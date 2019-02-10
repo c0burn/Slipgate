@@ -247,7 +247,7 @@ if set, the breakable must be triggered to destroy it
 number of pieces of debris to spawn. default 8.
 
 "angle" "n"
-If set, overrides the direction debris moves in. Range 0-360 for yaw, or -1 and -2 for up/down. Use 360 for a yaw of 0.
+If set, overrides the direction debris moves in. Use -1 and -2 for up/down. Use 360 for a yaw of 0.
 
 "dmg" "n"
 Amount of explosive damage to deal. Default 60.

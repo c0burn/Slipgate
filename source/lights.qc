@@ -74,7 +74,7 @@ Styles 32+ are assigned by the light compiler for switchable lights.
 ==========*/
 void() setup_lightstyles =
 {
-	for (float i=0; i<NUM_LIGHTSTYLES; i++)
+	for (float i = 0; i < NUM_LIGHTSTYLES - 1; i++)
 	{
 		lightstyle(i, lightstyle_lookup(i));
 	}
@@ -144,7 +144,7 @@ void() light_use =
 /*QUAKED light (1 1 0) (-8 -8 -8) (8 8 8) START_OFF FADE_IN_OUT
 Non-displayed light
 Please see your compiling utility documentation for full details,
-this entry only describes things controlled by the QuakeC
+this entry only describes things controlled by the game code
 
 ==========
 Keys

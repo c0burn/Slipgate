@@ -23,6 +23,7 @@ it_backpack.qc
 
 ambient.qc
 info.qc
+bmodel.qc
 lights.qc
 misc.qc
 bodyque.qc

@@ -1304,3 +1304,17 @@
 "classname" "weapon_supernailgun"
 "origin" "-0 -192 48"
 }
+// entity 52
+{
+"classname" "func_illusionary"
+"targetname" "mon1"
+// brush 0
+{
+( 128 -64 -0 ) ( 128 -63 -0 ) ( 128 -64 1 ) +abasebtn 0 0 0 1 1
+( 160 -32 16 ) ( 160 -32 17 ) ( 160 -31 16 ) +abasebtn 0 0 0 1 1
+( 128 -64 -0 ) ( 128 -64 1 ) ( 129 -64 -0 ) +abasebtn 0 0 0 1 1
+( 160 -32 16 ) ( 161 -32 16 ) ( 160 -32 17 ) +abasebtn 0 0 0 1 1
+( 160 -32 96 ) ( 160 -31 96 ) ( 161 -32 96 ) +abasebtn -0 -0 -0 1 1
+( 128 -64 -0 ) ( 129 -64 -0 ) ( 128 -63 -0 ) +abasebtn 0 0 0 1 1
+}
+}
