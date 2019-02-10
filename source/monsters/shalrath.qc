@@ -87,15 +87,13 @@ void() shal_death5      =[      $death5,        shal_death6     ] {};
 void() shal_death6      =[      $death6,        shal_death7     ] {};
 void() shal_death7      =[      $death7,        shal_death7    ] {};
 
-
 void(entity attacker, float damage) shalrath_pain =
 {
 	if (self.pain_finished > time)
 		return;
-
 	sound (self, CHAN_VOICE, "shalrath/pain.wav", 1, ATTN_NORM);
-	shal_pain1();
 	self.pain_finished = time + 3;
+	shal_pain1();
 };
 
 void(entity inflictor, entity attacker) shalrath_die =
@@ -110,11 +108,9 @@ void(entity inflictor, entity attacker) shalrath_die =
 		ThrowGib ("progs/gib3.mdl", self.health);
 		return;
 	}
-
+	self.solid = SOLID_NOT;
 	sound (self, CHAN_VOICE, "shalrath/death.wav", 1, ATTN_NORM);
 	shal_death1();
-	self.solid = SOLID_NOT;
-	// insert death sounds here
 };
 
 /*
@@ -145,7 +141,6 @@ void() ShalMissile =
 	missile.solid = SOLID_BBOX;
 	missile.movetype = MOVETYPE_FLYMISSILE;
 	setmodel (missile, "progs/v_spike.mdl");
-
 	setsize (missile, '0 0 0', '0 0 0');		
 
 	missile.origin = self.origin + '0 0 10';
@@ -159,43 +154,34 @@ void() ShalMissile =
 
 void() ShalHome =
 {
-	local vector	dir, vtemp;
-	vtemp = self.enemy.origin + '0 0 10';
-	if (self.enemy.health < 1)
-	{
-		remove(self);
+	if (self.enemy.health <= 0)
 		return;
-	}
-	dir = normalize(vtemp - self.origin);
+	if (self.owner.health <= 0 && skill < 2)
+		return;
+		
+	vector dir = normalize(self.enemy.origin + '0 0 10' - self.origin);
 	if (skill == 3)
 		self.velocity = dir * 350;
 	else
 		self.velocity = dir * 250;
+
 	self.nextthink = time + 0.2;
 	self.think = ShalHome;	
 };
 
 void() ShalMissileTouch =
 {
-	if (other == self.owner)
-		return;		// don't explode on owner
-
 	if (other.classname == "monster_zombie")
 		T_Damage (other, self, self, 110);	
 	T_RadiusDamage (self, self.owner, 40, world);
-	sound (self, CHAN_WEAPON, "weapons/r_exp3.wav", 1, ATTN_NORM);
 
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteByte (MSG_BROADCAST, TE_TAREXPLOSION);
 	WriteCoord (MSG_BROADCAST, self.origin_x);
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
 
-	self.velocity = '0 0 0';
-	self.touch = SUB_Null;
-	setmodel (self, "progs/s_explod.spr");
-	self.solid = SOLID_NOT;
-	s_explode1 ();
+	remove(self);
 };
 
 //=================================================================

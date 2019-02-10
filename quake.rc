@@ -1,10 +1,6 @@
 // default config
 exec default.cfg
 
-cl_bob "0.012"
-cl_bobcycle "0.55"
-cl_bobup "0.7"
-
 // engine saved config
 exec config.cfg
 

@@ -8,7 +8,6 @@ void() backpack_touch =
 	if (other.health <= 0)
 		return;
 
-	other.items = other.items | self.items;
 	other.ammo_shells = other.ammo_shells + self.ammo_shells;
 	other.ammo_nails = other.ammo_nails + self.ammo_nails;
 	other.ammo_rockets = other.ammo_rockets + self.ammo_rockets;
@@ -17,6 +16,9 @@ void() backpack_touch =
 	W_SetCurrentAmmo(other);
 	
 	sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
+	if (self.items)
+		sound(other, CHAN_AUTO, "weapons/pkup.wav", 1, ATTN_NORM);
+		
 	stuffcmd (other, "bf\n");
 	
 	// tell the player what's inside
@@ -101,27 +103,37 @@ void() backpack_touch =
 		sprint (other, " cells");
 	}
 	sprint (other, "\n");
-	
-	
-	// fire all targets
-	activator = other;
-	SUB_UseTargets();
 
-	// set up for respawn in deathmatch
-	if (self.classname == "item_backpack")	// map item, not dropped backpack
+	if (self.items)
 	{
-		self.solid = SOLID_NOT;
-		self.model = string_null;
-		if (deathmatch)
+		if (other.items & self.items == 0)
 		{
-			self.think = ItemRespawn;
-			self.nextthink = time + 30;
+			other.items = other.items | self.items;
+			if (!other.weaponframe)
+			{
+				other.weapon = self.items;
+				W_UpdateWeapon(other);
+			}
 		}
+	}
+	
+	// set up for respawn
+	self.solid = SOLID_NOT;
+	self.model = string_null;
+	if (self.classname == "item_backpack" && deathmatch)	// map item, not dropped backpack
+	{
+		self.think = ItemRespawn;
+		self.nextthink = time + 30;
 	}
 	else
 	{
-		remove(self);
+		self.think = SUB_Remove;
+		self.nextthink = time + 0.01;
 	}
+
+	// fire all targets
+	activator = other;
+	SUB_UseTargets();
 };
 
 /*==========
@@ -137,9 +149,9 @@ void() DropBackpack =
 		return;
 
 	entity backpack = spawn();
-	backpack.classname = "item_backpack_dropped";
+	backpack.classname = "backpack";
 
-	backpack.items = self.weapon;
+	backpack.weapon = self.weapon;
 	backpack.ammo_shells = self.ammo_shells;
 	backpack.ammo_nails = self.ammo_nails;
 	backpack.ammo_rockets = self.ammo_rockets;
@@ -161,10 +173,10 @@ void() DropBackpack =
 /*QUAKED item_backback (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/backpack.mdl");	}
 Backpack pickup. Contains 40 shells, 50 nails, 10 rockets and 12 cells.
-Set ammo_shells, ammo_nails, ammo_rockets and ammo_cells to override defaults.
-Use a value of -1, not 0, to not give any ammo of that type.
-Set the items bitfield to the IT_SHOTGUN etc values to make it contain weapons.
-You can give more than one weapon.
+
+Keys:
+items: set to one of the IT_SHOTGUN etc values to make the backpack contain a (single) weapon
+ammo_shells, ammo_nails, ammo_rockets, ammo_cells - set to override defaults. set to -1 to not give ammo of that type.
 */
 void() item_backback =
 {
@@ -174,10 +186,20 @@ void() item_backback =
 	setsize (self, '-16 -16 0', '16 16 56');
 	self.touch = backpack_touch;
 
-	// remove anything that isn't a weapon
-	self.items = self.items & (IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN |
-		IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING);
-	
+	if (self.items & IT_AXE)
+		self.items = IT_AXE;
+	else
+	{
+		for (float i = IT_SHOTGUN; i <= IT_LIGHTNING; i*=2)
+		{
+			if (self.items & i)
+			{
+				self.items = i;
+				break;
+			}
+		}
+	}
+
 	if (!self.ammo_shells)
 		self.ammo_shells = 40;
 	if (self.ammo_shells < 0)

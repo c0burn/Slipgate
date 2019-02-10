@@ -171,7 +171,7 @@ match (string)self.target and call their .use function
 void() SUB_UseTargets =
 {
 	// if delay is set, create a temporary entity to fire later
-	if (self.delay)
+	if (self.delay > 0)
 	{
 		entity t = spawn();
 		t.classname = "DelayedUse";
@@ -193,12 +193,10 @@ void() SUB_UseTargets =
 	}
 
 	// remove any killtargets
-	// in id1, if both target and killtarget was set,
-	// only killtarget was ever used and generally a triger_relay was used
-	// if a mapper wanted to target and killtarget something at the same time
+	// in id1, if both target and killtarget were set, target was ignored
 	// this mod allows both to be set, however id1 contains several maps with
-	// triggers that contain an identical target + killtarget so if we fix
-	// this bug we get some unintended side effects
+	// triggers that contain an identical target + killtarget so by adding
+	// this feature we can get some unintended side effects
 	// the solution is to remove the target field ONLY if it's identical to killtarget,
 	// as it would have had no effect in id1
 	if (self.killtarget != "")
@@ -206,7 +204,9 @@ void() SUB_UseTargets =
 		if (self.target == self.killtarget)
 		{
 			dprint(self.classname);
-			dprint(" has target==killtarget\n");
+			dprint(" at: ");
+			dprint(vtos(0.5 * (self.absmin + self.absmax)));
+			dprint(" has target == killtarget\n");
 			self.target = string_null;
 		}
 

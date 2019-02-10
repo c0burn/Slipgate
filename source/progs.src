@@ -1,6 +1,6 @@
 ../progs.dat
-#pragma optimise 2
-//#pragma optimise strip_unused_fields
+#pragma optimise 1
+#pragma optimise strip_unused_fields
 #copyright Michael Coburn (c0burn) - michael.s.coburn@gmail.com
 
 defs.qc
@@ -25,7 +25,8 @@ ambient.qc
 info.qc
 bmodel.qc
 lights.qc
-misc.qc
+bubbles.qc
+traps.qc
 bodyque.qc
 world.qc
 

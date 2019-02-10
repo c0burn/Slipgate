@@ -1118,7 +1118,7 @@ void() PlayerPostThink =
 		return;
 	if (self.deadflag)
 		return;
-		
+
 	W_WeaponFrame ();
 
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))

@@ -357,13 +357,14 @@ void(entity inflictor, entity attacker) wiz_die =
 
 void(entity attacker, float damage) Wiz_Pain =
 {
-	sound (self, CHAN_VOICE, "wizard/wpain.wav", 1, ATTN_NORM);
 	if (random()*70 > damage)
-		return;		// didn't flinch
-
+		return;
+	if (self.pain_finished > time)
+		return;
+	sound (self, CHAN_VOICE, "wizard/wpain.wav", 1, ATTN_NORM);
+	self.pain_finished = time + 0.4;
 	wiz_pain1 ();
 };
-
 
 void() Wiz_Missile =
 {

@@ -10,31 +10,34 @@ void() ammo_touch =
 	if (other.health <= 0)
 		return;
 
-	float best = W_BestWeapon(other);
-	
+	float count = 0;
 	if (self.items == IT_SHELLS)
 	{
 		if (other.ammo_shells >= 100)
 			return;
-		other.ammo_shells = other.ammo_shells + self.aflag;
+		other.ammo_shells = other.ammo_shells + self.ammo_shells;
+		count = self.ammo_shells;
 	}
 	if (self.items == IT_NAILS)
 	{
 		if (other.ammo_nails >= 200)
 			return;
-		other.ammo_nails = other.ammo_nails + self.aflag;
+		other.ammo_nails = other.ammo_nails + self.ammo_nails;
+		count = self.ammo_nails;
 	}
 	if (self.items == IT_ROCKETS)
 	{
 		if (other.ammo_rockets >= 100)
 			return;
-		other.ammo_rockets = other.ammo_rockets + self.aflag;
+		other.ammo_rockets = other.ammo_rockets + self.ammo_rockets;
+		count = self.ammo_rockets;
 	}
 	if (self.items == IT_CELLS)
 	{
 		if (other.ammo_cells >= 100)
 			return;
-		other.ammo_cells = other.ammo_cells + self.aflag;
+		other.ammo_cells = other.ammo_cells + self.ammo_cells;
+		count = self.ammo_cells;
 	}
 	W_BoundAmmo(other);
 	W_SetCurrentAmmo(other);
@@ -43,7 +46,7 @@ void() ammo_touch =
 	stuffcmd (other, "bf\n");
 	
 	sprint (other, "You got ");
-	sprint (other, ftos(self.aflag));
+	sprint (other, ftos(count));
 	sprint (other, " ");
 	sprint (other, self.netname);
 	sprint (other, "\n");
@@ -54,18 +57,6 @@ void() ammo_touch =
 	{
 		self.think = ItemRespawn;
 		self.nextthink = time + 30;
-	}
-
-	// if the player was using their best weapon,
-	// switch to a better one if we now have the ammo for it
-	if (other.weapon == best)
-	{
-		best = W_BestWeapon(other);
-		if (other.weapon != best)
-		{
-			other.weapon = best;
-			W_UpdateWeapon(other);
-		}
 	}
 
 	// fire all targets
@@ -87,13 +78,13 @@ void() item_shells =
 	{
 		precache_model ("maps/b_shell1.bsp");
 		setmodel (self, "maps/b_shell1.bsp");
-		self.aflag = 40;
+		self.ammo_shells = 40;
 	}
 	else
 	{
 		precache_model ("maps/b_shell0.bsp");
 		setmodel (self, "maps/b_shell0.bsp");
-		self.aflag = 20;
+		self.ammo_shells = 20;
 	}
 	self.items = IT_SHELLS;
 	self.netname = "shells";
@@ -115,13 +106,13 @@ void() item_spikes =
 	{
 		precache_model ("maps/b_nail1.bsp");
 		setmodel (self, "maps/b_nail1.bsp");
-		self.aflag = 50;
+		self.ammo_nails = 50;
 	}
 	else
 	{
 		precache_model ("maps/b_nail0.bsp");
 		setmodel (self, "maps/b_nail0.bsp");
-		self.aflag = 25;
+		self.ammo_nails = 25;
 	}
 	self.items = IT_NAILS;
 	self.netname = "nails";
@@ -139,25 +130,23 @@ AMMO_BIG is a box of 10 rockets.
 void() item_rockets =
 {
 	self.touch = ammo_touch;
-
 	if (self.spawnflags & AMMO_BIG)
 	{
 		precache_model ("maps/b_rock1.bsp");
 		setmodel (self, "maps/b_rock1.bsp");
-		self.aflag = 10;
+		self.ammo_rockets = 10;
 	}
 	else
 	{
 		precache_model ("maps/b_rock0.bsp");
 		setmodel (self, "maps/b_rock0.bsp");
-		self.aflag = 5;
+		self.ammo_rockets = 5;
 	}
 	self.items = IT_ROCKETS;
 	self.netname = "rockets";
 	setsize (self, '0 0 0', '32 32 56');
 	StartItem ();
 };
-
 
 /*QUAKED item_cells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
@@ -169,18 +158,17 @@ AMMO_BIG is a box of 12 cells.
 void() item_cells =
 {
 	self.touch = ammo_touch;
-
 	if (self.spawnflags & AMMO_BIG)
 	{
 		precache_model ("maps/b_batt1.bsp");
 		setmodel (self, "maps/b_batt1.bsp");
-		self.aflag = 12;
+		self.ammo_cells = 12;
 	}
 	else
 	{
 		precache_model ("maps/b_batt0.bsp");
 		setmodel (self, "maps/b_batt0.bsp");
-		self.aflag = 6;
+		self.ammo_cells = 6;
 	}
 	self.items = IT_CELLS;
 	self.netname = "cells";
@@ -203,14 +191,15 @@ float ITW_NAILS		= 4;
 float ITW_BIG		= 8;
 void() item_weapon =
 {
-	dprint("item_weapon is deprecated, converted to correct entity\n");
-	if (!self.spawnflags)
+	dprint("warning: item_weapon is deprecated\n");
+
+	if (!(self.spawnflags & (ITW_SHELLS | ITW_ROCKETS | ITW_NAILS)))
 	{
-		objerror("no spawnflags set");
+		objerror("invalid spawnflags");
 		remove(self);
 		return;
 	}
-	
+
 	if (self.spawnflags & ITW_SHELLS)
 	{
 		if (self.spawnflags & ITW_BIG)
@@ -231,10 +220,5 @@ void() item_weapon =
 			self.spawnflags = AMMO_BIG;
 		self.classname = "item_spikes";
 		item_spikes();
-	}
-	else
-	{
-		objerror("invalid spawnflags set");
-		remove(self);
 	}
 };

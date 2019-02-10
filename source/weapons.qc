@@ -403,10 +403,6 @@ void() W_FireRocket =
 void(vector p1, vector p2, entity from, float damage) LightningDamage =
 {
 	traceline (p1, p2, FALSE, self);
-	
-	dprint(trace_ent.classname);
-	dprint("\n");
-	
 	if (trace_ent.takedamage)
 	{
 		particle (trace_endpos, '0 0 100', 225, damage*4);

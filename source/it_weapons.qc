@@ -10,8 +10,6 @@ void() weapon_touch =
 	if (coop && (other.items & self.weapon))
 		return;
 
-	float olditems = other.items;
-	other.items = other.items | self.weapon;
 	other.ammo_shells = other.ammo_shells + self.ammo_shells;
 	other.ammo_nails = other.ammo_nails + self.ammo_nails;
 	other.ammo_rockets = other.ammo_rockets + self.ammo_rockets;
@@ -33,17 +31,11 @@ void() weapon_touch =
 		self.think = ItemRespawn;
 		self.nextthink = time + 30;
 	}
-	
-	// in deathmatch, we switch to a new gun if it's better
-	// in single player and coop, we switch if it's a new gun
-	if (!(olditems & self.weapon))
+
+	if (!(other.items & self.weapon))
 	{
-		if (deathmatch)
-		{
-			other.weapon = W_DeathmatchWeapon(other, other.weapon, self.weapon);
-			W_UpdateWeapon(other);
-		}
-		else
+		other.items = other.items | self.weapon;
+		if (!other.weaponframe)
 		{
 			other.weapon = self.weapon;
 			W_UpdateWeapon(other);
@@ -100,11 +92,6 @@ void() weapon_supernailgun =
 	self.ammo_nails = 30;
 	self.touch = weapon_touch;
 	setsize (self, '-16 -16 0', '16 16 56');
-	
-	dprint("***** SNAILGUN *****");
-	dprint(vtos(self.origin));
-	dprint("\n");
-	
 	StartItem ();
 };
 

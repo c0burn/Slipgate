@@ -273,21 +273,14 @@ void() sham_pain6       =[      $pain6, sham_run1      ] {};
 
 void(entity attacker, float damage)	sham_pain =
 {
-	sound (self, CHAN_VOICE, "shambler/shurt2.wav", 1, ATTN_NORM);
-
-	if (self.health <= 0)
-		return;		// allready dying, don't go into pain frame
-
 	if (random()*400 > damage)
-		return;		// didn't flinch
-
+		return;
 	if (self.pain_finished > time)
 		return;
+	sound (self, CHAN_VOICE, "shambler/shurt2.wav", 1, ATTN_NORM);
 	self.pain_finished = time + 2;
-		
-	sham_pain1 ();
+	sham_pain1();
 };
-
 
 //============================================================================
 

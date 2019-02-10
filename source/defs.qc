@@ -474,7 +474,6 @@ __used .string wad;
 .string	noise4;
 .float 	pausetime;
 .entity movetarget;
-.float	aflag;
 .float	dmg;
 .float	cnt;
 .void()	think1;
@@ -513,3 +512,4 @@ float SMALL_FLOAT = (float)(__variant)0x00800000i;
 
 float	intermission_running;
 float	intermission_exittime;
+
