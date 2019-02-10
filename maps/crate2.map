@@ -1,0 +1,51 @@
+// Game: Quake
+// Format: Standard
+// entity 0
+{
+"classname" "worldspawn"
+"wad" "gfx/base.wad"
+// brush 0
+{
+( -8 -16 8 ) ( 8 16 136 ) ( 8 16 8 ) crate1_side -16 8 -0 1 1
+( -8 -80 -56 ) ( -8 -79 -56 ) ( -8 -80 -55 ) crate1_side -16 8 -0 1 1
+( 88 16 -24 ) ( 89 16 -24 ) ( 88 16 -23 ) crate1_side -56 8 -0 1 1
+( 88 48 8 ) ( 88 49 8 ) ( 89 48 8 ) crate1_top -56 16 -0 1 1
+( -40 -80 -0 ) ( -39 -80 -0 ) ( -40 -79 -0 ) crate1_top -56 16 -0 1 1
+}
+}
+// entity 1
+{
+"classname" "light"
+"origin" "-0 -0 64"
+"light" "200"
+}
+// entity 2
+{
+"classname" "light"
+"origin" "-0 -64 -0"
+"light" "200"
+}
+// entity 3
+{
+"classname" "light"
+"origin" "-0 -0 -64"
+"light" "200"
+}
+// entity 4
+{
+"classname" "light"
+"origin" "-64 -0 -0"
+"light" "200"
+}
+// entity 5
+{
+"classname" "light"
+"origin" "64 -0 -0"
+"light" "200"
+}
+// entity 6
+{
+"classname" "light"
+"origin" "-0 64 -0"
+"light" "200"
+}

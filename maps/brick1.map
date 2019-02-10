@@ -1,0 +1,51 @@
+// Game: Quake
+// Format: Standard
+// entity 0
+{
+"classname" "worldspawn"
+"wad" "gfx/medieval.wad"
+// brush 0
+{
+( 12 12 8 ) ( 12 12 8.5 ) ( 12 12.749999999999998 8 ) bricks4_1 16 32 -0 0.75 0.5
+( -12 -12 8 ) ( 12 12 8 ) ( 12 12 72 ) bricks4_1 16 32 -0 0.75 0.5
+( -12 -12 -0 ) ( -12 -12 0.5 ) ( -11.25 -12 -0 ) bricks4_1 16 32 -0 0.75 0.5
+( 24 12 8 ) ( 24 12.749999999999998 8 ) ( 24.75 12 8 ) bricks4_1 16 -16 -0 0.75 0.75
+( -12 -24 -0 ) ( -11.25 -24 -0 ) ( -12 -23.25 -0 ) bricks4_1 16 -16 -0 0.75 0.75
+}
+}
+// entity 1
+{
+"classname" "light"
+"origin" "-0 -0 64"
+"light" "200"
+}
+// entity 2
+{
+"classname" "light"
+"origin" "-0 -64 -0"
+"light" "200"
+}
+// entity 3
+{
+"classname" "light"
+"origin" "-0 -0 -64"
+"light" "200"
+}
+// entity 4
+{
+"classname" "light"
+"origin" "-64 -0 -0"
+"light" "200"
+}
+// entity 5
+{
+"classname" "light"
+"origin" "64 -0 -0"
+"light" "200"
+}
+// entity 6
+{
+"classname" "light"
+"origin" "-0 64 -0"
+"light" "200"
+}

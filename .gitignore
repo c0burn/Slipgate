@@ -1,0 +1,12 @@
+**/autosave
+config.cfg
+spasm*.png
+*.log
+*.prt
+*.pts
+*.bak
+*.lno
+*.exe
+*.prj
+*.pui
+*.bat
