@@ -5,8 +5,7 @@ void() fireball_touch =
 {
 	if (other.classname == self.classname)
 		return;
-
-	T_Damage (other, self, self, 20);
+	T_Damage (other, self, self, self.dmg);
 	remove(self);
 };
 
@@ -49,6 +48,7 @@ Keys:
 speed - set vertical speed of fireballs. default 1000.
 wait - delay between fireballs (with some randomness). default 3 seconds.
 count - number of fireballs to launch. default 1.
+dmg - damage dealt by fireballs. default 20.
 */
 void() misc_fireball =
 {
@@ -61,7 +61,9 @@ void() misc_fireball =
 		self.count = 1;
 	if (self.wait <= 0)
 		self.wait = 3;
-	
+	if (self.dmg <= 20)
+		self.dmg = 20;
+		
 	self.think = fireball_fly;
 	self.nextthink = time + self.wait + random()*self.wait;
 };

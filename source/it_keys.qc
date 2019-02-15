@@ -133,7 +133,7 @@ void() sigil_touch =
 	if (other.health <= 0)
 		return;
 
-	serverflags = serverflags | self.spawnflags & 15;
+	serverflags = serverflags | (self.spawnflags & 15);
 	centerprint (other, "You got the Rune of ", self.netname, " Magic!");
 	sound (other, CHAN_ITEM, self.noise, 1, ATTN_NORM);
 	stuffcmd (other, "bf\n");

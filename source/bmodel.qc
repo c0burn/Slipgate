@@ -11,7 +11,7 @@ Simple solid bmodel
 
 Keys:
 "targetname" "name"
-if triggered, the bmodel will toggle its animation sequence between +0 to +9 and +a to +j
+if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 */
 void() func_wall =
 {
@@ -23,11 +23,11 @@ void() func_wall =
 };
 
 /*QUAKED func_illusionary (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-A simple bmodel that looks solid but lets you walk through it
+A simple bmodel that looks solid but lets the player walk through it
 
 Keys:
 "targetname" "name"
-if triggered, the bmodel will toggle its animation sequence between +0 to +9 and +a to +j
+if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 */
 void() func_illusionary =
 {
@@ -47,7 +47,7 @@ This bmodel will only appear if the episode has already been completed.
 
 Keys:
 "targetname" "name"
-if triggered, the bmodel will toggle its animation sequence between +0 to +9 and +a to +j
+if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 
 Spawnflags:
 E1, E2, E3, E4
@@ -71,7 +71,7 @@ This bmodel appears unless the player has all of the episode runes.
 
 Keys:
 "targetname" "name"
-if triggered, the bmodel will toggle its animation sequence between +0 to +9 and +a to +j
+if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 */
 void() func_bossgate =
 {

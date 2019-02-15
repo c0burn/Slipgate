@@ -178,7 +178,7 @@ Keys:
 items: set to one of the IT_SHOTGUN etc values to make the backpack contain a (single) weapon
 ammo_shells, ammo_nails, ammo_rockets, ammo_cells - set to override defaults. set to -1 to not give ammo of that type.
 */
-void() item_backback =
+void() item_backpack =
 {
 	precache_sound ("weapons/lock4.wav");
 	precache_model ("progs/backpack.mdl");

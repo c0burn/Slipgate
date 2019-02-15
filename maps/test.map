@@ -4,14 +4,16 @@
 {
 "classname" "worldspawn"
 "message" "Slipgate Test Map"
-"sounds" "6"
-"_tb_def" "external:slipgate.def"
+"_tb_def" "external:slipgate.fgd"
 "wad" "gfx/base.wad;gfx/lights.wad;gfx/medieval.wad;gfx/misc.wad;gfx/runic.wad;gfx/ubiBase_v100.wad"
-"sky" "browncloud"
-"fog" "0.03 0.0 0.02 0.03"
-"_sunlight2" "250"
-"_sunlight" "250"
+"_sunlight2" "100"
+"_sunlight" "100"
 "_tb_mod" "slipgate"
+"fog" "0.08 0.05 0.10 0.15"
+"worldtype" "2"
+"_dirt" "1"
+"_dirtmode" "1"
+"_dirtscale" "2"
 // brush 0
 {
 ( 256 64 -0 ) ( 256 64 1 ) ( 256 65 -0 ) sfloor1_4 -0 -0 -0 1 1
@@ -1095,40 +1097,23 @@
 }
 // entity 35
 {
-"classname" "info_player_start"
-"origin" "-112 16 24"
-}
-// entity 36
-{
-"classname" "item_backback"
-"origin" "-48 -128 -0"
-"items" "4"
-"ammo_cells" "-1"
-}
-// entity 37
-{
 "classname" "info_intermission"
 "origin" "232 -232 136"
 "mangle" "30 90 0"
 }
-// entity 38
+// entity 36
 {
 "classname" "info_intermission"
 "origin" "-216 216 216"
 "mangle" "30 -30 0"
 }
-// entity 39
+// entity 37
 {
 "classname" "info_intermission"
 "origin" "613 -234 26"
 "mangle" "-30 35 0"
 }
-// entity 40
-{
-"classname" "weapon_grenadelauncher"
-"origin" "48 -32 -0"
-}
-// entity 41
+// entity 38
 {
 "classname" "trigger_ladder"
 "angle" "360"
@@ -1142,7 +1127,7 @@
 ( 940 -32 -0 ) ( 941 -32 -0 ) ( 940 -31 -0 ) trigger -0 32 -0 1 1
 }
 }
-// entity 42
+// entity 39
 {
 "classname" "light"
 "origin" "936 128 160"
@@ -1152,7 +1137,7 @@
 "light" "300"
 "_softangle" "40"
 }
-// entity 43
+// entity 40
 {
 "classname" "light"
 "origin" "920 128 160"
@@ -1160,7 +1145,7 @@
 "light" "300"
 "angle" "180"
 }
-// entity 44
+// entity 41
 {
 "classname" "func_wall"
 "_shadow" "1"
@@ -1239,7 +1224,7 @@
 ( 944 16 -0 ) ( 960 32 -0 ) ( 944 32 -0 ) metal04_1 -0 16 -0 1 1
 }
 }
-// entity 45
+// entity 42
 {
 "classname" "trigger_once"
 "message" "\bClimbable ladder"
@@ -1254,12 +1239,7 @@
 ( 736 48 -0 ) ( 736 47 -0 ) ( 737 48 -0 ) trigger 48 -0 270 1 1
 }
 }
-// entity 46
-{
-"classname" "item_armor2"
-"origin" "48 16 -0"
-}
-// entity 47
+// entity 43
 {
 "classname" "light"
 "origin" "920 -128 160"
@@ -1267,7 +1247,7 @@
 "light" "300"
 "angle" "180"
 }
-// entity 48
+// entity 44
 {
 "classname" "light"
 "origin" "936 -128 160"
@@ -1277,15 +1257,7 @@
 "light" "300"
 "_softangle" "40"
 }
-// entity 49
-{
-"classname" "monster_shalrath"
-"origin" "160 160 24"
-"angle" "210"
-"targetname" "mon1"
-"spawnflags" "4"
-}
-// entity 50
+// entity 45
 {
 "classname" "trigger_changelevel"
 "map" "test"
@@ -1299,24 +1271,18 @@
 ( 720 208 -0 ) ( 721 208 -0 ) ( 720 209 -0 ) trigger 0 0 0 1 1
 }
 }
-// entity 51
+// entity 46
 {
-"classname" "item_cells"
-"origin" "-80 -80 -0"
-"spawnflags" "1"
+"classname" "info_player_start"
+"origin" "712 56 24"
 }
-// entity 52
+// entity 47
 {
-"classname" "item_shells"
-"origin" "-160 -112 -0"
+"classname" "item_backpack"
+"origin" "-48 -128 -0"
 }
-// entity 53
+// entity 48
 {
-"classname" "item_rockets"
-"origin" "-192 -176 -0"
-}
-// entity 54
-{
-"classname" "item_spikes"
-"origin" "-208 -128 -0"
+"classname" "info_player_start"
+"origin" "-64 32 24"
 }

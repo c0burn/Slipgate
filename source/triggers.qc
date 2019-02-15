@@ -545,7 +545,7 @@ void() trigger_hurt =
 {
 	InitTrigger ();
 	self.touch = hurt_touch;
-	if (!self.dmg)
+	if (self.dmg <= 0)
 		self.dmg = 5;
 };
 

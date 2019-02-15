@@ -214,7 +214,6 @@ void() breakable_use =
 Breakable brush model
 
 Spawnflags:
-
 EXPLODDE - will explode upon destruction. Set the dmg key to the force of the explosion.
 You can set dmg to 0 for just the explosion effects.
 NO_EXPLOSION_SPRITE - don't show explosion sprite.
@@ -222,7 +221,6 @@ NO_EXPLOSION_SOUND - don't make explosion sound or light.
 SPAWN_SMOKE - will spawn some additional smoke upon destuction
 
 Keys:
-
 "style" "n"
 Preset style, 1=base crates, 2=stone/brick
 Sets debris model, particle color and sounds automatically

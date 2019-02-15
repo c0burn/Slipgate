@@ -256,7 +256,7 @@ void() light_torch_small_walltorch =
 	makestatic(self);
 };
 
-/*QUAKED light_torch_long_walltorch (1 1 0) (-4 -4 -48) (8 4 24) NO_SOUND
+/*QUAKED light_torch_long_walltorch (1 1 0) (-8 -8 -48) (8 8 24) NO_SOUND
 {	model ("progs/flame3.mdl");	}
 Long wall torch
 Makes crackling fire noise unless NO_SOUND is set

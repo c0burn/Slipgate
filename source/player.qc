@@ -278,35 +278,26 @@ void(entity attacker) PainSound =
 		return;
 	}
 	self.pain_finished = time + 0.5;
-
-// don't make multiple pain sounds right after each other
-
-// ax pain sound
 	if (self.axhitme == 1)
 	{
 		self.axhitme = 0;
 		sound (self, CHAN_VOICE, "player/axhit1.wav", 1, ATTN_NORM);
 		return;
 	}
-	
 
-	float rs = rint((random() * 5) + 1);
-
-	self.noise = "";
-	if (rs == 1)
-		self.noise = "player/pain1.wav";
-	else if (rs == 2)
-		self.noise = "player/pain2.wav";
-	else if (rs == 3)
-		self.noise = "player/pain3.wav";
-	else if (rs == 4)
-		self.noise = "player/pain4.wav";
-	else if (rs == 5)
-		self.noise = "player/pain5.wav";
+	float r = randomrange(6);
+	if (r == 0)
+		sound (self, CHAN_VOICE, "player/pain1.wav", 1, ATTN_NORM);
+	else if (r == 1)
+		sound (self, CHAN_VOICE, "player/pain2.wav", 1, ATTN_NORM);
+	else if (r == 2)
+		sound (self, CHAN_VOICE, "player/pain3.wav", 1, ATTN_NORM);
+	else if (r == 3)
+		sound (self, CHAN_VOICE, "player/pain4.wav", 1, ATTN_NORM);
+	else if (r == 4)
+		sound (self, CHAN_VOICE, "player/pain5.wav", 1, ATTN_NORM);
 	else
-		self.noise = "player/pain6.wav";
-
-	sound (self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
+		sound (self, CHAN_VOICE, "player/pain6.wav", 1, ATTN_NORM);
 };
 
 void()	player_pain1 =	[	$pain1,	player_pain2	] {self.weaponframe=0;};
@@ -325,13 +316,12 @@ void()	player_axpain6 =	[	$axpain6,	player_run	] {};
 
 void(entity attacker, float damage) player_pain =
 {
+	PainSound(attacker);
+
 	if (self.weaponframe)
 		return;
-
-	if (self.invisible_finished > time)
-		return;		// eyes don't have pain frames
-
-	PainSound(attacker);
+	if (self.items & IT_INVISIBILITY)
+		return;
 	
 	if (self.weapon == IT_AXE)
 		player_axpain1 ();

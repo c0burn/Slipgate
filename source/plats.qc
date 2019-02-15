@@ -111,7 +111,7 @@ void() plat_crush =
 {
 //dprint ("plat_crush\n");
 
-	T_Damage (other, self, self, 1);
+	T_Damage (other, self, self, self.dmg);
 	
 	if (self.state == STATE_UP)
 		plat_go_down ();
@@ -146,15 +146,10 @@ Set "sounds" to one of the following:
 
 void() func_plat =
 {
-
-	if (!self.t_length)
-		self.t_length = 80;
-	if (!self.t_width)
-		self.t_width = 10;
-
-	if (self.sounds == 0)
+	if (self.dmg <= 0)
+		self.dmg = 1;
+	if (self.sounds <= 0)
 		self.sounds = 2;
-// FIX THIS TO LOAD A GENERIC PLAT SOUND
 
 	if (self.sounds == 1)
 	{

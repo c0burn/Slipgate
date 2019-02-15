@@ -248,10 +248,9 @@ void (entity attacker, float damage) shub_pain =
 	self.health = 40000;
 };
 
-/*QUAKED monster_oldone (1 0 0) (-16 -16 -24) (16 16 32)
-{
-	model ("progs/oldone.mdl");
-}
+/*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (160 128 256)
+{	model ("progs/oldone.mdl");		}
+Shub-Niggurath.
 */
 void() monster_oldone =
 {

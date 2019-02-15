@@ -243,21 +243,21 @@ Simple solid bmodel
 
 Keys:
 "targetname" "name"
-if triggered, the bmodel will toggle its animation sequence between +0 to +9 and +a to +j
+if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 */
 /*QUAKED func_illusionary (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-A simple bmodel that looks solid but lets you walk through it
+A simple bmodel that looks solid but lets the player walk through it
 
 Keys:
 "targetname" "name"
-if triggered, the bmodel will toggle its animation sequence between +0 to +9 and +a to +j
+if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 */
 /*QUAKED func_episodegate (0 .5 .8) ? E1 E2 E3 E4 X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 This bmodel will only appear if the episode has already been completed.
 
 Keys:
 "targetname" "name"
-if triggered, the bmodel will toggle its animation sequence between +0 to +9 and +a to +j
+if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 
 Spawnflags:
 E1, E2, E3, E4
@@ -267,7 +267,7 @@ This bmodel appears unless the player has all of the episode runes.
 
 Keys:
 "targetname" "name"
-if triggered, the bmodel will toggle its animation sequence between +0 to +9 and +a to +j
+if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 */
 /*QUAKED light (1 1 0) (-8 -8 -8) (8 8 8) START_OFF FADE_IN_OUT
 Non-displayed light
@@ -350,10 +350,14 @@ Makes crackling fire noise unless NO_SOUND is set
 testing air bubbles
 */
 /*QUAKED misc_fireball (1 .5 0) (-8 -8 -8) (8 8 8)
-{
-	model ("progs/lavaball.mdl");
-}
-Lava Balls
+{	model ("progs/lavaball.mdl");	}
+Flying lava balls
+
+Keys:
+speed - set vertical speed of fireballs. default 1000.
+wait - delay between fireballs (with some randomness). default 3 seconds.
+count - number of fireballs to launch. default 1.
+dmg - damage dealt by fireballs. default 20.
 */
 /*QUAKED misc_explobox (1 .5 0) (0 0 0) (32 32 64)
 {
@@ -393,7 +397,6 @@ Unless the NO_INTERMISSION flag is set, the view will go to the info_intermissio
 Breakable brush model
 
 Spawnflags:
-
 EXPLODDE - will explode upon destruction. Set the dmg key to the force of the explosion.
 You can set dmg to 0 for just the explosion effects.
 NO_EXPLOSION_SPRITE - don't show explosion sprite.
@@ -401,7 +404,6 @@ NO_EXPLOSION_SOUND - don't make explosion sound or light.
 SPAWN_SMOKE - will spawn some additional smoke upon destuction
 
 Keys:
-
 "style" "n"
 Preset style, 1=base crates, 2=stone/brick
 Sets debris model, particle color and sounds automatically

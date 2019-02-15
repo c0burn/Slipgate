@@ -816,7 +816,7 @@ void() WaterMove =
 				self.dmgtime = time + 1;
 			else
 				self.dmgtime = time + 0.2;
-
+			
 			T_Damage (self, world, world, 10*self.waterlevel);
 		}
 	}
@@ -825,6 +825,7 @@ void() WaterMove =
 		if (self.dmgtime < time && self.radsuit_finished < time)
 		{
 			self.dmgtime = time + 1;
+						
 			T_Damage (self, world, world, 4*self.waterlevel);
 		}
 	}
