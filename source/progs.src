@@ -25,6 +25,7 @@ ambient.qc
 info.qc
 bmodel.qc
 lights.qc
+misc.qc
 bubbles.qc
 traps.qc
 bodyque.qc

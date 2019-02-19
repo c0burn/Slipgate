@@ -303,7 +303,7 @@
 	_falloff(float) : "Falloff distance"
 	_color(color) : "Light color"
 	target(target_destination) : "Spotlight target"
-	mangle(string) : "Spotlight angle (yaw pitch roll)" : "0 0 0"
+	mangle(string) : "Spotlight angle (Yaw Pitch Roll)" : "0 0 0"
 	angle(float) : "Spotlight angle width" : 40
 	_softangle(float) : "Inner spotlight angle width" : 0
 	targetname(string) : "Targetname for a switchable light"
@@ -392,11 +392,52 @@
 @PointClass size(-8 -8 -48, 8 8 24) base(TorchLight) model("progs/flame3.mdl") = light_torch_small_walltorch : "Large walltorch" []
 
 //
-// misc
+// Misc
 //
 
+// air bubbles
+
 @PointClass base(Appearflags) color (0 255 255) = air_bubbles : "Air bubbles" []
+
+// boss lightning
+
 @PointClass base(Appearflags, Targetname) color(0 255 255) = event_lightning : "Boss lightning" []
+
+// misc_model
+
+@PointClass base(Appearflags) model({"path":mdl,"skin":skin,"frame":frame}) = misc_model : "Decorative model"
+[
+	mdl(string) : "Model"
+	frame(float) : "Pose"
+	skin(float) : "Skin"
+	pos1(string) : "Bounding Box Mins" : "-16 -16 -16"
+	pos2(string) : "Bounding Box Maxs" : "16 16 16"
+	spawnflags(Flags) =
+	[
+		1 : "Solid"
+	]
+]
+
+
+@PointClass model({"path":"progs/shalrath.mdl",frame:"93"}) size(-32 -32 -24, 32 32 0) = misc_shambler_dead : "Dead Shambler" []
+@PointClass model("progs/h_shams.mdl") size(-16 -16 0, 16 16 16) = misc_shambler_head  : "Shambler Head" []
+
+
+@PointClass model({"path":"progs/shambler.mdl",frame:"93"}) size(-32 -32 -24, 32 32 0) = misc_shambler_dead : "Dead Shambler" []
+@PointClass model("progs/h_shams.mdl") size(-16 -16 0, 16 16 16) = misc_shambler_head  : "Shambler Head" []
+
+@PointClass model({"path":"progs/soldier.mdl",frame:"17"}) size(-16 -16 -24, 16 16 0) = misc_soldier_dead_1 : "Dead Soldier" []
+@PointClass model({"path":"progs/soldier.mdl",frame:"28"}) size(-16 -16 -24, 16 16 0) = misc_soldier_dead_2 : "Dead Soldier" []
+@PointClass model("progs/h_guard.mdl") size(-16 -16 0, 16 16 16) = misc_soldier_head  : "Soldier Head" []
+
+@PointClass model({"path":"progs/zombie.mdl",frame:"172"}) size(-16 -16 -24, 16 16 0) = misc_zombie_dead : "Dead Zombie" []
+@PointClass model("progs/h_zombie.mdl") size(-16 -16 0, 16 16 16) = misc_zombie_head  : "Zombie Head" []
+
+@PointClass model({"path":"progs/wizard.mdl",frame:"53"}) size(-16 -16 -24, 16 16 0) = misc_wizard_dead : "Dead Scrag" []
+@PointClass model("progs/h_wizard.mdl") size(-16 -16 0, 16 16 16) = misc_wizard_head  : "Scrag Head" []
+
+@PointClass size(-16 -16 -16, 16 16 16) model("progs/teleport.mdl") = misc_teleporttrain : "Teleport train" []
+
 
 //
 // traps
@@ -449,8 +490,11 @@
 // brush models
 //
 
+
 @baseclass = BrushModel
 [
+	// ericw-tools light
+	
 	_minlight(float) : "Minlight" : 0
 	_minlight_exclude(string) : "Minlight exclude texture name"
 	_mincolor(color255) : "Minlight color" : "255 255 255"
@@ -485,12 +529,15 @@
 		1 : "Enable phong shading"
 	]
 	_phong_angle(float) : "Phong shading angle" : 89
-	_phong_angle_concave(float) : "Phone shading angle for concave faces" : 0
+	_phong_angle_concave(float) : "Phone shading angle for concave joints" : 0
 	_lightignore(choices) : "Minlight only" : 0 =
 	[
 		0 : "Do not ignore light (default)"
 		1 : "Receive minlight only"
 	]
+	
+	// ericw-tools qbsp
+	
 	_lmscale(float) : "Lightmap scale" : 0
 	_mirrorinside(choices) : "Mirror inside faces" : 0 =
 	[
@@ -499,8 +546,50 @@
 	]
 ]
 
-@BaseClass base(Appearflags, Targetname, Target, BrushModel) = Door
+@baseclass = DetailModel
 [
+	// ericw-tools light
+	
+	_minlight(float) : "Minlight" : 0
+	_mincolor(color255) : "Minlight color" : "255 255 255"
+	_shadow(choices) : "Shadow" : 0 =
+	[
+		-1 : "Do not cast shadows"
+		0 : "Cast shadows (default)"
+	]
+	_dirt(choices) : "Dirtmapping" : 0 =
+	[
+		-1 : "Disable dirtmapping"
+		0 : "Inherit from worldspawn (default)"
+	]
+	_phong(choices) : "Phong shading" : 0 =
+	[
+		0 : "Disable phong shading (default)"
+		1 : "Enable phong shading"
+	]
+	_phong_angle(float) : "Phong shading angle" : 89
+	_phong_angle_concave(float) : "Phone shading angle for concave joints" : 0
+	
+	// ericw-tools qbsp
+	
+	_lmscale(float) : "Lightmap scale" : 0
+	_mirrorinside(choices) : "Mirror inside faces" : 0 =
+	[
+		0 : "Do not mirror inside faces (default)"
+		1 : "Mirror inside faces"
+	]
+]
+
+@SolidClass base(Appearflags, Targetname, Target, BrushModel) = func_door : "Door"
+[
+	spawnflags(flags) =
+	[
+		1 : "Start Open" 
+		4 : "Don't Link" 
+		8 : "Gold Key needed"
+		16: "Silver Key needed"
+		32: "Toggle"
+	]
 	speed(float) : "Speed" : 100
 	sounds(choices) : "Sound" : 0 = 
 	[
@@ -513,26 +602,21 @@
 	[
 		-1 : "Stays open"
 	]
-	lip(float) : "Lip" : 8
+	lip(float) : "Lip remaining at end of move" : 8
 	dmg(float) : "Damage inflicted when blocked" : 2
-	message(string) : "Message if triggered"
 	health(float) : "Health (shoot open)" : 0
-]
-
-@SolidClass base(Door) = func_door : "Basic door" 
-[
-	spawnflags(flags) =
-	[
-		1 : "Start Open" : 0
-		4 : "Don't Link" : 0
-		8 : "Gold Key needed" : 0
-		16: "Silver Key needed" : 0
-		32: "Toggle" : 0
-	]
 ]
 
 @SolidClass base(Appearflags, Targetname, BrushModel) = func_door_secret : "Secret door" 
 [
+	spawnflags(flags) = 
+	[
+		1 : "Open once only"
+		2 : "Moves left first"
+		4 : "Moves down first"
+		8 : "Not shootable"
+		16 : "Always shootable"
+	]
 	speed(float) : "Speed" : 50
 	t_width(float) : "First move length"
 	t_length(float) : "Second move length"
@@ -547,14 +631,32 @@
 		2: "Metal"
 		3: "Base"
 	]
-	spawnflags(flags) = 
+]
+
+@SolidClass base(Appearflags, Targetname, Target, BrushModel) = func_breakable : "Breakable Brush Model" 
+[
+	spawnflags(flags) =
 	[
-		1 : "Open once only"
-		2 : "Moves left first"
-		4 : "Moves down first"
-		8 : "Not shootable"
-		16 : "Always shootable"
+		1 : "Explode on destruction"
+		2 : "No explosion sprite"
+		4 : "No explosion sound"
+		8 : "Spawn smoke on destruction"
 	]
+	style(choices) : "Preset Style" : 0 =
+	[
+		1 : "Base Crate"
+		2 : "Stone"
+	]
+	mdl1(string) : "Debris Model 1"
+	mdl2(string) : "Debris Model 2"
+	mdl3(string) : "Debris Model 3"
+	color(float) : "Particle Color (0-254, from palette)"
+	noise1(string) : "Damage / bounce sound"
+	noise2(string) : "Destruction sound"
+	health(float) : "Damage required to destroy" : 30
+	count(float) : "Amount of debris to spawn" : 8
+	angle(float) : "Direction of debris movement" : 0
+	dmg(float) : "If explosive, damage to deal"
 ]
 
 @SolidClass base(Targetname, Appearflags, BrushModel) = func_wall : "Wall" []
@@ -738,6 +840,12 @@
 	dmg(float) : "Damage" : 5
 ]
 
+@SolidClass = trigger_ladder : "Trigger: Ladder" 
+[
+	angle(float) : "Player facing direction - use 360 for a yaw of 0" : 0
+]
+
+
 //
 // ericw-tools
 //
@@ -751,14 +859,14 @@
 	_external_map_scale(float) : "Scale"
 ]
 
-@SolidClass base(BrushModel) = func_group : "Brush group" []
+@SolidClass base(DetailModel) = func_group : "Brush group" []
 
-@SolidClass base(BrushModel) = func_detail : "Detail brush" []
+@SolidClass base(DetailModel) = func_detail : "Detail brush" []
 
-@SolidClass base(BrushModel) = func_detail_illusionary : "Non-solid detail brush" []
+@SolidClass base(DetailModel) = func_detail_illusionary : "Non-solid detail brush" []
 
-@SolidClass base(BrushModel) = func_detail_wall : "Detail brush that doesn't split world faces" []
+@SolidClass base(DetailModel) = func_detail_wall : "Detail brush that doesn't split world faces" []
 
-@SolidClass base(BrushModel) = func_detail_fence : "Detail brush that doesn't split or clip world faces" []
+@SolidClass base(DetailModel) = func_detail_fence : "Detail brush that doesn't split or clip world faces" []
 
-@SolidClass base(BrushModel) = func_illusionary_visblocker : "Non-solid brush that blocks vis" []
+@SolidClass base(DetailModel) = func_illusionary_visblocker : "Non-solid brush that blocks vis" []

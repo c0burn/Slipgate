@@ -622,6 +622,9 @@ void() trigger_monsterjump =
 	self.touch = trigger_monsterjump_touch;
 };
 
+/*==========
+ladder_touch
+==========*/
 void() ladder_touch =
 {
 	if (other.classname != "player")

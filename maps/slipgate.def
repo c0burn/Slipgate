@@ -326,7 +326,7 @@ Sprite globe light
 Short wall torch
 Makes crackling fire noise unless NO_SOUND is set
 */
-/*QUAKED light_torch_long_walltorch (1 1 0) (-4 -4 -48) (8 4 24) NO_SOUND
+/*QUAKED light_torch_long_walltorch (1 1 0) (-8 -8 -48) (8 8 24) NO_SOUND
 {	model ("progs/flame3.mdl");	}
 Long wall torch
 Makes crackling fire noise unless NO_SOUND is set
@@ -344,6 +344,65 @@ Makes crackling fire noise unless NO_SOUND is set
 /*QUAKED light_flame_sprite (1 1 0) (-16 -16 0) (16 16 40) NO_SOUND
 Large yellow flame sprite
 Makes crackling fire noise unless NO_SOUND is set
+*/
+/*QUAKED misc_model (0 0 1) (-16 -16 -16) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path" : mdl, "skin" : skin, "frame": frame});
+}
+*/
+/*QUAKED misc_shambler_dead (1 0 0) (-32 -32 -24) (32 32 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/shambler.mdl","frame":93});
+}
+Dead Shambler
+*/
+/*QUAKED misc_shambler_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_shams.mdl");
+}
+Shambler Head
+*/
+/*QUAKED misc_soldier_dead_1 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/soldier.mdl","frame":28});
+}
+Dead Soldier
+*/
+/*QUAKED misc_soldier_dead_2 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/soldier.mdl","frame":28});
+}
+Dead Soldier
+*/
+/*QUAKED misc_soldier_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_guard.mdl");
+}
+Soldier Head
+*/
+/*QUAKED misc_wizard_dead (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/wizard.mdl","frame":53});
+}
+Dead Scrag
+*/
+/*QUAKED misc_wizard_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_wizard.mdl");
+}
+Scrag Head
+*/
+/*QUAKED misc_zombie_dead (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/zombie.mdl","frame":172});
+}
+Dead Zombie
+*/
+/*QUAKED misc_zombie_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_zombie.mdl");
+}
+Zombie Head
 */
 /*QUAKED air_bubbles (0 .5 .8) (-8 -8 -8) (8 8 8)
 
@@ -397,7 +456,7 @@ Unless the NO_INTERMISSION flag is set, the view will go to the info_intermissio
 Breakable brush model
 
 Spawnflags:
-EXPLODDE - will explode upon destruction. Set the dmg key to the force of the explosion.
+EXPLODE - will explode upon destruction. Set the dmg key to the force of the explosion.
 You can set dmg to 0 for just the explosion effects.
 NO_EXPLOSION_SPRITE - don't show explosion sprite.
 NO_EXPLOSION_SOUND - don't make explosion sound or light.
@@ -683,8 +742,7 @@ Vore.
 }
 Enforcer.
 */
-/*QUAKED monster_oldone (1 0 0) (-16 -16 -24) (16 16 32)
-{
-	model ("progs/oldone.mdl");
-}
+/*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (160 128 256)
+{	model ("progs/oldone.mdl");		}
+Shub-Niggurath.
 */

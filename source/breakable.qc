@@ -214,7 +214,7 @@ void() breakable_use =
 Breakable brush model
 
 Spawnflags:
-EXPLODDE - will explode upon destruction. Set the dmg key to the force of the explosion.
+EXPLODE - will explode upon destruction. Set the dmg key to the force of the explosion.
 You can set dmg to 0 for just the explosion effects.
 NO_EXPLOSION_SPRITE - don't show explosion sprite.
 NO_EXPLOSION_SOUND - don't make explosion sound or light.

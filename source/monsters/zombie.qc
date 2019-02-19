@@ -507,3 +507,4 @@ void() monster_zombie =
 		monster_start("progs/zombie.mdl", "progs/h_zombie.mdl", 60, 0, '-16 -16 -24', '16 16 40');
 	}
 };
+

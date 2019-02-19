@@ -63,7 +63,8 @@ void() misc_fireball =
 		self.wait = 3;
 	if (self.dmg <= 20)
 		self.dmg = 20;
-		
+	
+	//self.use = fireball_use;
 	self.think = fireball_fly;
 	self.nextthink = time + self.wait + random()*self.wait;
 };

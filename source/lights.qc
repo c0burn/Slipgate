@@ -2,8 +2,8 @@
 lights.qc
 ========================================*/
 
-enumflags { START_OFF, FADE_IN_OUT };
-enumflags { NO_SOUND };
+static enumflags { START_OFF, FADE_IN_OUT };
+static enumflags { NO_SOUND };
 
 #define FADE_RAMP 13
 string abc[FADE_RAMP] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m" };
@@ -45,7 +45,7 @@ lightstyle_lookup
 
 look up a style by it's number and return the correct animation string
 ==========*/
-string(float num) lightstyle_lookup =
+static string(float num) lightstyle_lookup =
 {
 	if (num > NUM_LIGHTSTYLES - 1)
 		num = NUM_LIGHTSTYLES - 1;
@@ -57,7 +57,7 @@ string(float num) lightstyle_lookup =
 /*==========
 lightstyle_fade_lookup
 ==========*/
-string(float num) lightstyle_fade_lookup =
+static string(float num) lightstyle_fade_lookup =
 {
 	if (num > FADE_RAMP - 1)
 		num = FADE_RAMP - 1;
@@ -83,7 +83,7 @@ void() setup_lightstyles =
 /*==========
 light_fade_in
 ==========*/
-void() light_fade_in =
+static void() light_fade_in =
 {
 	lightstyle(self.style, lightstyle_fade_lookup(self.count));
 	
@@ -101,7 +101,7 @@ void() light_fade_in =
 /*==========
 light_fade_out
 ==========*/
-void() light_fade_out =
+static void() light_fade_out =
 {	
 	lightstyle(self.style, lightstyle_fade_lookup(self.count));
 	
@@ -121,7 +121,7 @@ light_use
 
 using a light will turn it on and off
 ==========*/
-void() light_use =
+static void() light_use =
 {
 	if (self.spawnflags & START_OFF)
 	{
@@ -182,7 +182,7 @@ Spawnflags
 START_OFF - switchable lights only - light is switched off at map start - default is on
 FADE_IN_OUT - switchable lights only - light fades in and out when switched. you can't combine this with an animated style.
 */
-void() light =
+static void() light =
 {
 	// non-switchable light
 	if (!self.targetname)
@@ -195,6 +195,10 @@ void() light =
 	if (self.speed <= 0)
 		self.speed = 0.1;
 	
+	
+	if (self.style >= 32)
+		dprint("\blight with switchable style\n");
+		
 	// switchable light
 	if (self.style >= 32)
 	{
@@ -216,8 +220,11 @@ void() light =
 Non-displayed light
 Makes steady fluorescent humming sound
 */
-void() light_fluoro =
+static void() light_fluoro =
 {
+	if (self.style >= 32)
+		dprint("light_fluoro with switchable style\n");
+		
 	ambient_light_buzz();
 	remove(self);
 };
@@ -226,8 +233,11 @@ void() light_fluoro =
 Non-displayed light
 Makes sparking, broken fluorescent sound
 */
-void() light_fluorospark =
+static void() light_fluorospark =
 {
+	if (self.style >= 32)
+		dprint("light_fluorospark with switchable style\n");
+		
 	ambient_flouro_buzz();
 	remove(self);
 };
@@ -235,7 +245,7 @@ void() light_fluorospark =
 /*QUAKED light_globe (1 1 0) (-8 -8 -8) (8 8 8)
 Sprite globe light
 */
-void() light_globe =
+static void() light_globe =
 {
 	precache_model("progs/s_light.spr");
 	setmodel(self, "progs/s_light.spr");
@@ -247,7 +257,7 @@ void() light_globe =
 Short wall torch
 Makes crackling fire noise unless NO_SOUND is set
 */
-void() light_torch_small_walltorch =
+static void() light_torch_small_walltorch =
 {
 	precache_model("progs/flame.mdl");
 	setmodel(self, "progs/flame.mdl");
@@ -261,7 +271,7 @@ void() light_torch_small_walltorch =
 Long wall torch
 Makes crackling fire noise unless NO_SOUND is set
 */
-void() light_torch_long_walltorch =
+static void() light_torch_long_walltorch =
 {
 	precache_model("progs/flame3.mdl");
 	setmodel(self, "progs/flame3.mdl");
@@ -275,7 +285,7 @@ void() light_torch_long_walltorch =
 Small yellow flame
 Makes crackling fire noise unless NO_SOUND is set
 */
-void() light_flame_small_yellow =
+static void() light_flame_small_yellow =
 {
 	precache_model("progs/flame2.mdl");
 	setmodel(self, "progs/flame2.mdl");
@@ -289,7 +299,7 @@ void() light_flame_small_yellow =
 Large yellow flame
 Makes crackling fire noise unless NO_SOUND is set
 */
-void() light_flame_large_yellow =
+static void() light_flame_large_yellow =
 {
 	precache_model("progs/flame2.mdl");
 	setmodel (self, "progs/flame2.mdl");
@@ -302,7 +312,7 @@ void() light_flame_large_yellow =
 /*==========
 s_flame
 ==========*/
-void() s_flame =
+static void() s_flame =
 {
 	self.frame = self.frame + 1;
 	if (self.frame > 13)
@@ -315,7 +325,7 @@ void() s_flame =
 Large yellow flame sprite
 Makes crackling fire noise unless NO_SOUND is set
 */
-void() light_flame_sprite =
+static void() light_flame_sprite =
 {
 	precache_model("progs/s_flame.spr");
 	setmodel (self, "progs/s_flame.spr");
