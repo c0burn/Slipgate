@@ -5,6 +5,9 @@
 
 defs.qc
 util.qc
+tempents.qc
+waypoints.qc
+
 subs.qc
 fight.qc
 ai.qc

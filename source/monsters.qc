@@ -1,8 +1,7 @@
 /*==========
 monster_use
 
-using a monster makes it angry if the
-activator is a player
+using a monster makes it angry if the activator is a player
 ==========*/
 void() monster_use =
 {
@@ -43,7 +42,7 @@ monster_start_go
 ==========*/
 void() monster_start_go =
 {
-	// walkmonsters drop to the floor
+	// only walkmonsters drop to the floor
 	if (self.flags & (FL_MONSTER | FL_FLY | FL_SWIM) == FL_MONSTER)
 	{
 		self.origin_z = self.origin_z + 1;

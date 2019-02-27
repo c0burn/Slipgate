@@ -256,7 +256,7 @@ void() ogre_nail2	=[	$shoot2,		ogre_nail3	] {ai_face();};
 void() ogre_nail3	=[	$shoot2,		ogre_nail4	] {ai_face();};
 void() ogre_nail4	=[	$shoot3,		ogre_nail5	] {ai_face();OgreFireGrenade();};
 void() ogre_nail5	=[	$shoot4,		ogre_nail6	] {ai_face();};
-void() ogre_nail6	=[	$shoot5,		ogre_nail7	] {ai_face();};
+void() ogre_nail6	=[	$shoot5,		ogre_nail7	] {ai_face();SUB_CheckRefire (ogre_nail1);};
 void() ogre_nail7	=[	$shoot6,		ogre_run1	] {ai_face();};
 
 void()	ogre_pain1	=[	$pain1,		ogre_pain2	] {};
@@ -419,7 +419,7 @@ void() ogre_melee =
 Ogre.
 */
 void() monster_ogre =
-{
+{	
 	if (deathmatch)
 	{
 		remove(self);
@@ -448,12 +448,10 @@ void() monster_ogre =
 	monster_start("progs/ogre.mdl", "progs/h_ogre.mdl", 200, 0, VEC_HULL2_MIN, VEC_HULL2_MAX);
 };
 
-/*QUAKED monster_ogre_marksman (1 0 0) (-32 -32 -24) (32 32 64) Ambush
-{
-	model ("progs/ogre.mdl");
-}
+/*==========
+monster_ogre_marksman
 For compatibility only.
-*/
+==========*/
 void() monster_ogre_marksman =
 {
 	self.classname = "monster_ogre";

@@ -137,8 +137,12 @@ void(entity attacker, float damage)	knight_pain =
 	if (self.pain_finished > time)
 		return;
 
+	if (random() < 0.8)
+		sound (self, CHAN_VOICE, "knight/khurt.wav", 1, ATTN_NORM);
+	else
+		sound (self, CHAN_VOICE, "hknight/grunt.wav", 1, ATTN_NORM);
+
 	float r = random();
-	sound (self, CHAN_VOICE, "knight/khurt.wav", 1, ATTN_NORM);
 	if (r < 0.85)
 	{
 		knight_pain1 ();
@@ -178,7 +182,7 @@ void()	knight_dieb11 = [	$deathb11,	knight_dieb11] {};
 void(entity inflictor, entity attacker) knight_die =
 {
 // check for gib
-	//if (self.health < -40)
+	if (self.health < -40)
 	{
 		if (random() < 0.5)
 			sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
@@ -226,6 +230,7 @@ void() monster_knight =
 	precache_sound ("knight/sword1.wav");
 	precache_sound ("knight/sword2.wav");
 	precache_sound ("knight/idle.wav");
+	precache_sound ("hknight/grunt.wav");
 
 	self.th_stand = knight_stand1;
 	self.th_walk = knight_walk1;

@@ -198,6 +198,7 @@ void() worldspawn =
 	setup_lightstyles();
 	setup_gravity();
 	InitBodyQue();
+	WaypointInit();
 };
 
 /*==========
@@ -205,6 +206,7 @@ StartFrame
 ==========*/
 void() StartFrame =
 {
+	WaypointFrame();
 	teamplay = cvar("teamplay");
 	developer = cvar("developer");
 	framecount = framecount + 1;

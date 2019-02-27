@@ -1,64 +1,6 @@
-void() knight_walk1;
-void(entity etemp, entity stemp, entity stemp, float dmg) T_Damage;
-/*
 
-.enemy
-Will be world if not currently angry at anyone.
-
-.movetarget
-The next path spot to walk toward.  If .enemy, ignore .movetarget.
-When an enemy is killed, the monster will try to return to it's path.
-
-.huntt_ime
-Set to time + something when the player is in sight, but movement straight for
-him is blocked.  This causes the monster to use wall following code for
-movement direction instead of sighting on the player.
-
-.ideal_yaw
-A yaw angle of the intended direction, which will be turned towards at up
-to 45 deg / state.  If the enemy is in view and hunt_time is not active,
-this will be the exact line towards the enemy.
-
-.pausetime
-A monster will leave it's stand state and head towards it's .movetarget when
-time > .pausetime.
-
-walkmove(angle, speed) primitive is all or nothing
-*/
-
-
-//
-// globals
-//
-
-//
-// when a monster becomes angry at a player, that monster will be used
-// as the sight target the next frame so that monsters near that one
-// will wake up even if they wouldn't have noticed the player
-//
 entity	sight_entity;
 float	sight_entity_time;
-
-
-
-/*
-==============================================================================
-
-MOVETARGET CODE
-
-The angle of the movetarget effects standing and bowing direction, but has no effect on movement, which allways heads to the next target.
-
-targetname
-must be present.  The name of this movetarget.
-
-target
-the next spot to move to.  If not present, stop here for good.
-
-pausetime
-The number of seconds to spend standing or bowing for path_stand or path_bow
-
-==============================================================================
-*/
 
 /*
 =============
@@ -85,7 +27,6 @@ local entity	temp;
 	if (self.classname == "monster_ogre")
 		sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
 
-//dprint ("t_movetarget\n");
 	self.goalentity = self.movetarget = find (world, targetname, other.target);
 	self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
 	if (!self.movetarget)
@@ -129,12 +70,10 @@ returns the range catagorization of an entity reletive to self
 */
 float(entity targ) range =
 {
-local vector	spot1, spot2;
-local float		r;	
-	spot1 = self.origin + self.view_ofs;
-	spot2 = targ.origin + targ.view_ofs;
+	vector spot1 = self.origin + self.view_ofs;
+	vector spot2 = targ.origin + targ.view_ofs;
 	
-	r = vlen (spot1 - spot2);
+	float r = vlen (spot1 - spot2);
 	if (r < 120)
 		return RANGE_MELEE;
 	if (r < 500)
@@ -177,92 +116,27 @@ returns 1 if the entity is in front (in sight) of self
 */
 float(entity targ) infront =
 {
-	local vector	vec;
-	local float		dot;
-	
 	makevectors (self.angles);
-	vec = normalize (targ.origin - self.origin);
-	dot = vec * v_forward;
-	
-	if ( dot > 0.3)
-	{
+	vector vec = normalize (targ.origin - self.origin);
+	float dot = vec * v_forward;
+	if (dot > 0.3)
 		return TRUE;
-	}
-	return FALSE;
+	else
+		return FALSE;
 };
 
-
-//============================================================================
-
-/*
-===========
-ChangeYaw
-
-Turns towards self.ideal_yaw at self.yaw_speed
-Sets the global variable current_yaw
-Called every 0.1 sec by monsters
-============
-*/
-/*
-
-void() ChangeYaw =
-{
-	local float		ideal, move;
-
-//current_yaw = self.ideal_yaw;
-// mod down the current angle
-	current_yaw = anglemod( self.angles_y );
-	ideal = self.ideal_yaw;
-	
-	if (current_yaw == ideal)
-		return;
-	
-	move = ideal - current_yaw;
-	if (ideal > current_yaw)
-	{
-		if (move > 180)
-			move = move - 360;
-	}
-	else
-	{
-		if (move < -180)
-			move = move + 360;
-	}
-		
-	if (move > 0)
-	{
-		if (move > self.yaw_speed)
-			move = self.yaw_speed;
-	}
-	else
-	{
-		if (move < 0-self.yaw_speed )
-			move = 0-self.yaw_speed;
-	}
-
-	current_yaw = anglemod (current_yaw + move);
-
-	self.angles_y = current_yaw;
-};
-
-*/
-
-
-//============================================================================
 
 void() HuntTarget =
 {
 	self.goalentity = self.enemy;
-	self.think = self.th_run;
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+	self.think = self.th_run;
 	self.nextthink = time + 0.1;
-	SUB_AttackFinished (1);	// wait a while before first attack
+	SUB_AttackFinished(1);		// wait a while before first attack
 };
 
 void() SightSound =
 {
-local float	rsnd;
-
 	if (self.classname == "monster_ogre")	
 		sound (self, CHAN_VOICE, "ogre/ogwake.wav", 1, ATTN_NORM);
 	else if (self.classname == "monster_knight")
@@ -283,12 +157,12 @@ local float	rsnd;
 		sound (self, CHAN_VOICE, "blob/sight1.wav", 1, ATTN_NORM);
 	else if (self.classname == "monster_enforcer")
 	{
-		rsnd = rint(random() * 3);			
-		if (rsnd == 1)
+		float r = randomrange(4);
+		if (r == 0)
 			sound (self, CHAN_VOICE, "enforcer/sight1.wav", 1, ATTN_NORM);
-		else if (rsnd == 2)
+		else if (r == 1)
 			sound (self, CHAN_VOICE, "enforcer/sight2.wav", 1, ATTN_NORM);
-		else if (rsnd == 0)
+		else if (r == 2)
 			sound (self, CHAN_VOICE, "enforcer/sight3.wav", 1, ATTN_NORM);
 		else
 			sound (self, CHAN_VOICE, "enforcer/sight4.wav", 1, ATTN_NORM);
@@ -302,7 +176,7 @@ local float	rsnd;
 void() FoundTarget =
 {
 	if (self.enemy.classname == "player")
-	{	// let other monsters see this monster for a while
+	{
 		sight_entity = self;
 		sight_entity_time = time;
 	}
@@ -313,40 +187,17 @@ void() FoundTarget =
 	HuntTarget ();
 };
 
-/*
-===========
+/*==========
 FindTarget
-
-Self is currently not attacking anything, so try to find a target
-
-Returns TRUE if an enemy was sighted
-
-When a player fires a missile, the point of impact becomes a fakeplayer so
-that monsters that see the impact will respond as if they had seen the
-player.
-
-To avoid spending too much time, only a single client (or fakeclient) is
-checked each frame.  This means multi player games will have slightly
-slower noticing monsters.
-============
-*/
+==========*/
 float() FindTarget =
 {
-	local entity	client;
-	local float		r;
-
 	if (intermission_running)
 		return FALSE;
 
-// if the first spawnflag bit is set, the monster will only wake up on
-// really seeing the player, not another monster getting angry
-
-// spawnflags & 3 is a big hack, because zombie crucified used the first
-// spawn flag prior to the ambush flag, and I forgot about it, so the second
-// spawn flag works as well
 	if (sight_entity_time >= time - 0.1 && !(self.spawnflags & 3) )
 	{
-		client = sight_entity;
+		entity client = sight_entity;
 		if (client.enemy == self.enemy)
 			return FALSE;
 	}
@@ -354,7 +205,7 @@ float() FindTarget =
 	{
 		client = checkclient ();
 		if (!client)
-			return FALSE;	// current check entity isn't in PVS
+			return FALSE;
 	}
 
 	if (client == self.enemy)
@@ -365,7 +216,7 @@ float() FindTarget =
 	if (client.items & IT_INVISIBILITY)
 		return FALSE;
 
-	r = range (client);
+	float r = range(client);
 	if (r == RANGE_FAR)
 		return FALSE;
 		
@@ -379,7 +230,7 @@ float() FindTarget =
 	}
 	else if (r == RANGE_MID)
 	{
-		if ( /* client.show_hostile < time || */ !infront (client))
+		if (!infront (client))
 			return FALSE;
 	}
 	
@@ -407,104 +258,47 @@ float() FindTarget =
 
 void(float dist) ai_forward =
 {
-	walkmove (self.angles_y, dist);
+	walkmove(self.angles_y, dist);
 };
 
 void(float dist) ai_back =
 {
-	walkmove ( (self.angles_y+180), dist);
+	walkmove(self.angles_y + 180, dist);
 };
 
-
-/*
-=============
-ai_pain
-
-stagger back a bit
-=============
-*/
 void(float dist) ai_pain =
 {
-	ai_back (dist);
-/*
-	local float	away;
-	
-	away = anglemod (vectoyaw (self.origin - self.enemy.origin) 
-	+ 180*(random()- 0.5) );
-	
-	walkmove (away, dist);
-*/
+	ai_back(dist);
 };
 
-/*
-=============
-ai_painforward
-
-stagger back a bit
-=============
-*/
 void(float dist) ai_painforward =
 {
-	walkmove (self.ideal_yaw, dist);
+	ai_forward(dist);
 };
 
-/*
-=============
-ai_walk
-
-The monster is walking it's beat
-=============
-*/
 void(float dist) ai_walk =
 {
-	// check for noticing a player
-	if (FindTarget ())
+	if (FindTarget())
 		return;
-
-	movetogoal (dist);
+	movetogoal(dist);
 };
 
-
-/*
-=============
-ai_stand
-
-The monster is staying in one place for a while, with slight angle turns
-=============
-*/
 void() ai_stand =
 {
-	if (FindTarget ())
+	if (FindTarget())
 		return;
 };
 
-/*
-=============
-ai_turn
-
-don't move, but turn towards ideal_yaw
-=============
-*/
 void() ai_turn =
 {
-	if (FindTarget ())
+	if (FindTarget())
 		return;
-	
 	changeyaw ();
 };
 
-
-/*
-============
-FacingIdeal
-
-============
-*/
 float() FacingIdeal =
 {
-	local	float	delta;
-	
-	delta = anglemod(self.angles_y - self.ideal_yaw);
+	float delta = anglemod(self.angles_y - self.ideal_yaw);
 	if (delta > 45 && delta < 315)
 		return FALSE;
 	return TRUE;
@@ -536,18 +330,16 @@ float() CheckAnyAttack =
 };
 
 
-/*
-=============
+/*==========
 ai_run_melee
 
-Turn and close until within an angle to launch a melee attack
-=============
+Turn until facing enemy then launch melee attack
+==========
 */
 void() ai_run_melee =
 {
 	self.ideal_yaw = enemy_yaw;
-	changeyaw ();
-
+	changeyaw();
 	if (FacingIdeal())
 	{
 		self.th_melee ();
@@ -555,18 +347,21 @@ void() ai_run_melee =
 	}
 };
 
-
-/*
-=============
+/*==============
 ai_run_missile
 
-Turn in place until within an angle to launch a missile attack
-=============
-*/
+Turn until facing enemy then launch missile attack
+==========*/
 void() ai_run_missile =
 {
 	self.ideal_yaw = enemy_yaw;
 	changeyaw();
+	// if the enemy has dropped out of sight, cancel the attack
+	if (!enemy_vis)
+	{
+		self.attack_state = AS_STRAIGHT;
+		return;
+	}
 	if (FacingIdeal())
 	{
 		self.th_missile ();
@@ -574,20 +369,17 @@ void() ai_run_missile =
 	}
 };
 
-
-/*
-=============
+/*==========
 ai_run_slide
 
-Strafe sideways, but stay at aproximately the same range
-=============
-*/
+Face the enemy and strafe sideways
+==========*/
 void(float dist) ai_run_slide =
 {
-	local float	ofs;
-	
 	self.ideal_yaw = enemy_yaw;
-	changeyaw ();
+	changeyaw();
+	
+	float ofs;
 	if (self.lefty)
 		ofs = 90;
 	else
@@ -595,12 +387,364 @@ void(float dist) ai_run_slide =
 	
 	if (walkmove (self.ideal_yaw + ofs, dist))
 		return;
-		
 	self.lefty = 1 - self.lefty;
-	
 	walkmove (self.ideal_yaw - ofs, dist);
 };
 
+#define ROUTE_MAX 256
+float route_busy;
+.float route;
+.entity route_table[ROUTE_MAX];
+.float distance;
+.float route_time;
+
+/*============
+ClearRoute
+
+clear the monsters current route
+============*/
+void() ClearRoute =
+{
+	self.route = -1;
+	for (float i = 0; i < ROUTE_MAX; i = i + 1)
+		self.route_table[i] = world;
+};
+
+/*============
+ClearWayTable
+
+clear the waypoint table (which is shared between all monsters)
+marks all waypoints as not visited and infinite distance
+============*/
+void() ClearWayTable =
+{
+	entity e = way_head;
+	while (e)
+	{
+		e.state = -1;
+		e.distance = -1;
+		e.last_way = world;
+		e = e._next;
+	}
+};
+
+/*==========
+CheckDoors
+
+check if a door is in the way of two waypoints while checking a route
+==========*/
+float(entity e) CheckDoors =
+{
+	traceline(self.enemy.origin, e.origin, TRUE, self.enemy);
+	if (trace_fraction == 1)
+		return TRUE;
+	if (trace_ent == e)
+		return TRUE;
+		
+	if (trace_ent.classname == "door")
+	{
+		// we check .owner because it's the master door
+		if (trace_ent.owner.items) // key door
+			return FALSE;
+		if (trace_ent.owner.health) // shootable door
+			return FALSE;
+		if (trace_ent.owner.targetname != "") // triggered door
+			return FALSE;
+
+		return TRUE; // regular door with a trigger field
+	}
+	
+	dprint("CheckDoors: \n");
+	dprint(trace_ent.classname);
+	dprint("\n");
+	
+	return FALSE; // something else in the way
+};
+
+/*==========
+CheckRoute
+
+called from RouteThink to update the distances between the waypoints
+==========*/
+void(entity e) CheckRoute =
+{
+	if (!e)
+		return;
+	if (e.state > 0)
+		return;
+	if (!CheckDoors(e))
+		return;
+
+	float dist = self.enemy.distance;
+	dist = dist + vlen(self.enemy.origin - e.origin);
+	dist = dist + random() * 32;	// add some fuzzyness
+	
+	if ((e.distance == -1) || (dist < e.distance))
+	{
+		e.distance = dist;
+		e.last_way = self.enemy;
+	}
+};
+
+/*==========
+RouteThink
+
+return the shortest path to the goal waypoint
+==========*/
+void() RouteThink =
+{
+	entity e;
+
+	// the monster died while calculating a route - free up the table
+	if (self.owner.health <= 0)
+	{
+		route_busy = 0;
+		remove(self);
+		fixer = world;
+		return;
+	}
+
+	// visit all waypoints linking to current waypoint and update their distance
+	CheckRoute(self.enemy.target1);
+	CheckRoute(self.enemy.target2);
+	CheckRoute(self.enemy.target3);
+	CheckRoute(self.enemy.target4);
+
+	// mark this waypoint as visited
+	self.enemy.state = 1;
+
+	// found route
+	if (self.goalentity.state == 1)
+	{
+		//dprint("RouteThink: found route\n");
+		
+		e = self.goalentity;
+		float i = 0;
+		while (e)
+		{
+			self.owner.route_table[i] = e;
+			e = e.last_way;
+			if (e)		// don't count the final waypoint, as it's the one the monster is already at
+				i = i + 1;
+		}
+		
+		self.owner.route = i - 1;	// because route_table is a zero indexed array
+		self.owner.route_time = time + 5;
+		route_busy = FALSE;
+		remove(self);
+		fixer = world;
+		return;
+	}
+
+	// find the nearest, unvisited waypoint
+	entity best = world;
+	float bdist = -1;
+	e = way_head;
+	while (e)
+	{
+		if (e.state == -1) // not visited
+		{
+			if (e.distance > 0) // we use -1 for "infinite distance"
+			{
+				if (e.distance < bdist || bdist == -1)
+				{
+					best = e;
+					bdist = e.distance;
+				}
+			}
+		}
+		e = e._next;
+	}
+
+	// no valid route exists between the two waypoints
+	if (best == world)
+	{
+		//dprint("RouteThink: no valid route exists\n");
+		route_busy = FALSE;
+		remove(self);
+		fixer = world;
+		return;
+	}
+
+	// update the next waypoint
+	self.enemy = best;
+	self.think = RouteThink;
+	self.nextthink = time;
+};
+
+/*============
+StartRoute
+
+called by monsters when they want to find a path between waypoint A and B
+uses thinks to avoid tripping the runaway counter (RouteThink)
+============*/
+void(entity e1, entity e2) StartRoute =
+{	
+	// no waypoints exist in map
+	if (!waypoints)
+		return;
+	// another monster is already calculating a route
+	if (route_busy)
+		return;
+	// sanity check
+	if (e1 == world || e2 == world || e1 == e2)
+		return;
+	
+	//dprint("StartRoute\n");
+	
+	// mark the table as busy and clear it for use
+	route_busy = TRUE;
+	ClearWayTable();
+
+	// the first waypoint is always distance zero
+	e1.distance = 0;
+
+	if (!fixer)
+		fixer = spawn();
+	fixer.owner = self;
+	fixer.enemy = e1; // start waypoint
+	fixer.goalentity = e2; // end waypoint
+	fixer.nextthink = time;
+	fixer.think = RouteThink;
+};
+
+/*==========
+FindWaypoint
+==========*/
+entity(entity monster, entity start) FindWaypoint =
+{
+	if (!waypoints)
+		return world;
+
+	if (start != world)
+	{
+		float best_dist = vlen(start.origin - monster.origin);
+		entity best = start;
+	}
+	else
+	{
+		best_dist = -1;
+		best = world;
+	}
+
+	entity w = way_head;
+	while(w)
+	{
+		float way_dist = vlen(w.origin - monster.origin);
+		if (way_dist < best_dist || best_dist == -1)
+		{
+			if (wisible(monster, w))
+			{
+				best_dist = way_dist;
+				best = w;
+				
+				if (best_dist < 20)
+					return best;
+			}
+		}
+		w = w._next;
+	}
+
+	if (best_dist < 256)
+	{
+		//dprint("FindWaypoint: found\n");
+		return best;
+	}
+	else
+	{
+		//dprint("FindWaypoint: world\n");
+		return world;
+	}
+};
+
+/*==========
+ai_movetogoal
+==========*/
+
+.float blocked_time;
+.float blocked_count;
+
+float (float dist) SV_CloseEnough =
+{
+	if (self.goalentity.absmin.x > self.absmax.x + dist)
+		return FALSE;
+	if (self.goalentity.absmax.x < self.absmin.x - dist)
+		return FALSE;
+		
+	if (self.goalentity.absmin.y > self.absmax.y + dist)
+		return FALSE;
+	if (self.goalentity.absmax.y < self.absmin.y - dist)
+		return FALSE;
+		
+	if (self.goalentity.absmin.z > self.absmax.z + dist)
+		return FALSE;
+	if (self.goalentity.absmax.z < self.absmin.z - dist)
+		return FALSE;
+		
+	return TRUE;
+};
+
+void(entity goal, float dist) ai_movetogoal =
+{	
+	// new target
+	if (self.goalentity != goal)
+	{
+		self.goalentity = goal;
+		self.ideal_yaw = vectoyaw(goal.origin - self.origin);
+	}
+
+	if (SV_CloseEnough(dist))
+	{
+		dprint("SV_CloseEnough\n");
+		self.flags = self.flags | FL_PARTIALGROUND;
+		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+		changeyaw();
+		if (walkmove(self.angles_y, dist))
+			return;
+		float ofs;
+		if (self.lefty)
+			ofs = 45;
+		else
+			ofs = -45;
+			
+		if (walkmove(self.angles_y + ofs, dist))
+			return;
+		self.lefty = 1 - self.lefty;
+		walkmove(self.angles_y - ofs, dist);
+	}
+	else
+		movetogoal(dist);
+	
+	/*
+	if (self.blocked_count > 10)
+	{
+		self.blocked_count = 0;
+		self.blocked_time = time + 5;
+	}
+	if (self.blocked_time > time)
+	{
+		movetogoal(dist);
+		return;	
+	}
+	
+	self.ideal_yaw = vectoyaw(goal.origin - self.origin);
+	changeyaw();
+	if (walkmove(self.angles_y, dist))
+		return;
+
+	self.blocked_count = self.blocked_count + 1;
+	float ofs;
+	if (self.lefty)
+		ofs = 45;
+	else
+		ofs = -45;
+		
+	if (walkmove(self.angles_y + ofs, dist))
+		return;
+		
+	self.lefty = 1 - self.lefty;
+	walkmove(self.angles_y - ofs, dist);*/
+};
 
 /*
 =============
@@ -610,70 +754,127 @@ The monster has an enemy it is trying to kill
 =============
 */
 void(float dist) ai_run =
-{
+{	
+	// stop all attacks during intermission
 	if (intermission_running)
 	{
-		self.enemy = world;
+		ClearRoute();
+		self.enemy = self.goalentity = world;
 		self.th_stand();
 		return;
 	}
+	// enemy has died, so look for a new one
 	if (self.enemy.health <= 0)
 	{
-		self.enemy = world;
+		ClearRoute();
+		self.enemy = self.goalentity = world;
 		if (self.oldenemy.health > 0)
 		{
 			self.enemy = self.oldenemy;
-			HuntTarget ();
+			HuntTarget();
 		}
 		else
 		{
+			// monstes goes back to walking its beat
 			if (self.movetarget)
-				self.th_walk ();
-			else
-				self.th_stand();
+			{
+				self.goalentity = self.movetarget;
+				self.th_walk();
+				return;
+			}
+			
+			self.th_stand();
 			return;
 		}
 	}
 
-	self.show_hostile = time + 1;		// wake up other monsters
-
-// check knowledge of enemy
+	// FIXME: get rid of globals
 	enemy_vis = visible(self.enemy);
-	if (enemy_vis)
-		self.search_time = time + 5;
-
-// look for other coop players
-	if (coop && self.search_time < time)
-	{
-		if (FindTarget ())
-			return;
-	}
-
 	enemy_infront = infront(self.enemy);
 	enemy_range = range(self.enemy);
 	enemy_yaw = vectoyaw(self.enemy.origin - self.origin);
 	
+	// look for other players in co-op
+	if (enemy_vis)
+		self.search_time = time + 5;
+	if (coop && self.search_time < time)
+	{
+		if (FindTarget())
+			return;
+	}
+	
+	// started an attack, so just turn in place
 	if (self.attack_state == AS_MISSILE)
 	{
-		ai_run_missile ();
+		ai_run_missile();
 		return;
 	}
 	if (self.attack_state == AS_MELEE)
 	{
-		ai_run_melee ();
+		ai_run_melee();
 		return;
 	}
 
-	if (CheckAnyAttack ())
-		return;					// beginning an attack
-		
+	// check for beginning an attack
+	if (CheckAnyAttack())
+		return;
+	
+	// used by scrags
 	if (self.attack_state == AS_SLIDING)
 	{
-		ai_run_slide (dist);
+		ai_run_slide(dist);
 		return;
 	}
-		
-// head straight in
-	movetogoal (dist);		// done in C code...
-};
+	
+	// no waypoints in map
+	if (!waypoints)
+	{
+		ai_movetogoal(self.enemy, dist);
+		return;
+	}
 
+	// find a route to the enemy	
+	if (self.route < 0)
+	{
+		//dprint("Finding route\n");
+		
+		self.current_way = FindWaypoint(self, world);	
+		self.enemy.current_way = FindWaypoint(self.enemy, self.enemy.current_way);
+		StartRoute(self.current_way, self.enemy.current_way);
+		
+		ai_movetogoal(self.enemy, dist);
+		return;
+	}
+	
+	// monster has failed to move to the next waypoint, so drop the route
+	if (time > self.route_time)
+	{
+		//dprint("Dropping route\n");
+		ClearRoute();
+		ai_movetogoal(self.enemy, dist);
+		return;
+	}
+
+	// periodically refresh enemy waypoint
+	if (!route_busy)
+	{
+		self.enemy.current_way = FindWaypoint(self.enemy, self.enemy.current_way);
+		if (self.route_table[0] != self.enemy.current_way)
+			StartRoute(self.current_way, self.enemy.current_way);
+	}
+	
+	// move to the next waypoint
+	entity w = self.route_table[self.route];
+	ai_movetogoal(w, dist);
+	
+	// hit next waypoint?
+	if (vlen(self.origin - w.origin) < 64)
+	{
+		self.route_time = time + 5;
+		self.current_way = self.route_table[self.route];
+		self.route = self.route - 1;
+
+		if (self.route < 0)
+			ClearRoute();
+	}
+};

@@ -138,14 +138,12 @@ void(entity attacker, float damage)	demon1_pain =
 	demon1_pain1 ();
 };
 
-void()	demon1_die1		=[	$death1,		demon1_die2	] {
-sound (self, CHAN_VOICE, "demon/ddeath.wav", 1, ATTN_NORM);};
+void()	demon1_die1		=[	$death1,		demon1_die2	] {};
 void()	demon1_die2		=[	$death2,		demon1_die3	] {};
 void()	demon1_die3		=[	$death3,		demon1_die4	] {};
 void()	demon1_die4		=[	$death4,		demon1_die5	] {};
 void()	demon1_die5		=[	$death5,		demon1_die6	] {};
-void()	demon1_die6		=[	$death6,		demon1_die7	]
-{self.solid = SOLID_NOT;};
+void()	demon1_die6		=[	$death6,		demon1_die7	] {};
 void()	demon1_die7		=[	$death7,		demon1_die8	] {};
 void()	demon1_die8		=[	$death8,		demon1_die9	] {};
 void()	demon1_die9		=[	$death9,		demon1_die9 ] {};
@@ -163,7 +161,8 @@ void(entity inflictor, entity attacker) demon_die =
 		return;
 	}
 
-// regular death
+	sound (self, CHAN_VOICE, "demon/ddeath.wav", 1, ATTN_NORM);
+	self.solid = SOLID_NOT;
 	demon1_die1 ();
 };
 
@@ -182,6 +181,8 @@ Fiend.
 */
 void() monster_demon1 =
 {
+	self.classname = "monster_demon1";
+	
 	if (deathmatch)
 	{
 		remove(self);
@@ -279,12 +280,12 @@ float()	DemonCheckAttack =
 		return TRUE;
 	}
 	
-	if (CheckDemonJump ())
+	/*if (CheckDemonJump ())
 	{
 		self.attack_state = AS_MISSILE;
         sound (self, CHAN_VOICE, "demon/djump.wav", 1, ATTN_NORM);
 		return TRUE;
-	}
+	}*/
 	
 	return FALSE;
 };
