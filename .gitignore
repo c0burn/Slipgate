@@ -12,3 +12,4 @@ spasm*.png
 *.bat
 *.texinfo
 condump.txt
+*.dem
