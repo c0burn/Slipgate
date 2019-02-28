@@ -53,7 +53,6 @@ $frame pull1 pull2 pull3 pull4 pull5 pull6 pull7 pull8 pull9 pull10 pull11
 void() OgreGrenadeExplode =
 {
 	T_RadiusDamage (self, self.owner, 40, world);
-	sound (self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
 
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
@@ -70,8 +69,6 @@ void() OgreGrenadeExplode =
 
 void() OgreGrenadeTouch =
 {
-	if (other == self.owner)
-		return;		// don't explode on owner
 	if (other.takedamage == DAMAGE_AIM)
 	{
 		OgreGrenadeExplode();
@@ -79,8 +76,6 @@ void() OgreGrenadeTouch =
 	}
 	
 	sound (self, CHAN_VOICE, "weapons/bounce.wav", 1, ATTN_NORM);	// bounce sound
-	if (self.velocity == '0 0 0')
-		self.avelocity = '0 0 0';
 };
 
 /*
@@ -354,9 +349,7 @@ void(entity attacker, float damage)	ogre_pain =
 
 void()	ogre_die1	=[	$death1,	ogre_die2	] {};
 void()	ogre_die2	=[	$death2,	ogre_die3	] {};
-void()	ogre_die3	=[	$death3,	ogre_die4	]
-{self.solid = SOLID_NOT;
-self.ammo_rockets = 2;DropBackpack();};
+void()	ogre_die3	=[	$death3,	ogre_die4	] {DropBackpack();};
 void()	ogre_die4	=[	$death4,	ogre_die5	] {};
 void()	ogre_die5	=[	$death5,	ogre_die6	] {};
 void()	ogre_die6	=[	$death6,	ogre_die7	] {};
@@ -371,9 +364,7 @@ void()	ogre_die14	=[	$death14,	ogre_die14	] {};
 
 void()	ogre_bdie1	=[	$bdeath1,	ogre_bdie2	] {};
 void()	ogre_bdie2	=[	$bdeath2,	ogre_bdie3	] {ai_forward(5);};
-void()	ogre_bdie3	=[	$bdeath3,	ogre_bdie4	]
-{self.solid = SOLID_NOT;
-self.ammo_rockets = 2;DropBackpack();};
+void()	ogre_bdie3	=[	$bdeath3,	ogre_bdie4	] {DropBackpack();};
 void()	ogre_bdie4	=[	$bdeath4,	ogre_bdie5	] {ai_forward(1);};
 void()	ogre_bdie5	=[	$bdeath5,	ogre_bdie6	] {ai_forward(3);};
 void()	ogre_bdie6	=[	$bdeath6,	ogre_bdie7	] {ai_forward(7);};
@@ -395,8 +386,8 @@ void(entity inflictor, entity attacker) ogre_die =
 		return;
 	}
 
+	self.solid = SOLID_NOT;
 	sound (self, CHAN_VOICE, "ogre/ogdth.wav", 1, ATTN_NORM);
-	
 	if (random() < 0.5)
 		ogre_die1 ();
 	else
@@ -444,6 +435,8 @@ void() monster_ogre =
 	self.th_melee = ogre_melee;
 	self.th_missile = ogre_nail1;
 	self.th_pain = ogre_pain;
+	
+	self.ammo_rockets = 2;
 	
 	monster_start("progs/ogre.mdl", "progs/h_ogre.mdl", 200, 0, VEC_HULL2_MIN, VEC_HULL2_MAX);
 };

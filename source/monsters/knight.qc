@@ -157,7 +157,7 @@ void(entity attacker, float damage)	knight_pain =
 
 void()	knight_die1	=[	$death1,	knight_die2	] {};
 void()	knight_die2	=[	$death2,	knight_die3	] {};
-void()	knight_die3	=[	$death3,	knight_die4	] {self.solid = SOLID_NOT;};
+void()	knight_die3	=[	$death3,	knight_die4	] {};
 void()	knight_die4	=[	$death4,	knight_die5	] {};
 void()	knight_die5	=[	$death5,	knight_die6	] {};
 void()	knight_die6	=[	$death6,	knight_die7	] {};
@@ -168,7 +168,7 @@ void()	knight_die10=[	$death10,	knight_die10] {};
 
 void()	knight_dieb1	=[	$deathb1,	knight_dieb2	] {};
 void()	knight_dieb2	=[	$deathb2,	knight_dieb3	] {};
-void()	knight_dieb3	=[	$deathb3,	knight_dieb4	] {self.solid = SOLID_NOT;};
+void()	knight_dieb3	=[	$deathb3,	knight_dieb4	] {};
 void()	knight_dieb4	=[	$deathb4,	knight_dieb5	] {};
 void()	knight_dieb5	=[	$deathb5,	knight_dieb6	] {};
 void()	knight_dieb6	=[	$deathb6,	knight_dieb7	] {};
@@ -201,6 +201,7 @@ void(entity inflictor, entity attacker) knight_die =
 	}
 
 	// regular death
+	self.solid = SOLID_NOT;
 	sound (self, CHAN_VOICE, "knight/kdeath.wav", 1, ATTN_NORM);
 	if (random() < 0.5)
 		knight_die1();
