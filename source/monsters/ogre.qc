@@ -436,6 +436,8 @@ void() monster_ogre =
 	self.th_missile = ogre_nail1;
 	self.th_pain = ogre_pain;
 	
+	if (random() < 0.3)
+		self.skin = 1;
 	self.ammo_rockets = 2;
 	
 	monster_start("progs/ogre.mdl", "progs/h_ogre.mdl", 200, 0, VEC_HULL2_MIN, VEC_HULL2_MAX);
