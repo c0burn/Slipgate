@@ -661,9 +661,6 @@ entity(entity monster, entity start) FindWaypoint =
 ai_movetogoal
 ==========*/
 
-.float blocked_time;
-.float blocked_count;
-
 float (float dist) SV_CloseEnough =
 {
 	if (self.goalentity.absmin.x > self.absmax.x + dist)
@@ -684,6 +681,10 @@ float (float dist) SV_CloseEnough =
 	return TRUE;
 };
 
+
+//.float blocked_time;
+//.float blocked_count;
+
 void(entity goal, float dist) ai_movetogoal =
 {	
 	// new target
@@ -695,8 +696,8 @@ void(entity goal, float dist) ai_movetogoal =
 
 	if (SV_CloseEnough(dist))
 	{
-		dprint("SV_CloseEnough\n");
-		self.flags = self.flags | FL_PARTIALGROUND;
+		//dprint("SV_CloseEnough\n");
+		//self.flags = self.flags | FL_PARTIALGROUND;
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
 		changeyaw();
 		if (walkmove(self.angles_y, dist))
@@ -768,6 +769,7 @@ void(float dist) ai_run =
 	{
 		ClearRoute();
 		self.enemy = self.goalentity = world;
+		// look for previous enemy
 		if (self.oldenemy.health > 0)
 		{
 			self.enemy = self.oldenemy;
@@ -775,15 +777,16 @@ void(float dist) ai_run =
 		}
 		else
 		{
-			// monstes goes back to walking its beat
+			// go back to walking beat
 			if (self.movetarget)
 			{
 				self.goalentity = self.movetarget;
 				self.th_walk();
-				return;
 			}
-			
-			self.th_stand();
+			// otherwise, stand still
+			else
+				self.th_stand();
+				
 			return;
 		}
 	}
@@ -803,7 +806,7 @@ void(float dist) ai_run =
 			return;
 	}
 	
-	// started an attack, so just turn in place
+	// we've started an attack, so make sure we're facing the right way
 	if (self.attack_state == AS_MISSILE)
 	{
 		ai_run_missile();
@@ -826,19 +829,18 @@ void(float dist) ai_run =
 		return;
 	}
 	
-	// no waypoints in map
+	// no waypoints in map, so just use regular movement
 	if (!waypoints)
 	{
 		ai_movetogoal(self.enemy, dist);
 		return;
 	}
 
-	// find a route to the enemy	
+	// we have an enemy, but no route, so find a route to the enemy	
 	if (self.route < 0)
 	{
 		//dprint("Finding route\n");
-		
-		self.current_way = FindWaypoint(self, world);	
+		self.current_way = FindWaypoint(self, self.current_way);
 		self.enemy.current_way = FindWaypoint(self.enemy, self.enemy.current_way);
 		StartRoute(self.current_way, self.enemy.current_way);
 		
@@ -856,12 +858,14 @@ void(float dist) ai_run =
 	}
 
 	// periodically refresh enemy waypoint
+	/*
 	if (!route_busy)
 	{
 		self.enemy.current_way = FindWaypoint(self.enemy, self.enemy.current_way);
 		if (self.route_table[0] != self.enemy.current_way)
 			StartRoute(self.current_way, self.enemy.current_way);
 	}
+	*/
 	
 	// move to the next waypoint
 	entity w = self.route_table[self.route];
@@ -874,7 +878,11 @@ void(float dist) ai_run =
 		self.current_way = self.route_table[self.route];
 		self.route = self.route - 1;
 
+		// hit last waypoint
 		if (self.route < 0)
+		{
+			dprint("Hit last waypoint\n");
 			ClearRoute();
+		}
 	}
 };

@@ -223,31 +223,30 @@ void() sham_magic1     =[      $magic1,       sham_magic2    ] {ai_face();
 };
 void() sham_magic2     =[      $magic2,       sham_magic3    ] {ai_face();};
 void() sham_magic3     =[      $magic3,       sham_magic4    ] {ai_face();self.nextthink = self.nextthink + 0.2;
-local entity o;
-
 self.effects = self.effects | EF_MUZZLEFLASH;
 ai_face();
-self.owner = spawn();
-o = self.owner;
-setmodel (o, "progs/s_light.mdl");
-setorigin (o, self.origin);
-o.angles = self.angles;
-o.nextthink = time + 0.7;
-o.think = SUB_Remove;
+self.aiment = spawn();
+setmodel (self.aiment, "progs/s_light.mdl");
+setorigin (self.aiment, self.origin);
+self.aiment.angles = self.angles;
+self.aiment.think = SUB_Remove;
+self.aiment.nextthink = time + 0.3;
 };
 void() sham_magic4     =[      $magic4,       sham_magic5    ]
 {
 self.effects = self.effects | EF_MUZZLEFLASH;
-self.owner.frame = 1;
+self.aiment.frame = 1;
+self.aiment.nextthink = time + 0.2;
 };
 void() sham_magic5     =[      $magic5,       sham_magic6    ]
 {
 self.effects = self.effects | EF_MUZZLEFLASH;
-self.owner.frame = 2;
+self.aiment.frame = 2;
+self.aiment.nextthink = time + 0.2;
 };
 void() sham_magic6     =[      $magic6,       sham_magic9    ]
 {
-remove (self.owner);
+remove (self.aiment);
 CastLightning();
 sound (self, CHAN_WEAPON, "shambler/sboom.wav", 1, ATTN_NORM);
 };
@@ -286,7 +285,7 @@ void(entity attacker, float damage)	sham_pain =
 
 void() sham_death1      =[      $death1,       sham_death2     ] {};
 void() sham_death2      =[      $death2,       sham_death3     ] {};
-void() sham_death3      =[      $death3,       sham_death4     ] {self.solid = SOLID_NOT;};
+void() sham_death3      =[      $death3,       sham_death4     ] {};
 void() sham_death4      =[      $death4,       sham_death5     ] {};
 void() sham_death5      =[      $death5,       sham_death6     ] {};
 void() sham_death6      =[      $death6,       sham_death7     ] {};
@@ -310,6 +309,7 @@ void(entity inflictor, entity attacker) sham_die =
 	}
 
 // regular death
+	self.solid = SOLID_NOT;
 	sound (self, CHAN_VOICE, "shambler/sdeath.wav", 1, ATTN_NORM);
 	sham_death1 ();
 };
