@@ -1321,15 +1321,5 @@
 // entity 48
 {
 "classname" "monster_shalrath"
-"origin" "176 80 24"
-}
-// entity 49
-{
-"classname" "monster_army"
-"origin" "192 -80 24"
-}
-// entity 50
-{
-"classname" "monster_shambler"
-"origin" "144 192 24"
+"origin" "160 -0 24"
 }
