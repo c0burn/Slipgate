@@ -647,19 +647,14 @@ sounds
 */
 /*QUAKED misc_teleporttrain (.5 .5 .5) (-16 -16 -16) (16 16 16)
 {	model("progs/teleport.mdl");	}
-This is used for the final boss
+
+Teleporter target for final boss level. Must target a series of 'path_corner' entities.
 */
 /*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 {
 	model ("progs/ogre.mdl");
 }
 Ogre.
-*/
-/*QUAKED monster_ogre_marksman (1 0 0) (-32 -32 -24) (32 32 64) Ambush
-{
-	model ("progs/ogre.mdl");
-}
-For compatibility only.
 */
 /*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 {

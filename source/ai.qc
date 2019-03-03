@@ -1,6 +1,6 @@
 
-entity	sight_entity;
-float	sight_entity_time;
+
+
 
 /*
 =============
@@ -312,12 +312,12 @@ float()	DogCheckAttack;
 
 float() CheckAnyAttack =
 {
+	if (self.classname == "monster_ogre")
+		return OgreCheckAttack ();
 	if (!enemy_vis)
 		return FALSE;
 	if (self.classname == "monster_army")
 		return SoldierCheckAttack ();
-	if (self.classname == "monster_ogre")
-		return OgreCheckAttack ();
 	if (self.classname == "monster_shambler")
 		return ShamCheckAttack ();
 	if (self.classname == "monster_demon1")
@@ -354,17 +354,30 @@ Turn until facing enemy then launch missile attack
 ==========*/
 void() ai_run_missile =
 {
-	self.ideal_yaw = enemy_yaw;
-	changeyaw();
-	// if the enemy has dropped out of sight, cancel the attack
-	if (!enemy_vis)
+	if (self.attack_state == AS_SPAM)
 	{
-		self.attack_state = AS_STRAIGHT;
-		return;
+		self.ideal_yaw = vectoyaw(self.enemy_last - self.origin);
+		changeyaw();
 	}
+	else
+	{
+		self.ideal_yaw = enemy_yaw;
+		changeyaw();
+		// if the enemy has dropped out of sight, cancel the attack
+		if (!enemy_vis)
+		{
+			dprint("ai_run_missile: not visible\n");
+			self.attack_state = AS_STRAIGHT;
+			return;
+		}
+	}
+	
 	if (FacingIdeal())
 	{
-		self.th_missile ();
+		if (self.attack_state == AS_SPAM)
+			self.th_spam();
+		else
+			self.th_missile();
 		self.attack_state = AS_STRAIGHT;
 	}
 };
@@ -756,7 +769,7 @@ The monster has an enemy it is trying to kill
 */
 void(float dist) ai_run =
 {	
-	// stop all attacks during intermission
+	// stop all attacks during the intermission
 	if (intermission_running)
 	{
 		ClearRoute();
@@ -796,10 +809,13 @@ void(float dist) ai_run =
 	enemy_infront = infront(self.enemy);
 	enemy_range = range(self.enemy);
 	enemy_yaw = vectoyaw(self.enemy.origin - self.origin);
-	
-	// look for other players in co-op
 	if (enemy_vis)
+	{
+		self.enemy_last = self.enemy.origin + self.enemy.view_ofs;
 		self.search_time = time + 5;
+	}
+
+	// look for other players in co-op
 	if (coop && self.search_time < time)
 	{
 		if (FindTarget())
@@ -807,7 +823,7 @@ void(float dist) ai_run =
 	}
 	
 	// we've started an attack, so make sure we're facing the right way
-	if (self.attack_state == AS_MISSILE)
+	if (self.attack_state == AS_MISSILE || self.attack_state == AS_SPAM)
 	{
 		ai_run_missile();
 		return;

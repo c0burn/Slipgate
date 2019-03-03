@@ -29,6 +29,10 @@ void() ai_face;
 float	enemy_vis, enemy_infront, enemy_range;
 float	enemy_yaw;
 
+entity	sight_entity;
+float	sight_entity_time;
+
+.vector enemy_last;
 
 
 
@@ -123,7 +127,13 @@ Stay facing the enemy
 */
 void() ai_face =
 {
-	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+	if (self.attack_state == AS_SPAM)
+	{
+		dprint("ai_face: spam\n");
+		self.ideal_yaw = vectoyaw(self.enemy_last - self.origin);	
+	}
+	else
+		self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
 	changeyaw ();
 };
 
@@ -350,9 +360,40 @@ float() OgreCheckAttack =
 	if (time < self.attack_finished)
 		return FALSE;
 	
-	if (!enemy_vis)
-		return FALSE;
+	// aim at last known location on hard and nightmare
+	if (!enemy_vis && skill > 1)
+	{
+		if (time < self.search_time)
+		{
+			spot1 = self.origin + self.view_ofs;
+			spot2 = self.enemy_last;
+			traceline (spot1, spot2, FALSE, self);
+			if (trace_inopen && trace_inwater)
+				return FALSE;
+			if (trace_fraction < 1)
+				return FALSE;
 		
+			if (vlen(self.origin - self.enemy_last) < 500)
+				chance = 0.4;
+			else
+				chance = 0.1;
+			if (random() < chance)
+			{
+				dprint("attacking last known spot\n");
+				self.attack_state = AS_SPAM;
+				SUB_AttackFinished (1 + 2*random());
+				return TRUE;
+			}
+			else
+			{
+				self.attack_finished = time + 0.5;
+				return FALSE;
+			}
+		}
+		else
+			return FALSE;
+	}
+
 	targ = self.enemy;
 	
 // see if any entities are in the way of the shot
@@ -368,9 +409,6 @@ float() OgreCheckAttack =
 		return FALSE;	// don't have a clear shot
 			
 // missile attack
-	if (time < self.attack_finished)
-		return FALSE;
-	
 	if (enemy_range == RANGE_NEAR)
 		chance = 0.5;
 	else if (enemy_range == RANGE_MID)

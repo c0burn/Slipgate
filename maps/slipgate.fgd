@@ -419,10 +419,6 @@
 ]
 
 
-@PointClass model({"path":"progs/shalrath.mdl",frame:"93"}) size(-32 -32 -24, 32 32 0) = misc_shambler_dead : "Dead Shambler" []
-@PointClass model("progs/h_shams.mdl") size(-16 -16 0, 16 16 16) = misc_shambler_head  : "Shambler Head" []
-
-
 @PointClass model({"path":"progs/shambler.mdl",frame:"93"}) size(-32 -32 -24, 32 32 0) = misc_shambler_dead : "Dead Shambler" []
 @PointClass model("progs/h_shams.mdl") size(-16 -16 0, 16 16 16) = misc_shambler_head  : "Shambler Head" []
 
@@ -436,7 +432,11 @@
 @PointClass model({"path":"progs/wizard.mdl",frame:"53"}) size(-16 -16 -24, 16 16 0) = misc_wizard_dead : "Dead Scrag" []
 @PointClass model("progs/h_wizard.mdl") size(-16 -16 0, 16 16 16) = misc_wizard_head  : "Scrag Head" []
 
-@PointClass size(-16 -16 -16, 16 16 16) model("progs/teleport.mdl") = misc_teleporttrain : "Teleport train" []
+@PointClass base(Appearflags) size(-16 -16 -16, 16 16 16) model("progs/teleport.mdl") = misc_teleporttrain : "Teleport train"
+[
+	target(target_destination) : "Target"
+	targetname(target_source) : "Targetname"
+]
 
 
 //

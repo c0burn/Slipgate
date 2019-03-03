@@ -65,6 +65,9 @@ void(vector org) spawn_debug_marker =
 	if (!developer)
 		return;
 	
+	dprint(vtos(org));
+	dprint("\n");
+	
 	entity e = spawn();
 	e.solid = SOLID_NOT;
 	e.movetype = MOVETYPE_NONE;
@@ -143,3 +146,11 @@ float(float n) tan =
     return result;
 };
 
+/*==========
+atan2
+==========*/
+float(float y, float x) atan2 =
+{
+	vector ang = [x, y, 0];
+	return vectoyaw(ang);
+};

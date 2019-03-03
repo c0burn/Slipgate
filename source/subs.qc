@@ -67,46 +67,38 @@ self.origin traveling at speed
 ===============
 */
 
+
 void(vector tdest, float tspeed, void() func) SUB_CalcMove =
 {
-local vector	vdestdelta;
-local float		len, traveltime;
-
 	if (!tspeed)
-		objerror("No speed is defined!");
+	{
+		objerror("no speed defined");
+		return;
+	}
 
+	self.think = SUB_CalcMoveDone;
 	self.think1 = func;
 	self.finaldest = tdest;
-	self.think = SUB_CalcMoveDone;
-
+	
 	if (tdest == self.origin)
 	{
 		self.velocity = '0 0 0';
-		self.nextthink = self.ltime + 0.1;
+		self.nextthink = self.ltime + 0.01;
 		return;
 	}
-		
-// set destdelta to the vector needed to move
-	vdestdelta = tdest - self.origin;
-	
-// calculate length of vector
-	len = vlen (vdestdelta);
-	
-// divide by speed to get time to reach dest
-	traveltime = len / tspeed;
 
-	if (traveltime < 0.1)
+	vector delta = tdest - self.origin;
+	float len = vlen(delta);
+	float traveltime = len / tspeed;
+	if (traveltime < 0.01)
 	{
 		self.velocity = '0 0 0';
-		self.nextthink = self.ltime + 0.1;
+		self.nextthink = self.ltime + 0.01;
 		return;
 	}
 	
-// set nextthink to trigger a think when dest is reached
 	self.nextthink = self.ltime + traveltime;
-
-// scale the destdelta vector by the time spent traveling to get velocity
-	self.velocity = vdestdelta * (1/traveltime);	// qcc won't take vec/float	
+	self.velocity = delta / traveltime;
 };
 
 /*
@@ -118,6 +110,7 @@ void()  SUB_CalcMoveDone =
 {
 	setorigin(self, self.finaldest);
 	self.velocity = '0 0 0';
+	self.think = SUB_Null;
 	self.nextthink = -1;
 	if (self.think1)
 		self.think1();
@@ -213,8 +206,7 @@ void() SUB_UseTargets =
 		// we use a think to remove the killtargets to avoid
 		// any SV_TouchLinks bugs - notably e2m2 if you shoot one trigger
 		// and jump over the gap on easy skill
-		// most modern sourceports don't strictly require this,
-		// but best to do things the clean way
+		// most modern sourceports have a fix for this, however this way we also fix dosquake.. :)
 		t = spawn();
 		t.classname = "DelayedKill";
 		t.think = DelayKill;

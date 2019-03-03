@@ -711,8 +711,6 @@
 "angle" "180"
 "target" "l1"
 "sounds" "2"
-"speed" "100"
-"wait" "1.5"
 // brush 0
 {
 ( -248 16 32 ) ( -248 17 32 ) ( -248 16 31 ) +0basebtn -0 -16 270 1 1
@@ -756,24 +754,6 @@
 }
 // entity 7
 {
-"classname" "func_button"
-"angle" "90"
-"sounds" "2"
-"speed" "100"
-"target" "l3"
-"wait" "0.5"
-// brush 0
-{
-( 16 240 32 ) ( 16 240 31 ) ( 16 239 32 ) tech05_4 -0 -0 90 -1 1
-( -16 256 64 ) ( -16 255 64 ) ( -16 256 63 ) tech05_4 -0 -0 90 -1 1
-( -16 256 64 ) ( -16 256 63 ) ( -15 256 64 ) tech05_4 -0 -0 270 1 1
-( 16 248 32 ) ( 17 248 32 ) ( 16 248 31 ) +0basebtn -0 -16 270 1 1
-( -16 256 64 ) ( -15 256 64 ) ( -16 255 64 ) tech05_4 -0 -0 180 -1 1
-( 16 240 32 ) ( 16 239 32 ) ( 17 240 32 ) tech05_4 -0 -0 180 -1 1
-}
-}
-// entity 8
-{
 "classname" "light"
 "origin" "-0 232 160"
 "light" "300"
@@ -784,7 +764,7 @@
 "angle" "60"
 "_softangle" "40"
 }
-// entity 9
+// entity 8
 {
 "classname" "func_wall"
 "targetname" "l3"
@@ -797,7 +777,7 @@
 ( 32 256 168 ) ( 32 240 168 ) ( -32 240 168 ) tech05_4 -0 -0 180 -1 1
 }
 }
-// entity 10
+// entity 9
 {
 "classname" "trigger_once"
 "message" "\bSwitchable animated light"
@@ -812,7 +792,7 @@
 ( -96 256 -0 ) ( -96 255 -0 ) ( -95 256 -0 ) trigger -0 -0 270 1 1
 }
 }
-// entity 11
+// entity 10
 {
 "classname" "func_breakable"
 "killtarget" "t1"
@@ -831,7 +811,7 @@
 ( 44 -164 -0 ) ( -12 -132 -0 ) ( -44 -188 -0 ) crate1_side -56 7.57948 330 1 1
 }
 }
-// entity 12
+// entity 11
 {
 "classname" "func_door"
 "angle" "90"
@@ -865,7 +845,7 @@
 ( 264 16 80 ) ( 264 -16 80 ) ( 392 -16 80 ) tech05_1 -0 -0 -0 1 1
 }
 }
-// entity 13
+// entity 12
 {
 "classname" "func_door"
 "angle" "-90"
@@ -899,7 +879,7 @@
 ( 264 -64 -0 ) ( 265 -64 -0 ) ( 264 -63 -0 ) tech05_1 -8 -0 -0 1 1
 }
 }
-// entity 14
+// entity 13
 {
 "classname" "func_door"
 "angle" "-90"
@@ -933,7 +913,7 @@
 ( 552 -64 -0 ) ( 553 -64 -0 ) ( 552 -63 -0 ) tech05_1 -40 -0 -0 1 1
 }
 }
-// entity 15
+// entity 14
 {
 "classname" "func_door"
 "angle" "90"
@@ -967,7 +947,7 @@
 ( 552 16 80 ) ( 552 -16 80 ) ( 680 -16 80 ) tech05_1 -32 -0 -0 1 1
 }
 }
-// entity 16
+// entity 15
 {
 "classname" "light"
 "origin" "312 -0 144"
@@ -977,7 +957,7 @@
 "light" "300"
 "_softangle" "40"
 }
-// entity 17
+// entity 16
 {
 "classname" "light"
 "origin" "520 -0 144"
@@ -987,26 +967,26 @@
 "light" "300"
 "_softangle" "40"
 }
-// entity 18
+// entity 17
 {
 "classname" "light"
 "origin" "416 -0 160"
 "_color" "255 255 192"
 "light" "200"
 }
-// entity 19
+// entity 18
 {
 "classname" "ambient_light_buzz"
 "origin" "416 -0 136"
 }
-// entity 20
+// entity 19
 {
 "classname" "light"
 "origin" "216 -0 160"
 "_color" "192 255 255"
 "light" "200"
 }
-// entity 21
+// entity 20
 {
 "classname" "light"
 "origin" "-32 96 216"
@@ -1015,7 +995,7 @@
 "wait" "0.5"
 "delay" "5"
 }
-// entity 22
+// entity 21
 {
 "classname" "light"
 "origin" "32 96 216"
@@ -1024,7 +1004,7 @@
 "wait" "0.5"
 "delay" "5"
 }
-// entity 23
+// entity 22
 {
 "classname" "light"
 "origin" "-96 96 216"
@@ -1033,7 +1013,7 @@
 "wait" "0.5"
 "delay" "5"
 }
-// entity 24
+// entity 23
 {
 "classname" "light"
 "origin" "96 96 216"
@@ -1042,7 +1022,7 @@
 "wait" "0.5"
 "delay" "5"
 }
-// entity 25
+// entity 24
 {
 "classname" "light"
 "origin" "232 -0 160"
@@ -1052,7 +1032,7 @@
 "light" "300"
 "_softangle" "40"
 }
-// entity 26
+// entity 25
 {
 "classname" "light"
 "origin" "-0 216 160"
@@ -1061,14 +1041,14 @@
 "targetname" "l3"
 "style2" "12"
 }
-// entity 27
+// entity 26
 {
 "classname" "light"
 "origin" "-0 -216 160"
 "light" "300"
 "_color" "192 255 255"
 }
-// entity 28
+// entity 27
 {
 "classname" "light"
 "origin" "-216 -0 160"
@@ -1078,7 +1058,7 @@
 "spawnflags" "2"
 "speed" "0.05"
 }
-// entity 29
+// entity 28
 {
 "classname" "light"
 "origin" "-96 -96 216"
@@ -1087,7 +1067,7 @@
 "wait" "0.5"
 "delay" "5"
 }
-// entity 30
+// entity 29
 {
 "classname" "light"
 "origin" "-32 -96 216"
@@ -1096,7 +1076,7 @@
 "wait" "0.5"
 "delay" "5"
 }
-// entity 31
+// entity 30
 {
 "classname" "light"
 "origin" "32 -96 216"
@@ -1105,7 +1085,7 @@
 "wait" "0.5"
 "delay" "5"
 }
-// entity 32
+// entity 31
 {
 "classname" "light"
 "origin" "96 -96 216"
@@ -1114,14 +1094,14 @@
 "wait" "0.5"
 "delay" "5"
 }
-// entity 33
+// entity 32
 {
 "classname" "light"
 "origin" "616 -0 160"
 "_color" "192 255 255"
 "light" "300"
 }
-// entity 34
+// entity 33
 {
 "classname" "light"
 "origin" "600 -0 160"
@@ -1131,25 +1111,25 @@
 "light" "300"
 "_softangle" "40"
 }
-// entity 35
+// entity 34
 {
 "classname" "info_intermission"
 "origin" "232 -232 136"
 "mangle" "30 90 0"
 }
-// entity 36
+// entity 35
 {
 "classname" "info_intermission"
 "origin" "-216 216 216"
 "mangle" "30 -30 0"
 }
-// entity 37
+// entity 36
 {
 "classname" "info_intermission"
 "origin" "613 -234 26"
 "mangle" "-30 35 0"
 }
-// entity 38
+// entity 37
 {
 "classname" "trigger_ladder"
 "angle" "360"
@@ -1164,7 +1144,7 @@
 ( 940 -32 -0 ) ( 941 -32 -0 ) ( 940 -31 -0 ) trigger -0 32 -0 1 1
 }
 }
-// entity 39
+// entity 38
 {
 "classname" "light"
 "origin" "936 128 160"
@@ -1174,7 +1154,7 @@
 "light" "300"
 "_softangle" "40"
 }
-// entity 40
+// entity 39
 {
 "classname" "light"
 "origin" "920 128 160"
@@ -1182,7 +1162,7 @@
 "light" "300"
 "angle" "180"
 }
-// entity 41
+// entity 40
 {
 "classname" "func_wall"
 "_shadow" "1"
@@ -1261,7 +1241,7 @@
 ( 944 16 -0 ) ( 960 32 -0 ) ( 944 32 -0 ) metal04_1 -0 16 -0 1 1
 }
 }
-// entity 42
+// entity 41
 {
 "classname" "trigger_once"
 "message" "\bClimbable ladder"
@@ -1276,7 +1256,7 @@
 ( 736 48 -0 ) ( 736 47 -0 ) ( 737 48 -0 ) trigger 48 -0 270 1 1
 }
 }
-// entity 43
+// entity 42
 {
 "classname" "light"
 "origin" "920 -128 160"
@@ -1284,7 +1264,7 @@
 "light" "300"
 "angle" "180"
 }
-// entity 44
+// entity 43
 {
 "classname" "light"
 "origin" "936 -128 160"
@@ -1294,7 +1274,7 @@
 "light" "300"
 "_softangle" "40"
 }
-// entity 45
+// entity 44
 {
 "classname" "trigger_changelevel"
 "map" "test"
@@ -1308,18 +1288,30 @@
 ( 720 208 -0 ) ( 721 208 -0 ) ( 720 209 -0 ) trigger 0 0 0 1 1
 }
 }
-// entity 46
+// entity 45
 {
 "classname" "item_backpack"
 "origin" "-48 -128 -0"
 }
-// entity 47
+// entity 46
 {
 "classname" "info_player_start"
-"origin" "-64 32 24"
+"origin" "-160 208 24"
+"angle" "315"
 }
-// entity 48
+// entity 47
 {
-"classname" "monster_shalrath"
-"origin" "160 -0 24"
+"classname" "func_button"
+"angle" "90"
+"sounds" "2"
+"target" "l3"
+// brush 0
+{
+( 16 240 32 ) ( 16 240 31 ) ( 16 239 32 ) tech05_4 -0 -0 90 -1 1
+( -16 256 64 ) ( -16 255 64 ) ( -16 256 63 ) tech05_4 -0 -0 90 -1 1
+( -16 256 64 ) ( -16 256 63 ) ( -15 256 64 ) tech05_4 -0 -0 270 1 1
+( 16 248 32 ) ( 17 248 32 ) ( 16 248 31 ) +0basebtn -0 -16 270 1 1
+( -16 256 64 ) ( -15 256 64 ) ( -16 255 64 ) tech05_4 -0 -0 180 -1 1
+( 16 240 32 ) ( 16 239 32 ) ( 17 240 32 ) tech05_4 -0 -0 180 -1 1
+}
 }

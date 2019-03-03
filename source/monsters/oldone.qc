@@ -248,7 +248,7 @@ void (entity attacker, float damage) shub_pain =
 	self.health = 40000;
 };
 
-/*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (160 128 256)
+/*QUAKED monster_oldone (1 0 0) (-128 -128 -24) (128 128 200)
 {	model ("progs/oldone.mdl");		}
 Shub-Niggurath.
 */
@@ -271,7 +271,7 @@ void() monster_oldone =
 	self.movetype = MOVETYPE_STEP;
 	
 	setmodel (self, "progs/oldone.mdl");
-	setsize (self, '-160 -128 -24', '160 128 256');
+	setsize (self, '-128 -128 -24', '128 128 200');
 
 	self.health = 40000;		// kill by telefrag
 	self.think = old_idle1;

@@ -214,7 +214,6 @@ float	FL_ONGROUND				= 512;
 float	FL_PARTIALGROUND		= 1024;
 float	FL_WATERJUMP			= 2048;
 float	FL_JUMPRELEASED			= 4096;
-// values below here are gamecode only
 float	FL_ONLADDER				= 8192;
 ;
 // movetype
@@ -404,6 +403,8 @@ float	AS_STRAIGHT			= 1;
 float	AS_SLIDING			= 2;
 float	AS_MELEE			= 3;
 float	AS_MISSILE			= 4;
+float	AS_SPAM				= 5;
+
 
 /*==========
 Globals
@@ -418,7 +419,9 @@ float	framecount;
 float	skill;
 entity	lastspawn;
 float	developer;
+float	sv_gravity;
 
+	
 /*==========
 Fields
 ==========*/
@@ -437,6 +440,7 @@ __used .string wad;
 .void()		th_run;
 .void()		th_missile;
 .void()		th_melee;
+.void()		th_spam;
 .void(entity inflictor, entity attacker) th_die;
 .void(entity attacker, float damage) th_pain;
 .entity		oldenemy;

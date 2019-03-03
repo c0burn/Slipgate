@@ -19,6 +19,8 @@ void() setup_gravity =
 		cvar_set ("sv_gravity", ftos(self.gravity));
 	else
 		cvar_set ("sv_gravity", "800");
+		
+	sv_gravity = cvar("sv_gravity");
 };
 
 /*==========
@@ -192,7 +194,7 @@ void() worldspawn =
 		skill = 0;
 	if (skill > 3)
 		skill = 3;
-		
+
 	precache_sounds();
 	precache_models();
 	setup_lightstyles();

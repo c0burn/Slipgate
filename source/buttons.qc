@@ -124,7 +124,7 @@ void() func_button =
 	else
 		self.touch = button_touch;
 
-	if (!self.speed)
+	if (self.speed <= 0)
 		self.speed = 40;
 	if (!self.wait)
 		self.wait = 1;
