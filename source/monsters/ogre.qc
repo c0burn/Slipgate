@@ -129,8 +129,8 @@ void(float spam) OgreFireGrenade =
 	// aim at player
 	else
 	{
-		// lead player on hard and nightmare
-		if (skill > 1)
+		// lead player on nightmare
+		if (skill > 2)
 		{
 			float t = vlen(self.enemy.origin + '0 0 8' - self.origin) / OGRE_G_VEL;
 			vector vec = self.enemy.velocity;
@@ -342,13 +342,13 @@ void() ogre_grenade5	=[	$shoot4,		ogre_grenade6	] {ai_face();};
 void() ogre_grenade6	=[	$shoot5,		ogre_grenade7	] {ai_face();SUB_CheckRefire (ogre_grenade1);};
 void() ogre_grenade7	=[	$shoot6,		ogre_run1	] {ai_face();};
 
-void() ogre_spam1	=[	$shoot1,		ogre_spam2	] {ai_face();};
-void() ogre_spam2	=[	$shoot2,		ogre_spam3	] {ai_face();};
-void() ogre_spam3	=[	$shoot2,		ogre_spam4	] {ai_face();};
-void() ogre_spam4	=[	$shoot3,		ogre_spam5	] {ai_face();OgreFireGrenade(TRUE);};
-void() ogre_spam5	=[	$shoot4,		ogre_spam6	] {ai_face();};
-void() ogre_spam6	=[	$shoot5,		ogre_spam7	] {ai_face();SUB_CheckRefire (ogre_spam1);};
-void() ogre_spam7	=[	$shoot6,		ogre_run1	] {ai_face();};
+void() ogre_spam1	=[	$shoot1,		ogre_spam2	] {ai_face_last();};
+void() ogre_spam2	=[	$shoot2,		ogre_spam3	] {ai_face_last();};
+void() ogre_spam3	=[	$shoot2,		ogre_spam4	] {ai_face_last();};
+void() ogre_spam4	=[	$shoot3,		ogre_spam5	] {ai_face_last();OgreFireGrenade(TRUE);};
+void() ogre_spam5	=[	$shoot4,		ogre_spam6	] {ai_face_last();};
+void() ogre_spam6	=[	$shoot5,		ogre_spam7	] {ai_face_last();SUB_CheckRefire (ogre_spam1);};
+void() ogre_spam7	=[	$shoot6,		ogre_run1	] {ai_face_last();};
 
 void()	ogre_pain1	=[	$pain1,		ogre_pain2	] {};
 void()	ogre_pain2	=[	$pain2,		ogre_pain3	] {};

@@ -127,14 +127,14 @@ Stay facing the enemy
 */
 void() ai_face =
 {
-	if (self.attack_state == AS_SPAM)
-	{
-		dprint("ai_face: spam\n");
-		self.ideal_yaw = vectoyaw(self.enemy_last - self.origin);	
-	}
-	else
-		self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-	changeyaw ();
+	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+	changeyaw();
+};
+
+void() ai_face_last =
+{
+	self.ideal_yaw = vectoyaw(self.enemy_last - self.origin);	
+	changeyaw();
 };
 
 /*
