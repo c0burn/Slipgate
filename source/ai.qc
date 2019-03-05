@@ -1,59 +1,22 @@
-
-
-
-
-/*
-=============
-t_movetarget
-
-Something has bumped into a movetarget.  If it is a monster
-moving towards it, change the next destination and continue.
-==============
-*/
-void() t_movetarget =
-{
-local entity	temp;
-
-	if (other.movetarget != self)
-		return;
-	
-	if (other.enemy)
-		return;		// fighting, not following a path
-
-	temp = self;
-	self = other;
-	other = temp;
-
-	if (self.classname == "monster_ogre")
-		sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
-
-	self.goalentity = self.movetarget = find (world, targetname, other.target);
-	self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-	if (!self.movetarget)
-	{
-		self.pausetime = time + 999999;
-		self.th_stand ();
-		return;
-	}
-};
-
-/*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8)
-Monsters will continue walking towards the next target corner.
+/*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+If a monster targets a path_corner, they will move towards it.
+Once a monster hits a path_corner, they will move to the next targeted path_corner.
+You can set "pausetime" on a path_corner to enforce a delay before the monster moves
+to the next target.
 */
 void() path_corner =
 {
 	if (!self.targetname)
-		objerror ("monster_movetarget: no targetname");
-		
+	{
+		objerror ("path_corner: no targetname");
+		remove(self);
+		return;
+	}
+	
+	self.movetype = MOVETYPE_NONE;
 	self.solid = SOLID_TRIGGER;
-	self.touch = t_movetarget;
 	setsize (self, '-8 -8 -8', '8 8 8');
 };
-
-
-
-
-
 
 //============================================================================
 
@@ -256,6 +219,97 @@ float() FindTarget =
 
 //=============================================================================
 
+/*==========
+ai_movetogoal
+==========*/
+
+float (float dist) SV_CloseEnough =
+{
+	if (self.goalentity.absmin.x > self.absmax.x + dist)
+		return FALSE;
+	if (self.goalentity.absmax.x < self.absmin.x - dist)
+		return FALSE;
+		
+	if (self.goalentity.absmin.y > self.absmax.y + dist)
+		return FALSE;
+	if (self.goalentity.absmax.y < self.absmin.y - dist)
+		return FALSE;
+		
+	if (self.goalentity.absmin.z > self.absmax.z + dist)
+		return FALSE;
+	if (self.goalentity.absmax.z < self.absmin.z - dist)
+		return FALSE;
+		
+	return TRUE;
+};
+
+
+//.float blocked_time;
+//.float blocked_count;
+
+void(entity goal, float dist) ai_movetogoal =
+{	
+	// new target
+	if (self.goalentity != goal)
+	{
+		self.goalentity = goal;
+		self.ideal_yaw = vectoyaw(goal.origin - self.origin);
+	}
+
+	if (SV_CloseEnough(dist))
+	{
+		//dprint("SV_CloseEnough\n");
+		//self.flags = self.flags | FL_PARTIALGROUND;
+		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+		changeyaw();
+		if (walkmove(self.angles_y, dist))
+			return;
+		float ofs;
+		if (self.lefty)
+			ofs = 45;
+		else
+			ofs = -45;
+			
+		if (walkmove(self.angles_y + ofs, dist))
+			return;
+		self.lefty = 1 - self.lefty;
+		walkmove(self.angles_y - ofs, dist);
+	}
+	else
+		movetogoal(dist);
+	
+	/*
+	if (self.blocked_count > 10)
+	{
+		self.blocked_count = 0;
+		self.blocked_time = time + 5;
+	}
+	if (self.blocked_time > time)
+	{
+		movetogoal(dist);
+		return;	
+	}
+	
+	self.ideal_yaw = vectoyaw(goal.origin - self.origin);
+	changeyaw();
+	if (walkmove(self.angles_y, dist))
+		return;
+
+	self.blocked_count = self.blocked_count + 1;
+	float ofs;
+	if (self.lefty)
+		ofs = 45;
+	else
+		ofs = -45;
+		
+	if (walkmove(self.angles_y + ofs, dist))
+		return;
+		
+	self.lefty = 1 - self.lefty;
+	walkmove(self.angles_y - ofs, dist);*/
+};
+
+
 void(float dist) ai_forward =
 {
 	walkmove(self.angles_y, dist);
@@ -280,13 +334,58 @@ void(float dist) ai_walk =
 {
 	if (FindTarget())
 		return;
-	movetogoal(dist);
+	
+	ai_movetogoal(self.movetarget, dist);
+	if (vlen(self.origin - self.movetarget.origin) < 32)
+	{
+		entity targ = find(world, targetname, self.movetarget.target);
+		if (targ.classname == "path_corner")
+		{
+			self.movetarget = self.goalentity = targ;
+			self.ideal_yaw = vectoyaw(targ.origin - self.origin);
+			if (targ.pausetime > 0)
+			{
+				self.think = self.th_stand;
+				self.pausetime = time + targ.pausetime;
+			}
+		}
+		else
+		{
+			self.think = self.th_stand;
+			self.pausetime = -1;
+		}
+	}
 };
 
 void() ai_stand =
 {
 	if (FindTarget())
 		return;
+		
+	if (time > self.pausetime && self.pausetime > 0)
+	{
+		if (self.movetarget)
+		{
+			self.th_walk();
+			return;
+		}
+	}
+	
+	// random angle turns
+	if (time > self.search_time)
+	{
+		self.search_time = time + 1 + random() * 2;
+		
+		if (self.angles_y != self.ideal_yaw)
+			self.angles_y = self.ideal_yaw;
+		else
+		{
+			if (random() < 0.5)
+				self.angles_y = self.ideal_yaw + random() * 30;
+			else
+				self.angles_y = self.ideal_yaw - random() * 30;
+		}
+	}
 };
 
 void() ai_turn =
@@ -670,95 +769,6 @@ entity(entity monster, entity start) FindWaypoint =
 	}
 };
 
-/*==========
-ai_movetogoal
-==========*/
-
-float (float dist) SV_CloseEnough =
-{
-	if (self.goalentity.absmin.x > self.absmax.x + dist)
-		return FALSE;
-	if (self.goalentity.absmax.x < self.absmin.x - dist)
-		return FALSE;
-		
-	if (self.goalentity.absmin.y > self.absmax.y + dist)
-		return FALSE;
-	if (self.goalentity.absmax.y < self.absmin.y - dist)
-		return FALSE;
-		
-	if (self.goalentity.absmin.z > self.absmax.z + dist)
-		return FALSE;
-	if (self.goalentity.absmax.z < self.absmin.z - dist)
-		return FALSE;
-		
-	return TRUE;
-};
-
-
-//.float blocked_time;
-//.float blocked_count;
-
-void(entity goal, float dist) ai_movetogoal =
-{	
-	// new target
-	if (self.goalentity != goal)
-	{
-		self.goalentity = goal;
-		self.ideal_yaw = vectoyaw(goal.origin - self.origin);
-	}
-
-	if (SV_CloseEnough(dist))
-	{
-		//dprint("SV_CloseEnough\n");
-		//self.flags = self.flags | FL_PARTIALGROUND;
-		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-		changeyaw();
-		if (walkmove(self.angles_y, dist))
-			return;
-		float ofs;
-		if (self.lefty)
-			ofs = 45;
-		else
-			ofs = -45;
-			
-		if (walkmove(self.angles_y + ofs, dist))
-			return;
-		self.lefty = 1 - self.lefty;
-		walkmove(self.angles_y - ofs, dist);
-	}
-	else
-		movetogoal(dist);
-	
-	/*
-	if (self.blocked_count > 10)
-	{
-		self.blocked_count = 0;
-		self.blocked_time = time + 5;
-	}
-	if (self.blocked_time > time)
-	{
-		movetogoal(dist);
-		return;	
-	}
-	
-	self.ideal_yaw = vectoyaw(goal.origin - self.origin);
-	changeyaw();
-	if (walkmove(self.angles_y, dist))
-		return;
-
-	self.blocked_count = self.blocked_count + 1;
-	float ofs;
-	if (self.lefty)
-		ofs = 45;
-	else
-		ofs = -45;
-		
-	if (walkmove(self.angles_y + ofs, dist))
-		return;
-		
-	self.lefty = 1 - self.lefty;
-	walkmove(self.angles_y - ofs, dist);*/
-};
 
 /*
 =============
@@ -846,7 +856,7 @@ void(float dist) ai_run =
 	}
 	
 	// no waypoints in map, so just use regular movement
-	if (!waypoints)
+	if (waypoint_mode < WM_LOADED || !waypoints)
 	{
 		ai_movetogoal(self.enemy, dist);
 		return;
@@ -874,14 +884,12 @@ void(float dist) ai_run =
 	}
 
 	// periodically refresh enemy waypoint
-	/*
 	if (!route_busy)
 	{
 		self.enemy.current_way = FindWaypoint(self.enemy, self.enemy.current_way);
 		if (self.route_table[0] != self.enemy.current_way)
 			StartRoute(self.current_way, self.enemy.current_way);
 	}
-	*/
 	
 	// move to the next waypoint
 	entity w = self.route_table[self.route];

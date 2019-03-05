@@ -40,11 +40,6 @@ $frame paind17 paind18 paind19
 
 void() Laser_Touch =
 {
-	local vector org;
-	
-	if (other == self.owner)
-		return;		// don't explode on owner
-
 	if (pointcontents(self.origin) == CONTENT_SKY)
 	{
 		remove(self);
@@ -52,24 +47,20 @@ void() Laser_Touch =
 	}
 	
 	sound (self, CHAN_WEAPON, "enforcer/enfstop.wav", 1, ATTN_STATIC);
-	org = self.origin - 8*normalize(self.velocity);
 
-	if (other.health)
+	if (other.takedamage)
 	{
 		if (other.classname == "func_breakable")
-			particle(org, self.velocity*0.2, other.colour, 15);
+			SpawnTouchParticles(15, other.colour);
 		else
-			SpawnBlood (org, self.velocity*0.2, 15);
+			spawn_touchblood(15);
 			
 		T_Damage (other, self, self.owner, 15);
 	}
 	else
 	{
-		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
-		WriteCoord (MSG_BROADCAST, org_x);
-		WriteCoord (MSG_BROADCAST, org_y);
-		WriteCoord (MSG_BROADCAST, org_z);
+		vector org = self.origin - 8*normalize(self.velocity);
+		te_gunshot(org);
 	}
 	
 	remove(self);	

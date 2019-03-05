@@ -208,8 +208,10 @@ StartFrame
 ==========*/
 void() StartFrame =
 {
-	WaypointFrame();
+	framecount = framecount + 1;
+	
 	teamplay = cvar("teamplay");
 	developer = cvar("developer");
-	framecount = framecount + 1;
+	
+	WaypointFrame();
 };

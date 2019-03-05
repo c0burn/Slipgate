@@ -151,7 +151,7 @@ float(entity targ) range;
 void(float d) ai_charge =
 {
 	ai_face ();	
-	movetogoal (d);		// done in C code...
+	walkmove(self.angles_y, d);
 };
 
 void() ai_charge_side =

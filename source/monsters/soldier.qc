@@ -1,16 +1,3 @@
-/*
-==============================================================================
-
-SOLDIER / PLAYER
-
-==============================================================================
-*/
-
-$cd id1/models/soldier3
-$origin 0 -6 24
-$base base		
-$skin skin
-
 $frame stand1 stand2 stand3 stand4 stand5 stand6 stand7 stand8
 
 $frame death1 death2 death3 death4 death5 death6 death7 death8
@@ -37,15 +24,11 @@ $frame prowl_1 prowl_2 prowl_3 prowl_4 prowl_5 prowl_6 prowl_7 prowl_8
 $frame prowl_9 prowl_10 prowl_11 prowl_12 prowl_13 prowl_14 prowl_15 prowl_16
 $frame prowl_17 prowl_18 prowl_19 prowl_20 prowl_21 prowl_22 prowl_23 prowl_24
 
-/*
-==============================================================================
-SOLDIER CODE
-==============================================================================
-*/
 
-void() army_fire;
-
-void()	army_stand1	=[	$stand1,	army_stand2	] {ai_stand();};
+void()	army_stand1	=[	$stand1,	army_stand2	] {
+if (random() < 0.1)
+	sound (self, CHAN_VOICE, "soldier/idle.wav", 1, ATTN_IDLE);
+	ai_stand();};
 void()	army_stand2	=[	$stand2,	army_stand3	] {ai_stand();};
 void()	army_stand3	=[	$stand3,	army_stand4	] {ai_stand();};
 void()	army_stand4	=[	$stand4,	army_stand5	] {ai_stand();};
@@ -83,7 +66,7 @@ void()	army_walk23	=[	$prowl_23,	army_walk24	] {ai_walk(1);};
 void()	army_walk24	=[	$prowl_24,	army_walk1	] {ai_walk(1);};
 
 void()	army_run1	=[	$run1,		army_run2	] {
-if (random() < 0.2)
+if (random() < 0.1)
 	sound (self, CHAN_VOICE, "soldier/idle.wav", 1, ATTN_IDLE);
 ai_run(11);};
 void()	army_run2	=[	$run2,		army_run3	] {ai_run(15);};
@@ -94,12 +77,22 @@ void()	army_run6	=[	$run6,		army_run7	] {ai_run(15);};
 void()	army_run7	=[	$run7,		army_run8	] {ai_run(10);};
 void()	army_run8	=[	$run8,		army_run1	] {ai_run(8);};
 
+void() army_fire =
+{	
+	self.effects = self.effects | EF_MUZZLEFLASH;
+	
+	sound (self, CHAN_WEAPON, "soldier/sattck1.wav", 1, ATTN_NORM);	
+
+	vector dir = self.enemy.origin - self.enemy.velocity * 0.2;
+	dir = normalize (dir - self.origin);
+	FireBullets (4, dir, '0.1 0.1 0');
+};
+
 void()	army_atk1	=[	$shoot1,	army_atk2	] {ai_face();};
 void()	army_atk2	=[	$shoot2,	army_atk3	] {ai_face();};
 void()	army_atk3	=[	$shoot3,	army_atk4	] {ai_face();};
 void()	army_atk4	=[	$shoot4,	army_atk5	] {ai_face();};
-void()	army_atk5	=[	$shoot5,	army_atk6	] {ai_face();army_fire();
-self.effects = self.effects | EF_MUZZLEFLASH;};
+void()	army_atk5	=[	$shoot5,	army_atk6	] {ai_face();army_fire();};
 void()	army_atk6	=[	$shoot6,	army_atk7	] {ai_face();};
 void()	army_atk7	=[	$shoot7,	army_atk8	] {ai_face();SUB_CheckRefire (army_atk1);};
 void()	army_atk8	=[	$shoot8,	army_atk9	] {ai_face();};
@@ -143,14 +136,11 @@ void()	army_painc12=[	$painc12,	army_painc13] {ai_painforward(8);};
 void()	army_painc13=[	$painc13,	army_run1] {};
 
 void(entity attacker, float damage)	army_pain =
-{
-	local float r;
-	
+{	
 	if (self.pain_finished > time)
 		return;
 
-	r = random();
-
+	float r = random();
 	if (r < 0.2)
 	{
 		self.pain_finished = time + 0.6;
@@ -172,30 +162,12 @@ void(entity attacker, float damage)	army_pain =
 };
 
 
-void() army_fire =
-{
-	local	vector	dir;
-	local	entity	en;
-	
-	ai_face();
-	
-	sound (self, CHAN_WEAPON, "soldier/sattck1.wav", 1, ATTN_NORM);	
-
-// fire somewhat behind the player, so a dodging player is harder to hit
-	en = self.enemy;
-	
-	dir = en.origin - en.velocity*0.2;
-	dir = normalize (dir - self.origin);
-	
-	FireBullets (4, dir, '0.1 0.1 0');
-};
 
 
 
 void()	army_die1	=[	$death1,	army_die2	] {};
 void()	army_die2	=[	$death2,	army_die3	] {};
-void()	army_die3	=[	$death3,	army_die4	]
-{self.ammo_shells = 5;DropBackpack();};
+void()	army_die3	=[	$death3,	army_die4	] {DropBackpack();};
 void()	army_die4	=[	$death4,	army_die5	] {};
 void()	army_die5	=[	$death5,	army_die6	] {};
 void()	army_die6	=[	$death6,	army_die7	] {};
@@ -206,8 +178,7 @@ void()	army_die10	=[	$death10,	army_die10	] {};
 
 void()	army_cdie1	=[	$deathc1,	army_cdie2	] {};
 void()	army_cdie2	=[	$deathc2,	army_cdie3	] {ai_back(5);};
-void()	army_cdie3	=[	$deathc3,	army_cdie4	]
-{self.ammo_shells = 5;DropBackpack();ai_back(4);};
+void()	army_cdie3	=[	$deathc3,	army_cdie4	] {DropBackpack();ai_back(4);};
 void()	army_cdie4	=[	$deathc4,	army_cdie5	] {ai_back(13);};
 void()	army_cdie5	=[	$deathc5,	army_cdie6	] {ai_back(3);};
 void()	army_cdie6	=[	$deathc6,	army_cdie7	] {ai_back(4);};
@@ -269,6 +240,8 @@ void() monster_army =
 	self.th_missile = army_atk1;
 	self.th_pain = army_pain;
 	self.th_die = army_die;
+	
+	self.ammo_shells = 5;
 
 	monster_start("progs/soldier.mdl", "progs/h_guard.mdl", 30, 0, '-16 -16 -24', '16 16 40');
 };

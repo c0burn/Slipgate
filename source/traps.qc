@@ -77,18 +77,15 @@ explobox_explode
 ==========*/
 void() explobox_explode =
 {
-	self.classname = "explo_box";
+	vector org = [self.origin_x + self.maxs_x * 0.5, self.origin_y + self.maxs_y * 0.5, 
+					self.origin_z + self.maxs_z * 0.5];
+
+	setorigin(self, org);
+
+	self.classname = "explo_box";	
 	T_RadiusDamage (self, self, 160, world);
 
-	self.origin_x = self.origin_x + self.maxs_x * 0.5;
-	self.origin_y = self.origin_y + self.maxs_y * 0.5;
-	self.origin_z = self.origin_z + self.maxs_z * 0.5;
-	
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
+	te_explosion(self.origin);
 	BecomeExplosion();
 };
 

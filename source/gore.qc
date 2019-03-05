@@ -84,37 +84,20 @@ void() become_gibs =
 	self.avelocity = [0, crandom() * 600, 0];
 };
 
-vector() wall_velocity =
-{
-	local vector	vel;
-	
-	vel = normalize (self.velocity);
-	vel = normalize(vel + v_up*(random()- 0.5) + v_right*(random()- 0.5));
-	vel = vel + 2*trace_plane_normal;
-	vel = vel * 200;
-	
-	return vel;
-};
-
 void(vector org, vector vel) SpawnMeatSpray =
 {
-	local	entity missile;
-
-	missile = spawn ();
+	entity missile = spawn ();
 	missile.owner = self;
-	missile.movetype = MOVETYPE_BOUNCE;
+	missile.movetype = MOVETYPE_TOSS;
 	missile.solid = SOLID_NOT;
 
-	makevectors (self.angles);
-
 	missile.velocity = vel;
-	missile.velocity_z = missile.velocity_z + 250 + 50*random();
-
+	missile.velocity_z = missile.velocity_z + 250 + 50 * random();
 	missile.avelocity = '3000 1000 2000';
 	
-// set missile duration
 	missile.nextthink = time + 1;
 	missile.think = SUB_Remove;
+	missile.touch = SUB_Remove;
 
 	setmodel (missile, "progs/zom_gib.mdl");
 	setsize (missile, '0 0 0', '0 0 0');		
@@ -123,15 +106,24 @@ void(vector org, vector vel) SpawnMeatSpray =
 
 void(vector org, vector vel, float damage) SpawnBlood =
 {
-	particle (org, vel*0.1, 64, damage*2);
-	particle (org, vel*0.1, 73, damage*2);
+	particle (org, vel, 66, damage);
+	particle (org, vel, 73, damage);
+};
+
+void(float damage, float col) SpawnTouchParticles =
+{
+	vector vel = normalize(self.velocity);
+	vector org = self.origin - 4 * vel;
+	
+	makevectors(vel);
+	vel = v_right * crandom() + v_up * crandom();
+	vel = vel * random() * 4;
+	
+	particle (org, vel, col, damage);
 };
 
 void(float damage) spawn_touchblood =
 {
-	local vector vel;
-
-	vel = wall_velocity () * 0.2;
-	SpawnBlood (self.origin + vel*0.01, vel, damage);
+	SpawnTouchParticles(damage, 66);
+	SpawnTouchParticles(damage, 73);
 };
-

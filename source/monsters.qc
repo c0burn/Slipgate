@@ -50,31 +50,19 @@ void() monster_start_go =
 	}
 	
 	// check if we're stuck in a wall
-	if (!walkmove(0,0))
+	if (!walkmove(0, 0))
 	{
 		dprint(self.classname);
 		dprint(" in wall at: ");
 		dprint(vtos(self.origin));
 		dprint("\n");
-		
-		
-		// fix monster count
-		// removed this because monsters in teleport closets
-		// can be "stuck" but still move out
-		/*
-		remove(self);
-		total_monsters = total_monsters - 1;
-		WriteByte (MSG_ALL, SVC_UPDATESTAT);
-		WriteByte (MSG_ALL, STAT_TOTALMONSTERS);
-		WriteLong (MSG_ALL, total_monsters);
-		return;
-		*/
 	}
 	
 	self.think = self.th_stand;
 	self.nextthink = time + 0.1;
 	
 	// if the monster targets a path corner, they will move towards it
+	// otherwise, they will fire their targets upon death
 	if (self.target != "")
 	{
 		entity t = find(world, targetname, self.target);

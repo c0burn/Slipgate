@@ -1043,6 +1043,7 @@ void() WaypointPostFrame =
 		return;
 	if (self.impulse == 100)
 	{
+		dprint("ToggleWaypointMenu\n");
 		ToggleWaypointMenu();
 		self.impulse = 0;
 		return;

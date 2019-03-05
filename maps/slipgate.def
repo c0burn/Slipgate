@@ -1,5 +1,8 @@
-/*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8)
-Monsters will continue walking towards the next target corner.
+/*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+If a monster targets a path_corner, they will move towards it.
+Once a monster hits a path_corner, they will move to the next targeted path_corner.
+You can set "pausetime" on a path_corner to enforce a delay before the monster moves
+to the next target.
 */
 /*QUAKED item_health (0 0 1) (0 0 0) (32 32 56) Rotten Megahealth X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
@@ -645,10 +648,11 @@ sounds
 1) ratchet metal
 
 */
-/*QUAKED misc_teleporttrain (.5 .5 .5) (-16 -16 -16) (16 16 16)
+/*QUAKED misc_teleporttrain (.5 .5 .5) (-16 -16 -16) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/teleport.mdl");	}
 
 Teleporter target for final boss level. Must target a series of 'path_corner' entities.
+If a targetname is set, must be triggered to start moving.
 */
 /*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 {
@@ -737,7 +741,7 @@ Vore.
 }
 Enforcer.
 */
-/*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (160 128 256)
+/*QUAKED monster_oldone (1 0 0) (-128 -128 -24) (128 128 200)
 {	model ("progs/oldone.mdl");		}
 Shub-Niggurath.
 */

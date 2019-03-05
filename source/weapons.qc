@@ -183,10 +183,14 @@ void() W_FireAxe =
 	if (trace_ent.takedamage)
 	{
 		trace_ent.axhitme = 1;
+		
+		vector vel = crandom() * v_right + crandom() * v_up;
+		vel = vel * random() * 4;
+		
 		if (trace_ent.classname == "func_breakable")
-			particle(org, '0 0 0', trace_ent.colour, 20);
+			particle(org, vel, trace_ent.colour, 40);
 		else
-			SpawnBlood (org, '0 0 0', 20);
+			SpawnBlood (org, vel, 40);
 		T_Damage (trace_ent, self, self, 20);
 	}
 	else
@@ -233,30 +237,26 @@ void(entity hit, float damage) AddMultiDamage =
 
 void(float damage, vector dir) TraceAttack =
 {
-	local	vector	vel, org;
-	
-	vel = normalize(dir + v_up*crandom() + v_right*crandom());
-	vel = vel + 2*trace_plane_normal;
-	vel = vel * 200;
-
-	org = trace_endpos - dir*4;
+	vector org = trace_endpos - dir*4;
 
 	if (trace_ent.takedamage)
 	{
+		vector vel = normalize(dir + v_up*crandom() + v_right*crandom());
+		vel = vel + 2*trace_plane_normal;
+		vel = vel * 4;
+	
 		if (trace_ent.classname == "func_breakable")
-			particle(org, vel*0.02, trace_ent.colour, damage);
+			particle(org, vel, trace_ent.colour, damage * 2);
+		else if (trace_ent.solid == SOLID_SLIDEBOX)
+			SpawnBlood (org, vel, damage * 2);
 		else
-			SpawnBlood (org, vel*0.2, damage);
+			particle(org, vel, 192, damage * 2);
 			
 		AddMultiDamage (trace_ent, damage);
 	}
 	else
 	{
-		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
-		WriteCoord (MSG_BROADCAST, org_x);
-		WriteCoord (MSG_BROADCAST, org_y);
-		WriteCoord (MSG_BROADCAST, org_z);
+		te_gunshot(org);
 	}
 };
 
@@ -630,9 +630,7 @@ void() spike_touch =
 	{
 		if (other.classname == "func_breakable")
 		{
-			vector vel;
-			vel = wall_velocity () * 0.2;
-			particle(self.origin + vel * 0.01, vel * 0.02, other.colour, 9);
+			SpawnTouchParticles(9, other.colour);
 		}
 		else
 			spawn_touchblood (9);
@@ -670,11 +668,7 @@ void() superspike_touch =
 	if (other.takedamage)
 	{
 		if (other.classname == "func_breakable")
-		{
-			vector vel;
-			vel = wall_velocity () * 0.2;
-			particle(self.origin + vel * 0.01, vel * 0.02, other.colour, 18);
-		}
+			SpawnTouchParticles(18, other.colour);
 		else
 			spawn_touchblood(18);
 			
