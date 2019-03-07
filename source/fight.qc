@@ -344,10 +344,6 @@ Returns FALSE if movement should continue
 */
 float() OgreCheckAttack =
 {
-	local vector	spot1, spot2;	
-	local entity	targ;
-	local float		chance;
-
 	if (enemy_range == RANGE_MELEE)
 	{
 		if (CanDamage (self.enemy, self))
@@ -361,60 +357,56 @@ float() OgreCheckAttack =
 		return FALSE;
 	
 	// aim at last known location on hard and nightmare
-	if (!enemy_vis && skill > 1)
+	if (!enemy_vis)
 	{
-		if (time < self.search_time)
+		if (skill > 1)
 		{
-			spot1 = self.origin + self.view_ofs;
-			spot2 = self.enemy_last;
-			traceline (spot1, spot2, FALSE, self);
-			if (trace_inopen && trace_inwater)
-				return FALSE;
-			if (trace_fraction < 1)
-				return FALSE;
-		
-			if (vlen(self.origin - self.enemy_last) < 500)
-				chance = 0.4;
-			else
-				chance = 0.1;
-			if (random() < chance)
+			if (time < self.search_time)
 			{
-				dprint("attacking last known spot\n");
-				self.attack_state = AS_SPAM;
-				SUB_AttackFinished (1 + 2*random());
-				return TRUE;
-			}
-			else
-			{
-				self.attack_finished = time + 0.5;
-				return FALSE;
+				vector spot1 = self.origin;
+				vector spot2 = self.enemy_last;
+				traceline(spot1, spot2, MOVE_MISSILE, self);
+				if (trace_ent != world)
+					if (trace_ent.solid != SOLID_BSP)
+						return FALSE;
+
+				float chance = 0;
+				if (vlen(self.origin - self.enemy_last) < 500)
+					chance = 0.4;
+				else
+					chance = 0.1;
+				if (random() < chance)
+				{
+					self.attack_state = AS_SPAM;
+					SUB_AttackFinished (1 + 2*random());
+					return TRUE;
+				}
+				else
+				{
+					self.attack_finished = time + 0.5;
+					return FALSE;
+				}
 			}
 		}
-		else
-			return FALSE;
+		
+		return FALSE;
 	}
+		
+	spot1 = self.origin;
+	spot2 = self.enemy.origin + self.enemy.view_ofs;
+	traceline (spot1, spot2, MOVE_MISSILE, self);
+	if (trace_inwater)
+		if (trace_inopen)
+			return FALSE;
+	if (trace_ent != self.enemy)
+		return FALSE;
 
-	targ = self.enemy;
-	
-// see if any entities are in the way of the shot
-	spot1 = self.origin + self.view_ofs;
-	spot2 = targ.origin + targ.view_ofs;
-
-	traceline (spot1, spot2, FALSE, self);
-
-	if (trace_inopen && trace_inwater)
-		return FALSE;			// sight line crossed contents
-
-	if (trace_ent != targ)
-		return FALSE;	// don't have a clear shot
-			
-// missile attack
+	// missile attack
+	chance = 0;
 	if (enemy_range == RANGE_NEAR)
 		chance = 0.5;
 	else if (enemy_range == RANGE_MID)
 		chance = 0.3;
-	else
-		chance = 0;
 
 	if (random() < chance)
 	{
@@ -428,4 +420,3 @@ float() OgreCheckAttack =
 		return FALSE;
 	}
 };
-

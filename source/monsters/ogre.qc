@@ -35,7 +35,7 @@ $frame bdeath7 bdeath8 bdeath9 bdeath10
 $frame pull1 pull2 pull3 pull4 pull5 pull6 pull7 pull8 pull9 pull10 pull11
 
 float OGRE_G_VEL = 600;
-float OGRE_DEFAULT_ELEVATION = 30;
+float OGRE_DEFAULT_ELEVATION = 45;
 
 /*==========
 OgreGrenadeExplode
@@ -76,7 +76,10 @@ float(float theta, vector dest, vector org) OgreIterateElevation =
 
 	// can't reach target
 	if (b * b < 4 * a * c)
+	{
+		dprint("OGRE_DEFAULT_ELEVATION\n");
 		return OGRE_DEFAULT_ELEVATION;
+	}
 
 	float tan_theta = tan(theta);
 	theta = atan2(a * tan_theta * tan_theta - c, 2 * a * tan_theta + b);
@@ -95,8 +98,9 @@ void(float spam) OgreFireGrenade =
 	
 	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
 
-	makevectors(self.angles);
-	vector org = self.origin + v_forward * 16 + v_right * -8;
+	//makevectors(self.angles);
+	//vector org = self.origin + v_forward * 16 + v_right * -8;
+	vector org = self.origin;
 
 	entity missile = spawn ();
 	missile.owner = self;
@@ -119,10 +123,9 @@ void(float spam) OgreFireGrenade =
 	else
 	{
 		// lead player on hard
-		if (skill > 1)
+		if (skill > 3)
 		{
-			vector ofs = self.enemy.origin - org;
-			ofs_z = 0;
+			vector ofs = self.enemy.origin + self.enemy.view_ofs - org;
 			float t = vlen(ofs) / OGRE_G_VEL;
 			vector vel = self.enemy.velocity;
 			vel_z = 0;

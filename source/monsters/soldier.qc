@@ -81,7 +81,7 @@ void() army_fire =
 {	
 	self.effects = self.effects | EF_MUZZLEFLASH;
 	
-	sound (self, CHAN_WEAPON, "soldier/sattck1.wav", 1, ATTN_NORM);	
+	sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);	
 
 	vector dir = self.enemy.origin - self.enemy.velocity * 0.2;
 	dir = normalize (dir - self.origin);
@@ -231,8 +231,8 @@ void() monster_army =
 	precache_sound ("soldier/idle.wav");
 	precache_sound ("soldier/pain1.wav");
 	precache_sound ("soldier/pain2.wav");
-	precache_sound ("soldier/sattck1.wav");
 	precache_sound ("soldier/sight1.wav");
+	precache_sound ("weapons/guncock.wav");
 
 	self.th_stand = army_stand1;
 	self.th_walk = army_walk1;

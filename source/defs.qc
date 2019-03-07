@@ -405,6 +405,10 @@ float	AS_MELEE			= 3;
 float	AS_MISSILE			= 4;
 float	AS_SPAM				= 5;
 
+// traceline flags
+float	MOVE_NORMAL			= 0;
+float	MOVE_NOMONSTERS		= 1;
+float	MOVE_MISSILE		= 2;
 
 /*==========
 Globals

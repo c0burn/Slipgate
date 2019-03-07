@@ -305,7 +305,7 @@ Set the animated light style. Default 0.
 "style2" "n"
 Set the animated light style for a switchable light.
 This is because "style" will be set by your compiling utility to a value in the range 32+,
-so we need to tell the gamecode what actual style to use.
+so we need to tell the QuakeC what actual style to use.
 
 ==========
 Spawnflags
@@ -352,6 +352,137 @@ Makes crackling fire noise unless NO_SOUND is set
 {
 	model ({"path" : mdl, "skin" : skin, "frame": frame});
 }
+Custom map object. Non-solid by default.
+
+"mdl" "name" - model to load, e.g. "progs/grenade.mdl". Will also work on .bsp and .spr
+"pos1", "pos2" "vector" - bounding box size. if not defined it will default to '-16 -16 -16' , '16 16 16'
+"skin" "n" - model or sprite skin
+"frame" "n" - model or sprite frame
+
+==========
+Spawnflags
+==========
+1 - Object is solid
+*/
+/*QUAKED misc_demon_dead (1 0 0) (-32 -32 -24) (32 32 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/demon.mdl","frame":53});
+}
+Dead Fiend
+*/
+/*QUAKED misc_demon_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_demon.mdl");
+}
+Fiend Head
+*/
+/*QUAKED misc_dog_dead_1 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/dog.mdl","frame":16});
+}
+Dead dog
+*/
+/*QUAKED misc_dog_dead_2 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/dog.mdl","frame":25});
+}
+Dead dog
+*/
+/*QUAKED misc_dog_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_dog.mdl");
+}
+dog Head
+*/
+/*QUAKED misc_enforcer_dead_1 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/enforcer.mdl","frame":54});
+}
+Dead Enforcer
+*/
+/*QUAKED misc_enforcer_dead_2 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/enforcer.mdl","frame":65});
+}
+Dead Enforcer
+*/
+/*QUAKED misc_enforcer_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_mega.mdl");
+}
+Enforcer Head
+*/
+/*QUAKED misc_fish_dead (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/fish.mdl","frame":38});
+}
+Dead Fish
+*/
+/*QUAKED misc_hknight_dead_1 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/hknight.mdl","frame":53});
+}
+Dead Death Knight
+*/
+/*QUAKED misc_hknight_dead_2 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/hknight.mdl","frame":62});
+}
+Dead Death Knight
+*/
+/*QUAKED misc_hknight_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_hellkn.mdl");
+}
+Death Knight Head
+*/
+/*QUAKED misc_knight_dead_1 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/knight.mdl","frame":85});
+}
+Dead Knight
+*/
+/*QUAKED misc_knight_dead_2 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/knight.mdl","frame":96});
+}
+Dead Knight
+*/
+/*QUAKED misc_knight_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_knight.mdl");
+}
+Knight Head
+*/
+/*QUAKED misc_ogre_dead_1 (1 0 0) (-32 -32 -24) (32 32 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/ogre.mdl","frame":125});
+}
+Dead Ogre
+*/
+/*QUAKED misc_ogre_dead_2 (1 0 0) (-32 -32 -24) (32 32 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/ogre.mdl","frame":135});
+}
+Dead Ogre
+*/
+/*QUAKED misc_ogre_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_ogre.mdl");
+}
+Ogre Head
+*/
+/*QUAKED misc_shalrath_dead (1 0 0) (-32 -32 -24) (32 32 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path":"progs/shalrath.mdl","frame":22});
+}
+Dead Vore
+*/
+/*QUAKED misc_shalrath_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ("progs/h_shal.mdl");
+}
+Vore Head
 */
 /*QUAKED misc_shambler_dead (1 0 0) (-32 -32 -24) (32 32 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
@@ -369,19 +500,19 @@ Shambler Head
 {
 	model ({"path":"progs/soldier.mdl","frame":28});
 }
-Dead Soldier
+Dead Grunt
 */
 /*QUAKED misc_soldier_dead_2 (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
 	model ({"path":"progs/soldier.mdl","frame":28});
 }
-Dead Soldier
+Dead Grunt
 */
 /*QUAKED misc_soldier_head (1 0 0) (-16 -16 0) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
 	model ("progs/h_guard.mdl");
 }
-Soldier Head
+Grunt Head
 */
 /*QUAKED misc_wizard_dead (1 0 0) (-16 -16 -24) (16 16 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {

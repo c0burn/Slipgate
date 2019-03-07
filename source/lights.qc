@@ -174,7 +174,7 @@ Set the animated light style. Default 0.
 "style2" "n"
 Set the animated light style for a switchable light.
 This is because "style" will be set by your compiling utility to a value in the range 32+,
-so we need to tell the gamecode what actual style to use.
+so we need to tell the QuakeC what actual style to use.
 
 ==========
 Spawnflags
@@ -194,11 +194,7 @@ static void() light =
 	// default fade speed
 	if (self.speed <= 0)
 		self.speed = 0.1;
-	
-	
-	if (self.style >= 32)
-		dprint("\blight with switchable style\n");
-		
+
 	// switchable light
 	if (self.style >= 32)
 	{
@@ -221,10 +217,7 @@ Non-displayed light
 Makes steady fluorescent humming sound
 */
 static void() light_fluoro =
-{
-	if (self.style >= 32)
-		dprint("light_fluoro with switchable style\n");
-		
+{		
 	ambient_light_buzz();
 	remove(self);
 };
@@ -234,10 +227,7 @@ Non-displayed light
 Makes sparking, broken fluorescent sound
 */
 static void() light_fluorospark =
-{
-	if (self.style >= 32)
-		dprint("light_fluorospark with switchable style\n");
-		
+{		
 	ambient_flouro_buzz();
 	remove(self);
 };

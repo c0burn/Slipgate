@@ -33,17 +33,21 @@ returns the range catagorization of an entity reletive to self
 */
 float(entity targ) range =
 {
-	vector spot1 = self.origin + self.view_ofs;
-	vector spot2 = targ.origin + targ.view_ofs;
-	
-	float r = vlen (spot1 - spot2);
-	if (r < 120)
-		return RANGE_MELEE;
+	float r = vlen (self.origin + self.view_ofs - targ.origin + targ.view_ofs);
 	if (r < 500)
-		return RANGE_NEAR;
-	if (r < 1000)
-		return RANGE_MID;
-	return RANGE_FAR;
+	{
+		if (r < 120)
+			return RANGE_MELEE;
+		else
+			return RANGE_NEAR;
+	}
+	else
+	{
+		if (r < 1000)
+			return RANGE_MID;
+		else
+			return RANGE_FAR;
+	}
 };
 
 /*
@@ -55,15 +59,12 @@ returns 1 if the entity is visible to self, even if not infront ()
 */
 float (entity targ) visible =
 {
-	local vector	spot1, spot2;
-	
-	spot1 = self.origin + self.view_ofs;
-	spot2 = targ.origin + targ.view_ofs;
-	traceline (spot1, spot2, TRUE, self);	// see through other monsters
-	
-	if (trace_inopen && trace_inwater)
-		return FALSE;			// sight line crossed contents
-
+	traceline (self.origin + self.view_ofs, targ.origin + targ.view_ofs, TRUE, self);
+	if (trace_inwater)
+	{
+		if (trace_inopen)
+			return FALSE;
+	}
 	if (trace_fraction == 1)
 		return TRUE;
 	return FALSE;
@@ -256,10 +257,14 @@ void(entity goal, float dist) ai_movetogoal =
 		self.ideal_yaw = vectoyaw(goal.origin - self.origin);
 	}
 
+	vector oldorigin = self.origin;
+	movetogoal(dist);
+	if (self.origin != oldorigin)
+		return;
+	
 	if (SV_CloseEnough(dist))
 	{
 		//dprint("SV_CloseEnough\n");
-		//self.flags = self.flags | FL_PARTIALGROUND;
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
 		changeyaw();
 		if (walkmove(self.angles_y, dist))
@@ -275,8 +280,7 @@ void(entity goal, float dist) ai_movetogoal =
 		self.lefty = 1 - self.lefty;
 		walkmove(self.angles_y - ofs, dist);
 	}
-	else
-		movetogoal(dist);
+		
 	
 	/*
 	if (self.blocked_count > 10)
@@ -397,9 +401,14 @@ void() ai_turn =
 
 float() FacingIdeal =
 {
-	float delta = anglemod(self.angles_y - self.ideal_yaw);
+	float delta = angcomp(self.angles_y, self.ideal_yaw);
+	if (delta > 90)
+		return FALSE;
+	
+	/*float delta = anglemod(self.angles_y - self.ideal_yaw);
 	if (delta > 45 && delta < 315)
 		return FALSE;
+	*/
 	return TRUE;
 };
 
@@ -473,6 +482,8 @@ void() ai_run_missile =
 	
 	if (FacingIdeal())
 	{
+		
+		
 		if (self.attack_state == AS_SPAM)
 			self.th_spam();
 		else
@@ -739,6 +750,9 @@ entity(entity monster, entity start) FindWaypoint =
 		best = world;
 	}
 
+	if (best_dist < 20)
+		return best;
+					
 	entity w = way_head;
 	while(w)
 	{
@@ -749,9 +763,6 @@ entity(entity monster, entity start) FindWaypoint =
 			{
 				best_dist = way_dist;
 				best = w;
-				
-				if (best_dist < 20)
-					return best;
 			}
 		}
 		w = w._next;
@@ -768,7 +779,6 @@ entity(entity monster, entity start) FindWaypoint =
 		return world;
 	}
 };
-
 
 /*
 =============
@@ -832,7 +842,7 @@ void(float dist) ai_run =
 			return;
 	}
 	
-	// we've started an attack, so make sure we're facing the right way
+	// we've started an attack, so make sure we're facing the right way before launching
 	if (self.attack_state == AS_MISSILE || self.attack_state == AS_SPAM)
 	{
 		ai_run_missile();
