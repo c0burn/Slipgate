@@ -11,7 +11,7 @@ void(string s, float vol, float atn) ambient_start =
 Customisable ambient sound.
 
 Keys:
-"noise" "name" - Ambient sound to play. Must be a looped WAV.
+"noise" "name" - Ambient sound to play. Must have loop markers.
 "volume" "n" - Set the volume of the sound. Range 0-1. Defaulf 0.5.
 "distance" "n" - Set the attenuation of the ambient sound.
 0 - static (default, usual for ambient sounds)

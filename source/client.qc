@@ -499,8 +499,6 @@ void() PutClientInServer =
 	self.flags = FL_CLIENT;
 	self.th_pain = player_pain;
 	self.th_die = PlayerDie;
-	self.touch = SUB_Null;
-	self.count = 0;
 	self.view_ofs = '0 0 22';
 	
 	// liquid stuff

@@ -66,18 +66,17 @@ become_gibs
 ==========*/
 void() become_gibs =
 {
-	self.touch = gib_touch;
 	self.think = SUB_Null;
 	self.nextthink = -1;
 	self.takedamage = DAMAGE_NO;
 	self.frame = 0;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 
-	self.solid = SOLID_NOT;
+	self.solid = SOLID_TRIGGER;
 	self.movetype = MOVETYPE_BOUNCE;
 	setmodel (self, self.headmodel);
 	setsize (self, '-16 -16 0', '16 16 16');
-	setorigin(self, self.origin + self.view_ofs);
+	setorigin(self, self.origin + self.view_ofs + [0, 0, 8]);
 	self.view_ofs = '0 0 8';
 	
 	self.velocity = gib_velocity(self.health);

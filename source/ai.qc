@@ -335,7 +335,7 @@ void(float dist) ai_painforward =
 };
 
 void(float dist) ai_walk =
-{
+{	
 	if (FindTarget())
 		return;
 	
@@ -362,7 +362,7 @@ void(float dist) ai_walk =
 };
 
 void() ai_stand =
-{
+{	
 	if (FindTarget())
 		return;
 		

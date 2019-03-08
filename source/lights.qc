@@ -6,10 +6,10 @@ static enumflags { START_OFF, FADE_IN_OUT };
 static enumflags { NO_SOUND };
 
 #define FADE_RAMP 13
-string abc[FADE_RAMP] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m" };
+static string abc[FADE_RAMP] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m" };
 
 #define NUM_LIGHTSTYLES 13
-string lightstyles[NUM_LIGHTSTYLES] =
+static string lightstyles[NUM_LIGHTSTYLES] =
 {
 	// 0 NORMAL
 	"m",
@@ -284,6 +284,16 @@ static void() light_flame_small_yellow =
 	makestatic(self);
 };
 
+/*==========
+light_flame_small_white
+For compatability only.
+==========*/
+static void() light_flame_small_white =
+{
+	self.classname = "light_flame_small_yellow";
+	light_flame_small_yellow();
+};
+
 /*QUAKED light_flame_large_yellow (1 1 0) (-8 -8 -12) (8 8 40) NO_SOUND
 {	model ( { "path" : "progs/flame2.mdl", "frame" : 1 } );	}
 Large yellow flame
@@ -326,7 +336,7 @@ static void() light_flame_sprite =
 	// makestatic and reduce network traffic
 	if (cvar("pr_checkextension"))
 	{
-		self.frame = 14;		// spritegroup which contains 14 frames
+		self.frame = 14;		// frame 14 is a spritegroup which contains 14 frames
 		makestatic(self);
 	}
 	else
