@@ -182,7 +182,7 @@ void() W_FireAxe =
 	vector org = trace_endpos - v_forward * 4;
 	if (trace_ent.takedamage)
 	{
-		trace_ent.axhitme = 1;
+		//trace_ent.axhitme = 1;
 		
 		vector vel = crandom() * v_right + crandom() * v_up;
 		vel = vel * random() * 4;
@@ -633,7 +633,7 @@ void() spike_touch =
 			SpawnTouchParticles(9, other.colour);
 		}
 		else
-			spawn_touchblood (9);
+			SpawnTouchblood (9);
 			
 		T_Damage (other, self, self.owner, 9);
 	}
@@ -670,7 +670,7 @@ void() superspike_touch =
 		if (other.classname == "func_breakable")
 			SpawnTouchParticles(18, other.colour);
 		else
-			spawn_touchblood(18);
+			SpawnTouchblood(18);
 			
 		T_Damage (other, self, self.owner, 18);
 	}
@@ -696,7 +696,7 @@ void()	player_axeb1;
 void()	player_axec1;
 void()	player_axed1;
 void()	player_shot1;
-void()	player_nail1;
+void()	player_nail;
 void()	player_lightning;
 void()	player_rocket1;
 void() W_Attack =
@@ -743,11 +743,11 @@ void() W_Attack =
 	}
 	else if (self.weapon == IT_NAILGUN)
 	{
-		player_nail1 ();
+		player_nail ();
 	}
 	else if (self.weapon == IT_SUPER_NAILGUN)
 	{
-		player_nail1 ();
+		player_nail ();
 	}
 	else if (self.weapon == IT_GRENADE_LAUNCHER)
 	{

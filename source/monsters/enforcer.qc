@@ -53,7 +53,7 @@ void() Laser_Touch =
 		if (other.classname == "func_breakable")
 			SpawnTouchParticles(15, other.colour);
 		else
-			spawn_touchblood(15);
+			SpawnTouchblood(15);
 			
 		T_Damage (other, self, self.owner, 15);
 	}
@@ -283,22 +283,25 @@ void(entity inflictor, entity attacker) enf_die =
 // check for gib
 	if (self.health < -35)
 	{
-		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_mega.mdl", self.health);
-		ThrowGib ("progs/gib1.mdl", self.health);
-		ThrowGib ("progs/gib2.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
+		SpawnGib("progs/gib1.mdl");
+		SpawnGib("progs/gib2.mdl");
+		SpawnGib("progs/gib3.mdl");
+		SpawnGib("progs/gib4.mdl");
+		SpawnGib("progs/gib5.mdl");
+		SpawnGib("progs/blood.mdl");
+		SpawnGib("progs/blood.mdl");
+		BecomeGibs();
 		return;
 	}
 
-// regular death
+	// regular death
 	sound (self, CHAN_VOICE, "enforcer/death1.wav", 1, ATTN_NORM);
+	self.solid = SOLID_NOT;
 	if (random() > 0.5)
 		enf_die1 ();
 	else
 		enf_fdie1 ();
 };
-
 
 /*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 {

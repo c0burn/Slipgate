@@ -382,12 +382,14 @@ void() zombie_paine30	=[	$paine30,	zombie_run1		] {};
 
 void(entity inflictor, entity attacker) zombie_die =
 {
-	// always gib
-	sound (self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);
-	ThrowHead ("progs/h_zombie.mdl", self.health);
-	ThrowGib ("progs/gib1.mdl", self.health);
-	ThrowGib ("progs/gib2.mdl", self.health);
-	ThrowGib ("progs/gib3.mdl", self.health);
+	SpawnGib("progs/gib1.mdl");
+	SpawnGib("progs/gib2.mdl");
+	SpawnGib("progs/gib3.mdl");
+	SpawnGib("progs/gib4.mdl");
+	SpawnGib("progs/gib5.mdl");
+	SpawnGib("progs/blood.mdl");
+	SpawnGib("progs/blood.mdl");
+	BecomeGibs();
 };
 
 /*

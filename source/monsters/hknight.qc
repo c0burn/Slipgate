@@ -174,8 +174,7 @@ void()	hknight_pain5	=[	$pain5,		hknight_run1	] {};
 
 void()	hknight_die1	=[	$death1,	hknight_die2	] {ai_forward(10);};
 void()	hknight_die2	=[	$death2,	hknight_die3	] {ai_forward(8);};
-void()	hknight_die3	=[	$death3,	hknight_die4	]
-{self.solid = SOLID_NOT; ai_forward(7);};
+void()	hknight_die3	=[	$death3,	hknight_die4	] {ai_forward(7);};
 void()	hknight_die4	=[	$death4,	hknight_die5	] {};
 void()	hknight_die5	=[	$death5,	hknight_die6	] {};
 void()	hknight_die6	=[	$death6,	hknight_die7	] {};
@@ -188,8 +187,7 @@ void()	hknight_die12	=[	$death12,	hknight_die12	] {};
 
 void()	hknight_dieb1	=[	$deathb1,	hknight_dieb2	] {};
 void()	hknight_dieb2	=[	$deathb2,	hknight_dieb3	] {};
-void()	hknight_dieb3	=[	$deathb3,	hknight_dieb4	]
-{self.solid = SOLID_NOT;};
+void()	hknight_dieb3	=[	$deathb3,	hknight_dieb4	] {};
 void()	hknight_dieb4	=[	$deathb4,	hknight_dieb5	] {};
 void()	hknight_dieb5	=[	$deathb5,	hknight_dieb6	] {};
 void()	hknight_dieb6	=[	$deathb6,	hknight_dieb7	] {};
@@ -199,23 +197,27 @@ void()	hknight_dieb9	=[	$deathb9,	hknight_dieb9	] {};
 
 void(entity inflictor, entity attacker) hknight_die =
 {
-// check for gib
+	// check for gib
 	if (self.health < -40)
 	{
-		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_hellkn.mdl", self.health);
-		ThrowGib ("progs/gib1.mdl", self.health);
-		ThrowGib ("progs/gib2.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
+		SpawnGib("progs/gib1.mdl");
+		SpawnGib("progs/gib2.mdl");
+		SpawnGib("progs/gib3.mdl");
+		SpawnGib("progs/gib4.mdl");
+		SpawnGib("progs/gib5.mdl");
+		SpawnGib("progs/blood.mdl");
+		SpawnGib("progs/blood.mdl");
+		BecomeGibs();
 		return;
 	}
 
-// regular death
+	// regular death
 	sound (self, CHAN_VOICE, "hknight/death1.wav", 1, ATTN_NORM);
+	self.solid = SOLID_NOT;
 	if (random() > 0.5)
-		hknight_die1 ();
+		hknight_die1();
 	else
-		hknight_dieb1 ();
+		hknight_dieb1();
 };
 
 

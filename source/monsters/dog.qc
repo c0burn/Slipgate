@@ -228,22 +228,23 @@ void() dog_dieb9		=[	$deathb9,	dog_dieb9	] {};
 
 void(entity inflictor, entity attacker) dog_die =
 {
-// check for gib
+	// check for gib
 	if (self.health < -35)
 	{
-		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowGib ("progs/gib3.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
-		ThrowHead ("progs/h_dog.mdl", self.health);
+		SpawnGib ("progs/gib3.mdl");
+		SpawnGib ("progs/gib3.mdl");
+		SpawnGib ("progs/gib4.mdl");
+		SpawnGib ("progs/gib5.mdl");
+		SpawnGib ("progs/blood.mdl");
+		SpawnGib ("progs/blood.mdl");
+		BecomeGibs ();
 		return;
 	}
-
-// regular death
+	
+	// regular death
 	sound (self, CHAN_VOICE, "dog/ddeath.wav", 1, ATTN_NORM);
 	self.solid = SOLID_NOT;
-
-	if (random() > 0.5)
+	if (random() < 0.5)
 		dog_die1 ();
 	else
 		dog_dieb1 ();

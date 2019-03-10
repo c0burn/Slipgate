@@ -34,8 +34,8 @@ $frame bdeath7 bdeath8 bdeath9 bdeath10
 
 $frame pull1 pull2 pull3 pull4 pull5 pull6 pull7 pull8 pull9 pull10 pull11
 
-float OGRE_G_VEL = 600;
-float OGRE_DEFAULT_ELEVATION = 45;
+#define OGRE_G_VEL				600
+#define OGRE_DEFAULT_ELEVATION	45
 
 /*==========
 OgreGrenadeExplode
@@ -98,8 +98,6 @@ void(float spam) OgreFireGrenade =
 	
 	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
 
-	//makevectors(self.angles);
-	//vector org = self.origin + v_forward * 16 + v_right * -8;
 	vector org = self.origin;
 
 	entity missile = spawn ();
@@ -123,7 +121,7 @@ void(float spam) OgreFireGrenade =
 	else
 	{
 		// lead player on hard
-		if (skill > 3)
+		/*if (skill > 1)
 		{
 			vector ofs = self.enemy.origin + self.enemy.view_ofs - org;
 			float t = vlen(ofs) / OGRE_G_VEL;
@@ -133,7 +131,8 @@ void(float spam) OgreFireGrenade =
 		}
 		// aim at enemy position
 		else
-			dest = self.enemy.origin + self.enemy.view_ofs;
+		*/
+		dest = self.enemy.origin + self.enemy.view_ofs;
 	}
 	float elevation = OgreIterateElevation(OGRE_DEFAULT_ELEVATION, dest, org);
 	elevation = OgreIterateElevation(elevation, dest, org);
@@ -154,29 +153,27 @@ void(float spam) OgreFireGrenade =
 	missile.think = OgreGrenadeExplode;
 };
 
-void() ogre_grenade1	=[	$shoot1,		ogre_grenade2	] {ai_face();};
-void() ogre_grenade2	=[	$shoot2,		ogre_grenade3	] {ai_face();};
-void() ogre_grenade3	=[	$shoot2,		ogre_grenade4	] {ai_face();};
-void() ogre_grenade4	=[	$shoot3,		ogre_grenade5	] {ai_face();OgreFireGrenade(FALSE);};
-void() ogre_grenade5	=[	$shoot4,		ogre_grenade6	] {ai_face();};
-void() ogre_grenade6	=[	$shoot5,		ogre_grenade7	] {ai_face();SUB_CheckRefire (ogre_grenade1);};
-void() ogre_grenade7	=[	$shoot6,		ogre_run1		] {ai_face();};
+void() ogre_grenade1	=[	$shoot1,	ogre_grenade2	] {ai_face();};
+void() ogre_grenade2	=[	$shoot2,	ogre_grenade3	] {ai_face();};
+void() ogre_grenade3	=[	$shoot2,	ogre_grenade4	] {ai_face();};
+void() ogre_grenade4	=[	$shoot3,	ogre_grenade5	] {ai_face();OgreFireGrenade(FALSE);};
+void() ogre_grenade5	=[	$shoot4,	ogre_grenade6	] {ai_face();};
+void() ogre_grenade6	=[	$shoot5,	ogre_grenade7	] {ai_face();SUB_CheckRefire (ogre_grenade1);};
+void() ogre_grenade7	=[	$shoot6,	ogre_run1		] {ai_face();};
 
-void() ogre_spam1	=[	$shoot1,		ogre_spam2	] {ai_face_last();};
-void() ogre_spam2	=[	$shoot2,		ogre_spam3	] {ai_face_last();};
-void() ogre_spam3	=[	$shoot2,		ogre_spam4	] {ai_face_last();};
-void() ogre_spam4	=[	$shoot3,		ogre_spam5	] {ai_face_last();OgreFireGrenade(TRUE);};
-void() ogre_spam5	=[	$shoot4,		ogre_spam6	] {ai_face_last();};
-void() ogre_spam6	=[	$shoot5,		ogre_spam7	] {ai_face_last();};
-void() ogre_spam7	=[	$shoot6,		ogre_run1	] {ai_face_last();};
+void() ogre_spam1	=[	$shoot1,	ogre_spam2	] {ai_face_last();};
+void() ogre_spam2	=[	$shoot2,	ogre_spam3	] {ai_face_last();};
+void() ogre_spam3	=[	$shoot2,	ogre_spam4	] {ai_face_last();};
+void() ogre_spam4	=[	$shoot3,	ogre_spam5	] {ai_face_last();OgreFireGrenade(TRUE);};
+void() ogre_spam5	=[	$shoot4,	ogre_spam6	] {ai_face_last();};
+void() ogre_spam6	=[	$shoot5,	ogre_spam7	] {ai_face_last();};
+void() ogre_spam7	=[	$shoot6,	ogre_run1	] {ai_face_last();};
 
 /*==========
 OgreChainsaw
 ==========*/
 void() OgreChainsaw =
 {
-	if (!self.enemy)
-		return;
 	float delta = vlen(self.enemy.origin - self.origin);
 	if (delta > 100)
 		return;
@@ -233,13 +230,12 @@ void() ogre_smash13	=[	$smash13,		ogre_smash14	] {ai_charge(4);};
 void() ogre_smash14	=[	$smash14,		ogre_run1		] {ai_charge(12);};
 
 /*==========
-OgreMelee
+ogre_melee
 ==========*/
-void() OgreMelee =
+void() ogre_melee =
 {
 	sound (self, CHAN_WEAPON, "ogre/ogsawatk.wav", 1, ATTN_NORM);
-	
-	if (random() > 0.5)
+	if (random() < 0.5)
 		ogre_smash1();
 	else
 		ogre_swing1();
@@ -294,10 +290,6 @@ void() ogre_run6	=[	$run6,		ogre_run7	] {ai_run(4);};
 void() ogre_run7	=[	$run7,		ogre_run8	] {ai_run(13);};
 void() ogre_run8	=[	$run8,		ogre_run1	] {ai_run(24);};
 
-
-
-
-
 void()	ogre_pain1	=[	$pain1,		ogre_pain2	] {};
 void()	ogre_pain2	=[	$pain2,		ogre_pain3	] {};
 void()	ogre_pain3	=[	$pain3,		ogre_pain4	] {};
@@ -349,9 +341,9 @@ void()	ogre_paine14=[	$paine14,	ogre_paine15] {};
 void()	ogre_paine15=[	$paine15,	ogre_run1	] {};
 
 /*==========
-OgrePain
+ogre_pain
 ==========*/
-void(entity attacker, float damage)	OgrePain =
+void(entity attacker, float damage)	ogre_pain =
 {
 	if (self.pain_finished > time)
 		return;
@@ -416,36 +408,21 @@ void()	ogre_bdie9	=[	$bdeath9,	ogre_bdie10	] {};
 void()	ogre_bdie10	=[	$bdeath10,	ogre_bdie10	] {};
 
 /*==========
-OgreDie
+ogre_die
 ==========*/
-void(entity inflictor, entity attacker) OgreDie =
+void(entity inflictor, entity attacker) ogre_die =
 {
-	/*if (self.health < -80)
+	if (self.health < -80)
 	{
-		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_ogre.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
-		return;
-	}*/
 
-	
-	//if (self.health < -80)
-	{
-		if (random() < 0.5)
-			sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		else
-			sound (self, CHAN_VOICE, "player/teledth1.wav", 1, ATTN_NORM);
-			
-		spawn_gib ("progs/gib1.mdl");
-		spawn_gib ("progs/gib2.mdl");
-		spawn_gib ("progs/gib3.mdl");
-		spawn_gib ("progs/gib4.mdl");
-		spawn_gib ("progs/gib5.mdl");
-		spawn_gib ("progs/blood.mdl");
-		spawn_gib ("progs/blood.mdl");
-		become_gibs ();
+		SpawnGib ("progs/gib3.mdl");
+		SpawnGib ("progs/gib3.mdl");
+		SpawnGib ("progs/gib3.mdl");
+		SpawnGib ("progs/gib4.mdl");
+		SpawnGib ("progs/gib5.mdl");
+		SpawnGib ("progs/blood.mdl");
+		SpawnGib ("progs/blood.mdl");
+		BecomeGibs ();
 		return;
 	}
 	
@@ -456,9 +433,6 @@ void(entity inflictor, entity attacker) OgreDie =
 	else
 		ogre_bdie1 ();
 };
-
-
-
 
 /*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 {
@@ -488,11 +462,11 @@ void() monster_ogre =
 	self.th_stand = ogre_stand1;
 	self.th_walk = ogre_walk1;
 	self.th_run = ogre_run1;
-	self.th_die = OgreDie;
-	self.th_melee = OgreMelee;
+	self.th_die = ogre_die;
+	self.th_melee = ogre_melee;
 	self.th_missile = ogre_grenade1;
 	self.th_spam = ogre_spam1;
-	self.th_pain = OgrePain;
+	self.th_pain = ogre_pain;
 	
 	if (random() < 0.3)
 		self.skin = 1;

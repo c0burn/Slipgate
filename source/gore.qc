@@ -1,9 +1,9 @@
 /*==========
-gib_touch
+GibTouch
 
 squelch, splat
 ==========*/
-void() gib_touch =
+static void() GibTouch =
 {
 	if (other != world)
 		return;
@@ -22,23 +22,23 @@ void() gib_touch =
 };
 
 /*==========
-gib_velocity
+GibVelocity
 ==========*/
-vector(float dm) gib_velocity =
+static vector(float dm) GibVelocity =
 {
 	vector v = [100 * crandom(), 100 * crandom(), 200 + 100 * random()];
 	if (dm > -50)
 		return v * 0.7;
 	else if (dm > -200)
-		return v;
+		return v * 2;
 	else
-		return v * 1.5;
+		return v * 10;
 };
 
 /*==========
-spawn_gib
+SpawnGib
 ==========*/
-void(string gibname) spawn_gib =
+void(string gibname) SpawnGib =
 {
 	entity gib = spawn();
 	gib.classname = "gib";
@@ -48,67 +48,100 @@ void(string gibname) spawn_gib =
 	setmodel (gib, gibname);
 	setsize (gib, '0 0 0', '0 0 0');
 	
-	vector sz = self.size * 0.5;
-	vector org = self.absmin + sz;
-	setorigin (gib, [org_x + sz_x * random(), org_y + sz_y * random(), org_z + sz_z * random()]);
-	
-	gib.velocity = gib_velocity(self.health);
+	vector org = self.origin;
+	setorigin (gib, [org_x + crandom() * 0.5 * self.size_x, org_y + crandom() * 0.5 * self.size_y, org_z + crandom() * 0.5 * self.size_z]);
+	gib.velocity = GibVelocity(self.health);
 	gib.avelocity = randomvec() * 100;
 	gib.frame = randomrange(10);
 
-	gib.touch = gib_touch;
+	gib.touch = GibTouch;
 	gib.think = SUB_Remove;
 	gib.nextthink = time + 10 + random() * 10;
 };
 
 /*==========
-become_gibs
+GibSound
 ==========*/
-void() become_gibs =
+static void() GibSound =
 {
+	float r = randomrange(4);
+	
+	// player death sounds have no attenuation
+	float attn;
+	if (self.classname == "player")
+		attn = ATTN_NONE;
+	else
+		attn = ATTN_NORM;
+		
+	if (r == 0)
+		sound (self, CHAN_VOICE, "player/udeath.wav", 1, attn);
+	else if (r == 1)
+		sound (self, CHAN_VOICE, "player/teledth1.wav", 1, attn);
+	else if (r == 2)
+		sound (self, CHAN_VOICE, "player/gib.wav", 1, attn);
+	else if (r == 4)
+		sound (self, CHAN_VOICE, "player/tornoff2.wav", 1, attn);
+};
+
+/*==========
+BecomeGibs
+==========*/
+void() BecomeGibs =
+{
+	GibSound();
+	
 	self.think = SUB_Null;
 	self.nextthink = -1;
+	self.deadflag = DEAD_DEAD;
 	self.takedamage = DAMAGE_NO;
 	self.frame = 0;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 
-	self.solid = SOLID_TRIGGER;
+	self.solid = SOLID_NOT;
 	self.movetype = MOVETYPE_BOUNCE;
 	setmodel (self, self.headmodel);
 	setsize (self, '-16 -16 0', '16 16 16');
-	setorigin(self, self.origin + self.view_ofs + [0, 0, 8]);
+	setorigin(self, self.origin + self.view_ofs + [0,0,8]);
 	self.view_ofs = '0 0 8';
 	
-	self.velocity = gib_velocity(self.health);
+	self.velocity = GibVelocity(self.health);
 	self.avelocity = [0, crandom() * 600, 0];
 };
 
+/*==========
+SpawnMeatSpray
+==========*/
 void(vector org, vector vel) SpawnMeatSpray =
 {
-	entity missile = spawn ();
-	missile.owner = self;
-	missile.movetype = MOVETYPE_TOSS;
-	missile.solid = SOLID_NOT;
-
-	missile.velocity = vel;
-	missile.velocity_z = missile.velocity_z + 250 + 50 * random();
-	missile.avelocity = '3000 1000 2000';
+	entity gib = spawn();
+	gib.owner = self;
+	gib.solid = SOLID_NOT;
+	gib.movetype = MOVETYPE_TOSS;
+	setmodel (gib, "progs/zom_gib.mdl");
+	setsize (gib, '0 0 0', '0 0 0');		
+	setorigin (gib, org);
 	
-	missile.nextthink = time + 1;
-	missile.think = SUB_Remove;
-	missile.touch = SUB_Remove;
-
-	setmodel (missile, "progs/zom_gib.mdl");
-	setsize (missile, '0 0 0', '0 0 0');		
-	setorigin (missile, org);
+	gib.velocity = vel;
+	gib.velocity_z = gib.velocity_z + 250 + 50 * random();
+	gib.avelocity = '3000 1000 2000';
+	
+	gib.touch = SUB_Remove;
+	gib.think = SUB_Remove;
+	gib.nextthink = time + 1;
 };
 
+/*==========
+SpawnBlood
+==========*/
 void(vector org, vector vel, float damage) SpawnBlood =
 {
-	particle (org, vel, 66, damage);
-	particle (org, vel, 73, damage);
+	particle(org, vel, 66, damage);
+	particle(org, vel, 73, damage);
 };
 
+/*==========
+SpawnTouchParticles
+==========*/
 void(float damage, float col) SpawnTouchParticles =
 {
 	vector vel = normalize(self.velocity);
@@ -118,10 +151,13 @@ void(float damage, float col) SpawnTouchParticles =
 	vel = v_right * crandom() + v_up * crandom();
 	vel = vel * random() * 4;
 	
-	particle (org, vel, col, damage);
+	particle(org, vel, col, damage);
 };
 
-void(float damage) spawn_touchblood =
+/*==========
+SpawnTouchblood
+==========*/
+void(float damage) SpawnTouchblood =
 {
 	SpawnTouchParticles(damage, 66);
 	SpawnTouchParticles(damage, 73);

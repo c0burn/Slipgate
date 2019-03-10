@@ -1,16 +1,3 @@
-/*
-==============================================================================
-
-BOSS-ONE
-
-==============================================================================
-*/
-$cd id1/models/boss1
-$origin 0 0 -15
-$base base
-$skin skin
-$scale 5
-
 $frame rise1 rise2 rise3 rise4 rise5 rise6 rise7 rise8 rise9 rise10
 $frame rise11 rise12 rise13 rise14 rise15 rise16 rise17 
 
@@ -34,13 +21,8 @@ $frame shockb1 shockb2 shockb3 shockb4 shockb5 shockb6
 $frame shockc1 shockc2 shockc3 shockc4 shockc5 shockc6 shockc7 shockc8 
 $frame shockc9 shockc10
 
-
-void(vector p) boss_missile;
-
 void() boss_face =
 {
-
-// go for another player if multi player
 	if (self.enemy.health <= 0 || random() < 0.02)
 	{
 		self.enemy = find(self.enemy, classname, "player");
@@ -50,12 +32,8 @@ void() boss_face =
 	ai_face();
 };
 
-void() boss_rise1	=[	$rise1, boss_rise2 ] {
-sound (self, CHAN_WEAPON, "boss1/out1.wav", 1, ATTN_NORM);
-};
-void() boss_rise2	=[	$rise2, boss_rise3 ] {
-sound (self, CHAN_VOICE, "boss1/sight1.wav", 1, ATTN_NORM);
-};
+void() boss_rise1	=[	$rise1, boss_rise2 ] {sound (self, CHAN_WEAPON, "boss1/out1.wav", 1, ATTN_NORM);};
+void() boss_rise2	=[	$rise2, boss_rise3 ] {sound (self, CHAN_VOICE, "boss1/sight1.wav", 1, ATTN_NORM);};
 void() boss_rise3	=[	$rise3, boss_rise4 ] {};
 void() boss_rise4	=[	$rise4, boss_rise5 ] {};
 void() boss_rise5	=[	$rise5, boss_rise6 ] {};
@@ -72,10 +50,7 @@ void() boss_rise15	=[	$rise15, boss_rise16 ] {};
 void() boss_rise16	=[	$rise16, boss_rise17 ] {};
 void() boss_rise17	=[	$rise17, boss_missile1 ] {};
 
-void() boss_idle1	=[	$walk1, boss_idle2 ]
-{
-// look for other players
-};
+/*void() boss_idle1	=[	$walk1, boss_idle2 ] {boss_face();};
 void() boss_idle2	=[	$walk2, boss_idle3 ] {boss_face();};
 void() boss_idle3	=[	$walk3, boss_idle4 ] {boss_face();};
 void() boss_idle4	=[	$walk4, boss_idle5 ] {boss_face();};
@@ -105,7 +80,46 @@ void() boss_idle27	=[	$walk27, boss_idle28 ] {boss_face();};
 void() boss_idle28	=[	$walk28, boss_idle29 ] {boss_face();};
 void() boss_idle29	=[	$walk29, boss_idle30 ] {boss_face();};
 void() boss_idle30	=[	$walk30, boss_idle31 ] {boss_face();};
-void() boss_idle31	=[	$walk31, boss_idle1 ] {boss_face();};
+void() boss_idle31	=[	$walk31, boss_idle1 ] {boss_face();};*/
+
+void(vector p) boss_missile =
+{
+	local	vector	offang;
+	local	vector	org, vec, d;
+	local	float	t;
+
+	offang = vectoangles (self.enemy.origin - self.origin);	
+	makevectors (offang);
+
+	org = self.origin + p_x*v_forward + p_y*v_right + p_z*'0 0 1';
+	
+	// lead the player on hard mode
+	if (skill > 1)
+	{
+		t = vlen(self.enemy.origin - org) / 300;
+		vec = self.enemy.velocity;
+		vec_z = 0;
+		d = self.enemy.origin + t * vec;		
+	}
+	else
+	{
+		d = self.enemy.origin;
+	}
+	
+	vec = normalize (d - org);
+
+	launch_spike (org, vec);
+	setmodel (newmis, "progs/lavaball.mdl");
+	newmis.avelocity = '200 100 300';
+	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);		
+	newmis.velocity = vec*300;
+	newmis.touch = T_MissileTouch; // rocket explosion
+	sound (self, CHAN_WEAPON, "boss1/throw.wav", 1, ATTN_NORM);
+
+// check for dead enemy
+	//if (self.enemy.health <= 0)
+		//boss_idle1 ();
+};
 
 void() boss_missile1	=[	$attack1, boss_missile2 ] {boss_face();};
 void() boss_missile2	=[	$attack2, boss_missile3 ] {boss_face();};
@@ -164,9 +178,7 @@ void() boss_shockc8 =[	$shockc8, boss_shockc9 ] {};
 void() boss_shockc9 =[	$shockc9, boss_shockc10 ] {};
 void() boss_shockc10 =[	$shockc10, boss_death1 ] {};
 
-void() boss_death1 = [$death1, boss_death2] {
-sound (self, CHAN_VOICE, "boss1/death.wav", 1, ATTN_NORM);
-};
+void() boss_death1 = [$death1, boss_death2] {sound (self, CHAN_VOICE, "boss1/death.wav", 1, ATTN_NORM);};
 void() boss_death2 = [$death2, boss_death3] {};
 void() boss_death3 = [$death3, boss_death4] {};
 void() boss_death4 = [$death4, boss_death5] {};
@@ -177,87 +189,41 @@ void() boss_death8 = [$death8, boss_death9] {};
 void() boss_death9 = [$death9, boss_death10]
 {
 	sound (self, CHAN_BODY, "boss1/out1.wav", 1, ATTN_NORM);
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_LAVASPLASH);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
+	te_lavasplash(self.origin);
 };
-
 void() boss_death10 = [$death9, boss_death10]
 {
 	killed_monsters = killed_monsters + 1;
-	WriteByte (MSG_ALL, SVC_KILLEDMONSTER);	// FIXME: reliable broadcast
-	SUB_UseTargets ();
-	remove (self);
-};
-
-void(vector p) boss_missile =
-{
-	local	vector	offang;
-	local	vector	org, vec, d;
-	local	float	t;
-
-	offang = vectoangles (self.enemy.origin - self.origin);	
-	makevectors (offang);
-
-	org = self.origin + p_x*v_forward + p_y*v_right + p_z*'0 0 1';
-	
-// lead the player on hard mode
-	if (skill > 1)
-	{
-		t = vlen(self.enemy.origin - org) / 300;
-		vec = self.enemy.velocity;
-		vec_z = 0;
-		d = self.enemy.origin + t * vec;		
-	}
-	else
-	{
-		d = self.enemy.origin;
-	}
-	
-	vec = normalize (d - org);
-
-	launch_spike (org, vec);
-	setmodel (newmis, "progs/lavaball.mdl");
-	newmis.avelocity = '200 100 300';
-	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);		
-	newmis.velocity = vec*300;
-	newmis.touch = T_MissileTouch; // rocket explosion
-	sound (self, CHAN_WEAPON, "boss1/throw.wav", 1, ATTN_NORM);
-
-// check for dead enemy
-	if (self.enemy.health <= 0)
-		boss_idle1 ();
+	WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
+	activator = self.enemy;
+	SUB_UseTargets();
+	remove(self);
 };
 
 
+
+/*==========
+boss_awake
+==========*/
 void() boss_awake =
 {
+	self.yaw_speed = 20;
+	self.enemy = activator;
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
 	self.takedamage = DAMAGE_NO;
 	
 	setmodel (self, "progs/boss.mdl");
 	setsize (self, '-128 -128 -24', '128 128 256');
-	
 	if (skill == 0)
 		self.health = 1;
 	else
 		self.health = 3;
 
-	self.enemy = activator;
-
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_LAVASPLASH);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
-
-	self.yaw_speed = 20;
+	te_lavasplash(self.origin);
+	
 	boss_rise1 ();
 };
-
 
 /*QUAKED monster_boss (1 0 0) (-128 -128 -24) (128 128 256)
 {
@@ -284,7 +250,6 @@ void() monster_boss =
 	precache_sound ("misc/power.wav");
 
 	total_monsters = total_monsters + 1;
-
 	self.use = boss_awake;
 };
 

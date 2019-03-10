@@ -182,21 +182,16 @@ void()	knight_dieb11 = [	$deathb11,	knight_dieb11] {};
 void(entity inflictor, entity attacker) knight_die =
 {
 // check for gib
-	//if (self.health < -40)
-	{
-		if (random() < 0.5)
-			sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		else
-			sound (self, CHAN_VOICE, "player/teledth1.wav", 1, ATTN_NORM);
-			
-		spawn_gib ("progs/gib1.mdl");
-		spawn_gib ("progs/gib2.mdl");
-		spawn_gib ("progs/gib3.mdl");
-		spawn_gib ("progs/gib4.mdl");
-		spawn_gib ("progs/gib5.mdl");
-		spawn_gib ("progs/blood.mdl");
-		spawn_gib ("progs/blood.mdl");
-		become_gibs ();
+	if (self.health < -40)
+	{			
+		SpawnGib ("progs/gib1.mdl");
+		SpawnGib ("progs/gib2.mdl");
+		SpawnGib ("progs/gib3.mdl");
+		SpawnGib ("progs/gib4.mdl");
+		SpawnGib ("progs/gib5.mdl");
+		SpawnGib ("progs/blood.mdl");
+		SpawnGib ("progs/blood.mdl");
+		BecomeGibs ();
 		return;
 	}
 

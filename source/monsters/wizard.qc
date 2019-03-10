@@ -333,14 +333,15 @@ void()	wiz_death8	=[	$death8,		wiz_death8	] {};
 
 void(entity inflictor, entity attacker) wiz_die =
 {
-// check for gib
+	// check for gib
 	if (self.health < -40)
 	{
-		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_wizard.mdl", self.health);
-		ThrowGib ("progs/gib2.mdl", self.health);
-		ThrowGib ("progs/gib2.mdl", self.health);
-		ThrowGib ("progs/gib2.mdl", self.health);
+		SpawnGib("progs/gib3.mdl");
+		SpawnGib("progs/gib4.mdl");
+		SpawnGib("progs/gib5.mdl");
+		SpawnGib("progs/blood.mdl");
+		SpawnGib("progs/blood.mdl");
+		BecomeGibs();
 		return;
 	}
 

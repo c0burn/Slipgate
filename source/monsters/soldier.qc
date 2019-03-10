@@ -80,9 +80,7 @@ void()	army_run8	=[	$run8,		army_run1	] {ai_run(8);};
 void() army_fire =
 {	
 	self.effects = self.effects | EF_MUZZLEFLASH;
-	
 	sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);	
-
 	vector dir = self.enemy.origin - self.enemy.velocity * 0.2;
 	dir = normalize (dir - self.origin);
 	FireBullets (4, dir, '0.1 0.1 0');
@@ -161,10 +159,6 @@ void(entity attacker, float damage)	army_pain =
 	}
 };
 
-
-
-
-
 void()	army_die1	=[	$death1,	army_die2	] {};
 void()	army_die2	=[	$death2,	army_die3	] {};
 void()	army_die3	=[	$death3,	army_die4	] {DropBackpack();};
@@ -191,38 +185,20 @@ void()	army_cdie11	=[	$deathc11,	army_cdie11	] {};
 
 void(entity inflictor, entity attacker) army_die =
 {
-// check for gib
-	/*
+	// check for gib	
 	if (self.health < -35)
 	{
-		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_guard.mdl", self.health);
-		ThrowGib ("progs/gib1.mdl", self.health);
-		ThrowGib ("progs/gib2.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
-		return;
-	}
-	*/
-	
-	//if (self.health < -35)
-	{
-		if (random() < 0.5)
-			sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		else
-			sound (self, CHAN_VOICE, "player/teledth1.wav", 1, ATTN_NORM);
-			
-		spawn_gib ("progs/gib1.mdl");
-		spawn_gib ("progs/gib2.mdl");
-		spawn_gib ("progs/gib3.mdl");
-		spawn_gib ("progs/gib4.mdl");
-		spawn_gib ("progs/gib5.mdl");
-		spawn_gib ("progs/blood.mdl");
-		spawn_gib ("progs/blood.mdl");
-		become_gibs ();
+		SpawnGib("progs/gib1.mdl");
+		SpawnGib("progs/gib2.mdl");
+		SpawnGib("progs/gib3.mdl");
+		SpawnGib("progs/gib4.mdl");
+		SpawnGib("progs/gib5.mdl");
+		SpawnGib("progs/blood.mdl");
+		BecomeGibs();
 		return;
 	}
 	
-
+	// regular death
 	sound (self, CHAN_VOICE, "soldier/death1.wav", 1, ATTN_NORM);
 	self.solid = SOLID_NOT;
 	if (random() < 0.5)

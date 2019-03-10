@@ -297,21 +297,24 @@ void() sham_death11     =[      $death11,      sham_death11    ] {};
 
 void(entity inflictor, entity attacker) sham_die =
 {
-// check for gib
+	// check for gib
 	if (self.health < -60)
 	{
-		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_shams.mdl", self.health);
-		ThrowGib ("progs/gib1.mdl", self.health);
-		ThrowGib ("progs/gib2.mdl", self.health);
-		ThrowGib ("progs/gib3.mdl", self.health);
+		SpawnGib("progs/gib3.mdl");
+		SpawnGib("progs/gib3.mdl");
+		SpawnGib("progs/gib3.mdl");
+		SpawnGib("progs/gib4.mdl");
+		SpawnGib("progs/gib5.mdl");
+		SpawnGib("progs/blood.mdl");
+		SpawnGib("progs/blood.mdl");
+		BecomeGibs();
 		return;
 	}
 
-// regular death
+	// regular death
 	self.solid = SOLID_NOT;
-	sound (self, CHAN_VOICE, "shambler/sdeath.wav", 1, ATTN_NORM);
-	sham_death1 ();
+	sound(self, CHAN_VOICE, "shambler/sdeath.wav", 1, ATTN_NORM);
+	sham_death1();
 };
 
 //============================================================================

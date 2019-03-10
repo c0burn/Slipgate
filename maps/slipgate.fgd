@@ -389,7 +389,7 @@
 @PointClass size(-4 -4 -12, 4 4 16) base(TorchLight) model("progs/flame2.mdl") = light_flame_small_yellow : "Small yellow flame" []
 @PointClass size(-10 -10 -12, 12 12 18) base(TorchLight) model({"path":"progs/flame2.mdl","frame":1}) = light_flame_large_yellow : "Large yellow flame" []
 @PointClass size(-4 -4 -16, 4 4 22) base(TorchLight) model("progs/flame.mdl") = light_torch_small_walltorch : "Small walltorch" []
-@PointClass size(-8 -8 -48, 8 8 24) base(TorchLight) model("progs/flame3.mdl") = light_torch_small_walltorch : "Large walltorch" []
+@PointClass size(-8 -8 -48, 8 8 24) base(TorchLight) model("progs/flame3.mdl") = light_torch_long_walltorch : "Large walltorch" []
 
 //
 // Misc

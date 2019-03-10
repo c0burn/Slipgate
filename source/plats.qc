@@ -354,11 +354,11 @@ void() teleporttrain_move =
 
 	// play a random teleport flash
 	// might make the boss level a bit more obvious
-	if (time > self.teleport_time)
+	/*if (time > self.teleport_time)
 	{
 		te_teleport(self.origin);
 		self.teleport_time = time + 3 + random() * 3;
-	}
+	}*/
 	
 	if (vlen(self.origin - self.enemy.origin) < self.size_x)
 		teleporttrain_next();

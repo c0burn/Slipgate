@@ -28,11 +28,6 @@ when a monster dies, it fires it's targets with its enemy as the activator
 ==========*/
 void() monster_death_use =
 {
-	if (self.flags & FL_FLY)
-		self.flags = self.flags - FL_FLY;
-	if (self.flags & FL_SWIM)
-		self.flags = self.flags - FL_SWIM;
-
 	activator = self.enemy;
 	SUB_UseTargets();
 };
