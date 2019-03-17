@@ -61,7 +61,7 @@ void() ammo_touch =
 
 	// fire all targets
 	activator = other;
-	SUB_UseTargets();
+	UseTargets();
 };
 
 /*QUAKED item_shells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM

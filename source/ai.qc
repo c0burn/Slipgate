@@ -89,7 +89,6 @@ float(entity targ) infront =
 		return FALSE;
 };
 
-
 void() HuntTarget =
 {
 	self.goalentity = self.enemy;
@@ -399,10 +398,17 @@ void() ai_turn =
 	changeyaw ();
 };
 
-float() FacingIdeal =
+float(float ang) FacingIdeal =
 {
-	float delta = angcomp(self.angles_y, self.ideal_yaw);
-	if (delta > 90)
+	float delta = angcomp(self.ideal_yaw, self.angles_y);
+	
+	dprint("FacingIdeal: ");
+	dprint(ftos(delta));
+	dprint("\n");
+	
+	if (delta > ang)
+		return FALSE;
+	if (delta < -ang)
 		return FALSE;
 	
 	/*float delta = anglemod(self.angles_y - self.ideal_yaw);
@@ -448,7 +454,7 @@ void() ai_run_melee =
 {
 	self.ideal_yaw = enemy_yaw;
 	changeyaw();
-	if (FacingIdeal())
+	if (FacingIdeal(90))
 	{
 		self.th_melee ();
 		self.attack_state = AS_STRAIGHT;
@@ -480,10 +486,8 @@ void() ai_run_missile =
 		}
 	}
 	
-	if (FacingIdeal())
+	if (FacingIdeal(90))
 	{
-		
-		
 		if (self.attack_state == AS_SPAM)
 			self.th_spam();
 		else
@@ -810,16 +814,7 @@ void(float dist) ai_run =
 		}
 		else
 		{
-			// go back to walking beat
-			if (self.movetarget)
-			{
-				self.goalentity = self.movetarget;
-				self.th_walk();
-			}
-			// otherwise, stand still
-			else
-				self.th_stand();
-				
+			self.th_stand();
 			return;
 		}
 	}
@@ -905,7 +900,7 @@ void(float dist) ai_run =
 	entity w = self.route_table[self.route];
 	ai_movetogoal(w, dist);
 	
-	// hit next waypoint?
+	// hit next waypoint
 	if (vlen(self.origin - w.origin) < 64)
 	{
 		self.route_time = time + 5;

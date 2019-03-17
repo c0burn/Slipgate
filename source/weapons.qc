@@ -50,9 +50,9 @@ void(entity player) W_BoundAmmo =
 	if (player.ammo_nails > 200)
 		player.ammo_nails = 200;
 	if (player.ammo_rockets > 100)
-		player.ammo_rockets = 100;		
+		player.ammo_rockets = 100;
 	if (player.ammo_cells > 100)
-		player.ammo_cells = 100;		
+		player.ammo_cells = 100;
 };
 
 /*==========
@@ -191,7 +191,7 @@ void() W_FireAxe =
 			particle(org, vel, trace_ent.colour, 40);
 		else
 			SpawnBlood (org, vel, 40);
-		T_Damage (trace_ent, self, self, 20);
+		Damage (trace_ent, self, self, 20);
 	}
 	else
 	{
@@ -217,7 +217,7 @@ void() ApplyMultiDamage =
 {
 	if (!multi_ent)
 		return;
-	T_Damage (multi_ent, self, self, multi_damage);
+	Damage (multi_ent, self, self, multi_damage);
 };
 
 void(entity hit, float damage) AddMultiDamage =
@@ -329,40 +329,24 @@ void() BecomeExplosion =
 
 void() T_MissileTouch =
 {
-	local float	damg;
-
-	if (other == self.owner)
-		return;		// don't explode on owner
-
 	if (pointcontents(self.origin) == CONTENT_SKY)
 	{
 		remove(self);
 		return;
 	}
 
-	damg = 100 + random()*20;
-	
-	if (other.health)
+	float damg = 100 + random() * 20;
+	if (other.takedamage)
 	{
 		if (other.classname == "monster_shambler")
-			damg = damg * 0.5;	// mostly immune
-		T_Damage (other, self, self.owner, damg );
+			damg = damg * 0.5;
+		Damage (other, self, self.owner, damg);
 	}
+	RadiusDamage(self, self.owner, 120, other);
 
-	// don't do radius damage to the other, because all the damage
-	// was done in the impact
-	T_RadiusDamage (self, self.owner, 120, other);
-
-//	sound (self, CHAN_WEAPON, "weapons/r_exp3.wav", 1, ATTN_NORM);
 	self.origin = self.origin - 8*normalize(self.velocity);
-
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
-
-	BecomeExplosion ();
+	te_explosion(self.origin);
+	BecomeExplosion();
 };
 
 void() W_FireRocket =
@@ -406,7 +390,7 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 	if (trace_ent.takedamage)
 	{
 		particle (trace_endpos, '0 0 100', 225, damage*4);
-		T_Damage (trace_ent, from, from, damage);
+		Damage (trace_ent, from, from, damage);
 	}
 };
 
@@ -426,7 +410,7 @@ void() W_FireLightning =
 		self.ammo_cells = 0;
 		self.weapon = W_BestWeapon(self);
 		W_UpdateWeapon (self);
-		T_RadiusDamage (self, self, 35*cells, world);
+		RadiusDamage (self, self, 35*cells, world);
 		return;
 	}
 
@@ -457,14 +441,8 @@ void() W_FireLightning =
 
 void() GrenadeExplode =
 {
-	T_RadiusDamage (self, self.owner, 120, world);
-
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
-
+	RadiusDamage (self, self.owner, 120, world);
+	te_explosion(self.origin);
 	BecomeExplosion ();
 };
 
@@ -475,16 +453,12 @@ void() GrenadeTouch =
 		remove(self);
 		return;
 	}
-	
 	if (other.takedamage == DAMAGE_AIM)
 	{
 		GrenadeExplode();
 		return;
 	}
-
-	sound (self, CHAN_WEAPON, "weapons/bounce.wav", 1, ATTN_NORM);	// bounce sound
-	if (self.velocity == '0 0 0')
-		self.avelocity = '0 0 0';
+	sound (self, CHAN_WEAPON, "weapons/bounce.wav", 1, ATTN_NORM);
 };
 
 void() W_FireGrenade =
@@ -536,13 +510,6 @@ void() W_FireGrenade =
 void() spike_touch;
 void() superspike_touch;
 
-/*
-===============
-launch_spike
-
-Used for both the player and the ogre
-===============
-*/
 void(vector org, vector dir) launch_spike =
 {	
 	newmis = spawn ();
@@ -557,7 +524,7 @@ void(vector org, vector dir) launch_spike =
 	newmis.think = SUB_Remove;
 	newmis.nextthink = time + 6;
 	setmodel (newmis, "progs/spike.mdl");
-	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);		
+	setsize (newmis, [0,0,0], [0,0,0]);	
 	setorigin (newmis, org);
 
 	newmis.velocity = dir * 1000;
@@ -635,7 +602,7 @@ void() spike_touch =
 		else
 			SpawnTouchblood (9);
 			
-		T_Damage (other, self, self.owner, 9);
+		Damage (other, self, self.owner, 9);
 	}
 	else
 	{
@@ -672,7 +639,7 @@ void() superspike_touch =
 		else
 			SpawnTouchblood(18);
 			
-		T_Damage (other, self, self.owner, 18);
+		Damage (other, self, self.owner, 18);
 	}
 	else
 	{
@@ -928,16 +895,6 @@ void() W_SuitCheat =
 	stuffcmd(self, "bf\n");
 };
 
-void() DebugTrace =
-{
-	makevectors (self.v_angle);
-	vector source = self.origin + '0 0 16';
-	traceline (source, source + v_forward*4096, FALSE, self);
-	
-	if (trace_ent)
-		eprint(trace_ent);
-};
-
 /*==========
 W_ImpulseCommands
 ==========*/
@@ -964,8 +921,6 @@ void() W_ImpulseCommands =
 			W_PentCheat();
 		}
 	}
-	if (self.impulse == 200)
-		DebugTrace();
 
 	if (time < self.attack_finished)
 		return;

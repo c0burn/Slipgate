@@ -1,4 +1,12 @@
 /*==========
+realorigin
+==========*/
+vector(entity e) realorigin =
+{
+	return 0.5 * (e.absmin + e.absmax);
+};
+
+/*==========
 anglemod
 correct an angle so it's between 0 and 359
 ==========*/

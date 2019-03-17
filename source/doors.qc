@@ -33,7 +33,7 @@ void() door_go_up;
 
 void() door_blocked =
 {
-	T_Damage (other, self, self, self.dmg);
+	Damage (other, self, self, self.dmg);
 	
 // if a door has a negative wait, it would never come back if blocked,
 // so let it just squash the object to death real fast
@@ -91,7 +91,7 @@ void() door_go_up =
 	self.state = STATE_UP;
 	SUB_CalcMove (self.pos2, self.speed, door_hit_top);
 
-	SUB_UseTargets();
+	UseTargets();
 };
 
 
@@ -114,7 +114,7 @@ void() door_fire =
 // play use key sound
 
 	if (self.items)
-		sound (self, CHAN_VOICE, self.noise4, 1, ATTN_NORM);
+		sound (self, CHAN_ITEM, self.noise4, 1, ATTN_NORM);
 
 	self.message = string_null;		// no more message
 	oself = self;
@@ -222,17 +222,17 @@ void() door_touch =
 			if (world.worldtype == 2)
 			{
 				centerprint (other, "You need the silver keycard");
-				sound (self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
+				sound (self, CHAN_ITEM, self.noise3, 1, ATTN_NORM);
 			}
 			else if (world.worldtype == 1)
 			{
 				centerprint (other, "You need the silver runekey");
-				sound (self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
+				sound (self, CHAN_ITEM, self.noise3, 1, ATTN_NORM);
 			}
 			else if (world.worldtype == 0)
 			{
 				centerprint (other, "You need the silver key");
-				sound (self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
+				sound (self, CHAN_ITEM, self.noise3, 1, ATTN_NORM);
 			}
 		}
 		else
@@ -240,17 +240,17 @@ void() door_touch =
 			if (world.worldtype == 2)
 			{
 				centerprint (other, "You need the gold keycard");
-				sound (self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
+				sound (self, CHAN_ITEM, self.noise3, 1, ATTN_NORM);
 			}
 			else if (world.worldtype == 1)
 			{
 				centerprint (other, "You need the gold runekey");
-				sound (self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);			
+				sound (self, CHAN_ITEM, self.noise3, 1, ATTN_NORM);			
 			}
 			else if (world.worldtype == 0)
 			{
 				centerprint (other, "You need the gold key");
-				sound (self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
+				sound (self, CHAN_ITEM, self.noise3, 1, ATTN_NORM);
 			}
 		}
 		return;
@@ -576,7 +576,7 @@ void () fd_secret_use =
 	
 	self.message = string_null;		// no more message
 
-	SUB_UseTargets();				// fire all targets / killtargets
+	UseTargets();				// fire all targets / killtargets
 	
 	if (!(self.spawnflags & SECRET_NO_SHOOT))
 	{
@@ -688,7 +688,7 @@ void () secret_blocked =
 	if (time < self.attack_finished)
 		return;
 	self.attack_finished = time + 0.5;
-	T_Damage (other, self, self, self.dmg);
+	Damage (other, self, self, self.dmg);
 };
 
 /*

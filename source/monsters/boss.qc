@@ -21,22 +21,41 @@ $frame shockb1 shockb2 shockb3 shockb4 shockb5 shockb6
 $frame shockc1 shockc2 shockc3 shockc4 shockc5 shockc6 shockc7 shockc8 
 $frame shockc9 shockc10
 
-void() boss_face =
+#define CHTHON_M_VEL 300
+
+void() boss_missile1;
+
+/*==========
+boss_idle
+==========*/
+void() boss_idle =
 {
-	if (self.enemy.health <= 0 || random() < 0.02)
+	// look for a new player in co-op
+	if (coop)
 	{
-		self.enemy = find(self.enemy, classname, "player");
-		if (!self.enemy)
-			self.enemy = find(self.enemy, classname, "player");
+		entity client = checkclient();
+		if (client)
+		{
+			self.enemy = client;
+			boss_missile1();
+			return;
+		}
 	}
-	ai_face();
+	
+	self.walkframe = self.walkframe + 1;
+	if (self.walkframe > 30)
+		self.walkframe = 0;
+	self.frame = $walk1 + self.walkframe;
+	
+	self.think = boss_idle;
+	self.nextthink = time + 0.1;
 };
 
-void() boss_rise1	=[	$rise1, boss_rise2 ] {sound (self, CHAN_WEAPON, "boss1/out1.wav", 1, ATTN_NORM);};
-void() boss_rise2	=[	$rise2, boss_rise3 ] {sound (self, CHAN_VOICE, "boss1/sight1.wav", 1, ATTN_NORM);};
+void() boss_rise1	=[	$rise1, boss_rise2 ] {te_lavasplash(self.origin);sound(self, CHAN_BODY, "boss1/out1.wav", 1, ATTN_NORM);};
+void() boss_rise2	=[	$rise2, boss_rise3 ] {};
 void() boss_rise3	=[	$rise3, boss_rise4 ] {};
 void() boss_rise4	=[	$rise4, boss_rise5 ] {};
-void() boss_rise5	=[	$rise5, boss_rise6 ] {};
+void() boss_rise5	=[	$rise5, boss_rise6 ] {sound (self, CHAN_VOICE, "boss1/sight1.wav", 1, ATTN_NORM);};
 void() boss_rise6	=[	$rise6, boss_rise7 ] {};
 void() boss_rise7	=[	$rise7, boss_rise8 ] {};
 void() boss_rise8	=[	$rise8, boss_rise9 ] {};
@@ -50,100 +69,94 @@ void() boss_rise15	=[	$rise15, boss_rise16 ] {};
 void() boss_rise16	=[	$rise16, boss_rise17 ] {};
 void() boss_rise17	=[	$rise17, boss_missile1 ] {};
 
-/*void() boss_idle1	=[	$walk1, boss_idle2 ] {boss_face();};
-void() boss_idle2	=[	$walk2, boss_idle3 ] {boss_face();};
-void() boss_idle3	=[	$walk3, boss_idle4 ] {boss_face();};
-void() boss_idle4	=[	$walk4, boss_idle5 ] {boss_face();};
-void() boss_idle5	=[	$walk5, boss_idle6 ] {boss_face();};
-void() boss_idle6	=[	$walk6, boss_idle7 ] {boss_face();};
-void() boss_idle7	=[	$walk7, boss_idle8 ] {boss_face();};
-void() boss_idle8	=[	$walk8, boss_idle9 ] {boss_face();};
-void() boss_idle9	=[	$walk9, boss_idle10 ] {boss_face();};
-void() boss_idle10	=[	$walk10, boss_idle11 ] {boss_face();};
-void() boss_idle11	=[	$walk11, boss_idle12 ] {boss_face();};
-void() boss_idle12	=[	$walk12, boss_idle13 ] {boss_face();};
-void() boss_idle13	=[	$walk13, boss_idle14 ] {boss_face();};
-void() boss_idle14	=[	$walk14, boss_idle15 ] {boss_face();};
-void() boss_idle15	=[	$walk15, boss_idle16 ] {boss_face();};
-void() boss_idle16	=[	$walk16, boss_idle17 ] {boss_face();};
-void() boss_idle17	=[	$walk17, boss_idle18 ] {boss_face();};
-void() boss_idle18	=[	$walk18, boss_idle19 ] {boss_face();};
-void() boss_idle19	=[	$walk19, boss_idle20 ] {boss_face();};
-void() boss_idle20	=[	$walk20, boss_idle21 ] {boss_face();};
-void() boss_idle21	=[	$walk21, boss_idle22 ] {boss_face();};
-void() boss_idle22	=[	$walk22, boss_idle23 ] {boss_face();};
-void() boss_idle23	=[	$walk23, boss_idle24 ] {boss_face();};
-void() boss_idle24	=[	$walk24, boss_idle25 ] {boss_face();};
-void() boss_idle25	=[	$walk25, boss_idle26 ] {boss_face();};
-void() boss_idle26	=[	$walk26, boss_idle27 ] {boss_face();};
-void() boss_idle27	=[	$walk27, boss_idle28 ] {boss_face();};
-void() boss_idle28	=[	$walk28, boss_idle29 ] {boss_face();};
-void() boss_idle29	=[	$walk29, boss_idle30 ] {boss_face();};
-void() boss_idle30	=[	$walk30, boss_idle31 ] {boss_face();};
-void() boss_idle31	=[	$walk31, boss_idle1 ] {boss_face();};*/
-
-void(vector p) boss_missile =
+/*==========
+boss_missile
+==========*/
+void(float ofs) boss_missile =
 {
-	local	vector	offang;
-	local	vector	org, vec, d;
-	local	float	t;
-
-	offang = vectoangles (self.enemy.origin - self.origin);	
-	makevectors (offang);
-
-	org = self.origin + p_x*v_forward + p_y*v_right + p_z*'0 0 1';
+	sound (self, CHAN_WEAPON, "boss1/throw.wav", 1, ATTN_NORM);
 	
+	makevectors(self.angles);
+	vector org = self.origin + v_forward * 100 + v_right * ofs + v_up * self.view_ofs_z;
+	
+	vector d;
 	// lead the player on hard mode
 	if (skill > 1)
 	{
-		t = vlen(self.enemy.origin - org) / 300;
-		vec = self.enemy.velocity;
+		float t = vlen(self.enemy.origin + self.enemy.view_ofs - org) / CHTHON_M_VEL;
+		vector vec = self.enemy.velocity;
 		vec_z = 0;
-		d = self.enemy.origin + t * vec;		
+		d = self.enemy.origin + self.enemy.view_ofs + (t * vec);
 	}
 	else
-	{
-		d = self.enemy.origin;
-	}
+		d = self.enemy.origin + self.enemy.view_ofs;
 	
-	vec = normalize (d - org);
-
+	vec = normalize(d - org);
 	launch_spike (org, vec);
 	setmodel (newmis, "progs/lavaball.mdl");
+	setsize (newmis, '0 0 0', '0 0 0');
 	newmis.avelocity = '200 100 300';
-	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);		
-	newmis.velocity = vec*300;
-	newmis.touch = T_MissileTouch; // rocket explosion
-	sound (self, CHAN_WEAPON, "boss1/throw.wav", 1, ATTN_NORM);
-
-// check for dead enemy
-	//if (self.enemy.health <= 0)
-		//boss_idle1 ();
+	newmis.velocity = vec * CHTHON_M_VEL;
+	newmis.touch = T_MissileTouch;
 };
 
-void() boss_missile1	=[	$attack1, boss_missile2 ] {boss_face();};
-void() boss_missile2	=[	$attack2, boss_missile3 ] {boss_face();};
-void() boss_missile3	=[	$attack3, boss_missile4 ] {boss_face();};
-void() boss_missile4	=[	$attack4, boss_missile5 ] {boss_face();};
-void() boss_missile5	=[	$attack5, boss_missile6 ] {boss_face();};
-void() boss_missile6	=[	$attack6, boss_missile7 ] {boss_face();};
-void() boss_missile7	=[	$attack7, boss_missile8 ] {boss_face();};
-void() boss_missile8	=[	$attack8, boss_missile9 ] {boss_face();};
-void() boss_missile9	=[	$attack9, boss_missile10 ] {boss_missile('100 100 200');};
-void() boss_missile10	=[	$attack10, boss_missile11 ] {boss_face();};
-void() boss_missile11	=[	$attack11, boss_missile12 ] {boss_face();};
-void() boss_missile12	=[	$attack12, boss_missile13 ] {boss_face();};
-void() boss_missile13	=[	$attack13, boss_missile14 ] {boss_face();};
-void() boss_missile14	=[	$attack14, boss_missile15 ] {boss_face();};
-void() boss_missile15	=[	$attack15, boss_missile16 ] {boss_face();};
-void() boss_missile16	=[	$attack16, boss_missile17 ] {boss_face();};
-void() boss_missile17	=[	$attack17, boss_missile18 ] {boss_face();};
-void() boss_missile18	=[	$attack18, boss_missile19 ] {boss_face();};
-void() boss_missile19	=[	$attack19, boss_missile20 ] {boss_face();};
-void() boss_missile20	=[	$attack20, boss_missile21 ] {boss_missile('100 -100 200');};
-void() boss_missile21	=[	$attack21, boss_missile22 ] {boss_face();};
-void() boss_missile22	=[	$attack22, boss_missile23 ] {boss_face();};
-void() boss_missile23	=[	$attack23, boss_missile1 ] {boss_face();};
+/*==========
+boss_check_enemy
+==========*/
+void() boss_check_enemy =
+{
+	// look for a new player in coop
+	if (coop)
+	{
+		// randomly switch, or switch when player is dead
+		if (random() < 0.5 || self.enemy.health <= 0)
+		{
+			entity client = checkclient();
+			if (!client)
+			{
+				if (self.enemy.health > 0)
+					return;
+				// go to idle, no live players found
+				self.enemy = world;
+				boss_idle();
+				return;
+			}
+			self.enemy = client;
+		}
+		return;
+	}
+	
+	// go to idle in single player if the player is dead
+	if (self.enemy.health <= 0)
+	{
+		self.enemy = world;
+		boss_idle();
+	}
+};
+
+void() boss_missile1	=[	$attack1, boss_missile2 ] {ai_face();};
+void() boss_missile2	=[	$attack2, boss_missile3 ] {ai_face();};
+void() boss_missile3	=[	$attack3, boss_missile4 ] {ai_face();};
+void() boss_missile4	=[	$attack4, boss_missile5 ] {ai_face();};
+void() boss_missile5	=[	$attack5, boss_missile6 ] {ai_face();};
+void() boss_missile6	=[	$attack6, boss_missile7 ] {ai_face();};
+void() boss_missile7	=[	$attack7, boss_missile8 ] {ai_face();boss_missile(100);};
+void() boss_missile8	=[	$attack8, boss_missile9 ] {ai_face();};
+void() boss_missile9	=[	$attack9, boss_missile10 ] {ai_face();};
+void() boss_missile10	=[	$attack10, boss_missile11 ] {ai_face();};
+void() boss_missile11	=[	$attack11, boss_missile12 ] {ai_face();};
+void() boss_missile12	=[	$attack12, boss_missile13 ] {ai_face();};
+void() boss_missile13	=[	$attack13, boss_missile14 ] {ai_face();};
+void() boss_missile14	=[	$attack14, boss_missile15 ] {ai_face();};
+void() boss_missile15	=[	$attack15, boss_missile16 ] {ai_face();};
+void() boss_missile16	=[	$attack16, boss_missile17 ] {ai_face();};
+void() boss_missile17	=[	$attack17, boss_missile18 ] {ai_face();};
+void() boss_missile18	=[	$attack18, boss_missile19 ] {ai_face();boss_missile(-100);};
+void() boss_missile19	=[	$attack19, boss_missile20 ] {ai_face();};
+void() boss_missile20	=[	$attack20, boss_missile21 ] {ai_face();};
+void() boss_missile21	=[	$attack21, boss_missile22 ] {ai_face();};
+void() boss_missile22	=[	$attack22, boss_missile23 ] {ai_face();};
+void() boss_missile23	=[	$attack23, boss_missile1 ] {ai_face();boss_check_enemy();};
 
 void() boss_shocka1 =[	$shocka1, boss_shocka2 ] {};
 void() boss_shocka2 =[	$shocka2, boss_shocka3 ] {};
@@ -185,22 +198,20 @@ void() boss_death4 = [$death4, boss_death5] {};
 void() boss_death5 = [$death5, boss_death6] {};
 void() boss_death6 = [$death6, boss_death7] {};
 void() boss_death7 = [$death7, boss_death8] {};
-void() boss_death8 = [$death8, boss_death9] {};
-void() boss_death9 = [$death9, boss_death10]
-{
-	sound (self, CHAN_BODY, "boss1/out1.wav", 1, ATTN_NORM);
-	te_lavasplash(self.origin);
-};
+void() boss_death8 = [$death8, boss_death9] {te_lavasplash(self.origin);sound (self, CHAN_BODY, "boss1/out1.wav", 1, ATTN_NORM);};
+void() boss_death9 = [$death9, boss_death10] {};
 void() boss_death10 = [$death9, boss_death10]
-{
+{	
+	// bump kill counter
 	killed_monsters = killed_monsters + 1;
 	WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
+	
+	// use targets
 	activator = self.enemy;
-	SUB_UseTargets();
+	UseTargets();
+
 	remove(self);
 };
-
-
 
 /*==========
 boss_awake
@@ -208,19 +219,22 @@ boss_awake
 void() boss_awake =
 {
 	self.yaw_speed = 20;
-	self.enemy = activator;
+	self.view_ofs = '0 0 200';
+	
+	if (activator.classname == "player")
+		self.enemy = activator;
+
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
 	self.takedamage = DAMAGE_NO;
-	
 	setmodel (self, "progs/boss.mdl");
 	setsize (self, '-128 -128 -24', '128 128 256');
-	if (skill == 0)
+	
+	self.health = skill + 1;
+	if (self.health < 1)
 		self.health = 1;
-	else
-		self.health = 3;
-
-	te_lavasplash(self.origin);
+	if (self.health > 4)
+		self.health = 4;
 	
 	boss_rise1 ();
 };
@@ -241,7 +255,6 @@ void() monster_boss =
 	precache_model ("progs/boss.mdl");
 	precache_model ("progs/lavaball.mdl");
 
-	precache_sound ("weapons/rocket1i.wav");
 	precache_sound ("boss1/out1.wav");
 	precache_sound ("boss1/sight1.wav");
 	precache_sound ("boss1/throw.wav");
@@ -250,106 +263,121 @@ void() monster_boss =
 	precache_sound ("misc/power.wav");
 
 	total_monsters = total_monsters + 1;
+	
 	self.use = boss_awake;
 };
 
 //===========================================================================
 
-entity	le1, le2;
-float	lightning_end;
+void() lightning_use;
 
+/*==========
+lightning_fire
+==========*/
 void() lightning_fire =
 {
-	local vector p1, p2;
-	
-	if (time >= lightning_end)
-	{	// done here, put the terminals back up
-		self = le1;
+	// return electrodes when the bolt is done
+	if (time >= self.attack_finished)
+	{
+		self.state = 0;
+		entity oself = self;
+		self = self.target1;
 		door_go_down ();
-		self = le2;
+		self = oself.target2;
 		door_go_down ();
 		return;
 	}
 	
-	p1 = (le1.mins + le1.maxs) * 0.5;
-	p1_z = le1.absmin_z - 16;
+	// use two beams that meet in the middle, rather than the
+	// hack of making a single beam shorter
+	te_lightning3(self.pos1, self.pos2, self.target1);
+	//
 	
-	p2 = (le2.mins + le2.maxs) * 0.5;
-	p2_z = le2.absmin_z - 16;
+	te_lightning3(self.pos2, self.origin, self.target2);
 	
-	// compensate for length of bolt
-	p2 = p2 - normalize(p2-p1)*100;
-
 	self.nextthink = time + 0.1;
 	self.think = lightning_fire;
-
-	WriteByte (MSG_ALL, SVC_TEMPENTITY);
-	WriteByte (MSG_ALL, TE_LIGHTNING3);
-	WriteEntity (MSG_ALL, world);
-	WriteCoord (MSG_ALL, p1_x);
-	WriteCoord (MSG_ALL, p1_y);
-	WriteCoord (MSG_ALL, p1_z);
-	WriteCoord (MSG_ALL, p2_x);
-	WriteCoord (MSG_ALL, p2_y);
-	WriteCoord (MSG_ALL, p2_z);
 };
 
+/*==========
+lightning_use
+==========*/
 void() lightning_use =
 {
-	if (lightning_end >= time + 1)
+	if (self.state)
+		return;
+				
+	// check the electrodes are aligned and not moving
+	if (self.target1.state != self.target2.state)
+		return;
+	if (self.target1.state != STATE_BOTTOM && self.target1.state != STATE_TOP)
 		return;
 
-	le1 = find( world, target, "lightning");
-	le2 = find( le1, target, "lightning");
-	if (!le1 || !le2)
-	{
-		dprint ("missing lightning targets\n");
-		return;
-	}
+	self.state = 1;
+		
+	// don't let the electrodes go back up until the bolt is done
+	self.target1.nextthink = -1;
+	self.target2.nextthink = -1;
+	self.attack_finished = time + 1;
+
+	// find the position of the electrodes and then move the
+	// event_lightning entity to the middle of the electrodes.
+	// this is because e1m7 annoyingly has it positioned to the left of the
+	// button so the sound of the lightning is always panned incorrectly!
+	self.pos1 = (self.target1.mins + self.target1.maxs) * 0.5;
+	self.pos1_z = self.target1.absmin_z - 16;
+	self.pos2 = (self.target2.mins + self.target2.maxs) * 0.5;
+	self.pos2_z = self.target2.absmin_z - 16;
+	float len = vlen(self.pos2 - self.pos1);
+	vector dir = normalize(self.pos2 - self.pos1);
+	setorigin(self, self.pos1 + dir * len * 0.5);
+	sound (self, CHAN_VOICE, "misc/power.wav", 1, ATTN_NONE);	// no attenuation
+	lightning_fire();
 	
-	if (
-	 (le1.state != STATE_TOP && le1.state != STATE_BOTTOM)
-	|| (le2.state != STATE_TOP && le2.state != STATE_BOTTOM)
-	|| (le1.state != le2.state) )
-	{
-//		dprint ("not aligned\n");
+	// decrease chthon health
+	entity chthon = find (world, classname, "monster_boss");
+	if (!chthon)
 		return;
-	}
-
-// don't let the electrodes go back up until the bolt is done
-	le1.nextthink = -1;
-	le2.nextthink = -1;
-	lightning_end = time + 1;
-
-	sound (self, CHAN_VOICE, "misc/power.wav", 1, ATTN_NORM);
-	lightning_fire ();		
-
-// advance the boss pain if down
-	self = find (world, classname, "monster_boss");
-	if (!self)
-		return;
-	self.enemy = activator;
-	if (le1.state == STATE_TOP && self.health > 0)
+	if (self.target1.state == STATE_TOP && chthon.health > 0)
 	{
+		self = chthon;
+		self.enemy = activator;
 		sound (self, CHAN_VOICE, "boss1/pain.wav", 1, ATTN_NORM);
 		self.health = self.health - 1;
-		if (self.health >= 2)
+		if (self.health > 1)
 			boss_shocka1();
 		else if (self.health == 1)
 			boss_shockb1();
 		else if (self.health == 0)
 			boss_shockc1();
-	}	
+	}
 };
 
+/*==========
+event_lightning_go
+==========*/
+void() event_lightning_go =
+{
+	// find electrodes
+	self.target1 = find(world, target, "lightning");
+	self.target2 = find(self.target1, target, "lightning");
+	if (!self.target1 || !self.target2)
+	{
+		objerror("unable to find lightning targets");
+		remove(self);
+		return;
+	}
+	
+	self.use = lightning_use;
+};
 
 /*QUAKED event_lightning (0 1 1) (-8 -8 -8) (8 8 8)
-Just for boss level.
+Triggerable lightning event.
+You must have two func_door's in the level which both contain a target of "lightning" (not targetname)
 */
 void() event_lightning =
 {
 	precache_sound ("misc/power.wav");
-	self.use = lightning_use;
+	self.think = event_lightning_go;
+	self.nextthink = time + 0.2;
 };
-
-

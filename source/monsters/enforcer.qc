@@ -55,7 +55,7 @@ void() Laser_Touch =
 		else
 			SpawnTouchblood(15);
 			
-		T_Damage (other, self, self.owner, 15);
+		Damage (other, self, self.owner, 15);
 	}
 	else
 	{

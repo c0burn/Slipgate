@@ -22,91 +22,33 @@ void() SUB_Fade =
 
 
 
-/*
-QuakeEd only writes a single float for angles (bad idea), so up and down are
-just constant angles.
-*/
+/*==========
+SetMoveDir
+
+the angle field in map editors is a single float, so up and down are constant values
+==========*/
 void() SetMovedir =
 {
-	if (self.angles == '0 -1 0')
+	if (self.angles == '0 -1 0')		// up
 		self.movedir = '0 0 1';
-	else if (self.angles == '0 -2 0')
+	else if (self.angles == '0 -2 0')	// down
 		self.movedir = '0 0 -1';
 	else
 	{
 		makevectors (self.angles);
 		self.movedir = v_forward;
 	}
-	
 	self.angles = '0 0 0';
 };
 
-/*
-================
-InitTrigger
-================
-*/
-void() InitTrigger =
-{
-	if (self.angles)
-		SetMovedir();
-
-	self.movetype = MOVETYPE_NONE;
-	self.solid = SOLID_TRIGGER;
-	setmodel (self, self.model);
-	self.modelindex = 0;
-	self.model = "";
-};
-
-/*
-=============
-SUB_CalcMove
-
-calculate self.velocity and self.nextthink to reach dest from
-self.origin traveling at speed
-===============
-*/
 
 
-void(vector tdest, float tspeed, void() func) SUB_CalcMove =
-{
-	if (!tspeed)
-	{
-		objerror("no speed defined");
-		return;
-	}
+/*==========
+SUB_CalcMoveDone
 
-	self.think = SUB_CalcMoveDone;
-	self.think1 = func;
-	self.finaldest = tdest;
-	
-	if (tdest == self.origin)
-	{
-		self.velocity = '0 0 0';
-		self.nextthink = self.ltime + 0.01;
-		return;
-	}
-
-	vector delta = tdest - self.origin;
-	float len = vlen(delta);
-	float traveltime = len / tspeed;
-	if (traveltime < 0.01)
-	{
-		self.velocity = '0 0 0';
-		self.nextthink = self.ltime + 0.01;
-		return;
-	}
-	
-	self.nextthink = self.ltime + traveltime;
-	self.velocity = delta / traveltime;
-};
-
-/*
-============
-After moving, set origin to exact final destination
-============
-*/
-void()  SUB_CalcMoveDone =
+After moving, set origin to exact final destination and run think
+==========*/
+void() SUB_CalcMoveDone =
 {
 	setorigin(self, self.finaldest);
 	self.velocity = '0 0 0';
@@ -116,129 +58,45 @@ void()  SUB_CalcMoveDone =
 		self.think1();
 };
 
+/*==========
+SUB_CalcMove
 
-
-
-//=============================================================================
-
-void() DelayThink =
+calculate self.velocity and self.nextthink to reach dest from
+self.origin traveling at speed
+==========*/
+void(vector dst, float spd, void() thnk) SUB_CalcMove =
 {
-	activator = self.enemy;
-	SUB_UseTargets ();
-	remove(self);
-};
-
-void() DelayKill =
-{
-	entity t = world;
-	while (1)
+	if (!spd)
 	{
-		t = find(t, targetname, self.killtarget);
-		if (!t)
-			break;
-		remove(t);
-	}
-	
-	remove(self);
-};
-
-/*
-==============================
-SUB_UseTargets
-
-the global "activator" should be set to the entity that initiated the firing.
-
-If self.delay is set, a DelayedUse entity will be created that will actually
-do the SUB_UseTargets after that many seconds have passed.
-
-Centerprints any self.message to the activator.
-
-Removes all entities with a targetname that match self.killtarget,
-and removes them, so some events can remove other triggers.
-
-Search for (string)targetname in all entities that
-match (string)self.target and call their .use function
-
-==============================
-*/
-void() SUB_UseTargets =
-{
-	// if delay is set, create a temporary entity to fire later
-	if (self.delay > 0)
-	{
-		entity t = spawn();
-		t.classname = "DelayedUse";
-		t.think = DelayThink;
-		t.nextthink = time + self.delay;
-		t.enemy = activator;
-		t.message = self.message;
-		t.target = self.target;
-		t.killtarget = self.killtarget;
+		objerror("no speed defined");
 		return;
 	}
+
+	self.think = SUB_CalcMoveDone;
+	self.think1 = thnk;
+	self.finaldest = dst;
 	
-	// print any message
-	if (activator.classname == "player" && self.message != "")
+	if (dst == self.origin)
 	{
-		centerprint (activator, self.message);
-		if (!self.noise)
-			sound (activator, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
+		self.velocity = '0 0 0';
+		self.nextthink = self.ltime + 0.01;
+		return;
 	}
 
-	// remove any killtargets
-	// in id1, if both target and killtarget were set, target was ignored
-	// this mod allows both to be set, however id1 contains several maps with
-	// triggers that contain an identical target + killtarget so by adding
-	// this feature we can get some unintended side effects
-	// the solution is to remove the target field ONLY if it's identical to killtarget,
-	// as it would have had no effect in id1
-	if (self.killtarget != "")
+	vector delta = dst - self.origin;
+	float traveltime = vlen(delta) / spd;
+	if (traveltime < 0.01)
 	{
-		if (self.target == self.killtarget)
-		{
-			dprint(self.classname);
-			dprint(" at: ");
-			dprint(vtos(0.5 * (self.absmin + self.absmax)));
-			dprint(" has target == killtarget\n");
-			self.target = string_null;
-		}
+		self.velocity = '0 0 0';
+		self.nextthink = self.ltime + 0.01;
+		return;
+	}
 
-		// we use a think to remove the killtargets to avoid
-		// any SV_TouchLinks bugs - notably e2m2 if you shoot one trigger
-		// and jump over the gap on easy skill
-		// most modern sourceports have a fix for this, however this way we also fix dosquake.. :)
-		t = spawn();
-		t.classname = "DelayedKill";
-		t.think = DelayKill;
-		t.nextthink = time;
-		t.killtarget = self.killtarget;
-	}
-	
-	// fire any targets
-	if (self.target != "")
-	{
-		entity act = activator;
-		t = world;
-		while (1)
-		{
-			t = find (t, targetname, self.target);
-			if (!t)
-				break;
-				
-			entity stemp = self;
-			entity otemp = other;
-			self = t;
-			other = stemp;
-			
-			if (self.use)
-				self.use();
-				
-			self = stemp;
-			other = otemp;
-			activator = act;
-		}
-	}
+	self.nextthink = self.ltime + traveltime;
+	self.velocity = delta / traveltime;
 };
+
+
 
 /*
 

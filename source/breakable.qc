@@ -125,7 +125,7 @@ void() breakable_explode =
 	setorigin(self, org);
 
 	if (self.dmg > 0)
-		T_RadiusDamage (self, self, self.dmg, world);
+		RadiusDamage (self, self, self.dmg, world);
 
 	if (self.spawnflags & NO_EXPLOSION_SOUND)
 	{
@@ -189,7 +189,7 @@ void(entity inflictor) breakable_break =
 
 	// fire targets	
 	activator = self.enemy;
-	SUB_UseTargets();
+	UseTargets();
 };
 
 /*==========

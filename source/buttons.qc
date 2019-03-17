@@ -1,129 +1,199 @@
-// button and multiple button
+enumflags { BUTTON_START_OFF };
 
-void() button_wait;
-void() button_return;
+/*==========
+button_done
 
-void() button_wait =
-{
-	self.state = STATE_TOP;
-	self.nextthink = self.ltime + self.wait;
-	self.think = button_return;
-	activator = self.enemy;
-	SUB_UseTargets();
-	self.frame = 1;			// use alternate textures
-};
-
+the button is back in its original position
+==========*/
 void() button_done =
 {
 	self.state = STATE_BOTTOM;
 };
 
+/*==========
+button_return
+
+the button starts to return to its original position
+==========*/
 void() button_return =
 {
 	self.state = STATE_DOWN;
+	// use normal textures
+	self.frame = 0;
+	// can be shot again
+	if (self.max_health)
+	{
+		self.health = self.max_health;
+		self.takedamage = DAMAGE_YES;
+	}
 	SUB_CalcMove (self.pos1, self.speed, button_done);
-	self.frame = 0;			// use normal textures
-	if (self.health)
-		self.takedamage = DAMAGE_YES;	// can be shot again
 };
 
+/*==========
+button_wait
 
-void() button_blocked =
-{	// do nothing, just don't ome all the way back out
+the button has reached it's secondary position
+==========*/
+void() button_wait =
+{
+	self.state = STATE_TOP;
+	// use alternatve textures
+	self.frame = 1;
+	// fire targets	
+	activator = self.enemy;
+	UseTargets();
+	
+	// return after a delay of self.wait
+	if (self.wait > 0)
+	{
+		self.think = button_return;
+		self.nextthink = self.ltime + self.wait;
+	}
+	// never return
+	else
+	{
+		self.think = SUB_Null;
+		self.nextthink = -1;
+	}
 };
 
+/*==========
+button_fire
 
+the button has been activated by trigger, touch or damage
+==========*/
 void() button_fire =
 {
+	// already activated
 	if (self.state == STATE_UP || self.state == STATE_TOP)
 		return;
 
 	sound (self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
-
 	self.state = STATE_UP;
 	SUB_CalcMove (self.pos2, self.speed, button_wait);
 };
 
-
-void() button_use =
-{
-	self.enemy = activator;
-	button_fire ();
-};
-
+/*==========
+button_touch
+==========*/
 void() button_touch =
 {
 	if (other.classname != "player")
 		return;
+	if (other.health <= 0)
+		return;
+
 	self.enemy = other;
 	button_fire ();
 };
 
+/*==========
+button_killed
+
+the button has been shot
+==========*/
 void(entity inflictor, entity attacker) button_killed =
 {
+	self.takedamage = DAMAGE_NO;	// will be restored upon return
 	self.enemy = attacker;
-	self.health = self.max_health;
-	self.takedamage = DAMAGE_NO;	// wil be reset upon return
-	button_fire ();
+	button_fire();
 };
 
+/*==========
+button_use
 
-/*QUAKED func_button (0 .5 .8) ?
-When a button is touched, it moves some distance in the direction of it's angle, triggers all of it's targets, waits some time, then returns to it's original position where it can be triggered again.
+the button has been triggered
+==========*/
+void() button_use =
+{
+	// just enable the button if it is disabled
+	if (self.spawnflags & BUTTON_START_OFF)
+	{
+		self.spawnflags = self.spawnflags - BUTTON_START_OFF;
+		// use normal textures
+		self.frame = 0;
+		// button must be shot
+		if (self.health > 0)
+		{
+			self.max_health = self.health;
+			self.takedamage = DAMAGE_YES;
+			self.th_die = button_killed;
+		}
+		// button must be pushed
+		else
+			self.touch = button_touch;
+		return;
+	}
 
-"angle"		determines the opening direction
-"target"	all entities with a matching targetname will be used
-"speed"		override the default 40 speed
-"wait"		override the default 1 second wait (-1 = never return)
-"lip"		override the default 4 pixel lip remaining at end of move
-"health"	if set, the button must be killed instead of touched
-"sounds"
+	self.enemy = activator;
+	button_fire();
+};
+
+/*==========
+button_blocked
+
+do nothing
+==========*/
+void() button_blocked =
+{
+	
+};
+
+/*QUAKED func_button (0 .5 .8) ? START_OFF X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A button that can either be pushed or shot.
+
+When a button is activated, it moves the distance of its size,
+in the direction of its angle, leaving a lip at the end of the move.
+When the move is completed, it triggers all of its targets, waits some time,
+then returns to its original position where it can be triggered again.
+
+Spawnflags:
+START_OFF - the button starts in a disabled state, and it must be triggered to enable it.
+Once enabled, it acts like any other button.
+
+Keys:
+"target" - entities with a matching targetname will be triggered.
+"killtarget" - entities with a matching targetname will be remove.d
+"targetname" - if triggered, the button will fire, unless it's already in motion
+or switched off. if switched off, it will enable itself.
+"message" - message to print to player on activation.
+"delay" - button will wait some time before triggering its targets.
+"angle" - direction of movement. use -1 for up and -2 for down.
+"speed"	- speed of movement. default 40.
+"wait" - wait before returning. default 1 second. use -1 to never return.
+"lip" - number of units to leave at end of the move. default 4.
+"health" - if set, the button must be shot rather than pushed.
+"sounds" -
 0) steam metal
 1) wooden clunk
 2) metallic click
 3) in-out
+4) custom sound
+"noise" - custom sound for button activation
 */
 void() func_button =
 {
 	if (self.sounds == 0)
-	{
-		precache_sound ("buttons/airbut1.wav");
 		self.noise = "buttons/airbut1.wav";
-	}
-	if (self.sounds == 1)
-	{
-		precache_sound ("buttons/switch21.wav");
+	else if (self.sounds == 1)
 		self.noise = "buttons/switch21.wav";
-	}
-	if (self.sounds == 2)
-	{
-		precache_sound ("buttons/switch02.wav");
+	else if (self.sounds == 2)
 		self.noise = "buttons/switch02.wav";
-	}
-	if (self.sounds == 3)
-	{
-		precache_sound ("buttons/switch04.wav");
+	else if (self.sounds == 3)
 		self.noise = "buttons/switch04.wav";
-	}
-	
-	SetMovedir ();
-
-	self.movetype = MOVETYPE_PUSH;
-	self.solid = SOLID_BSP;
-	setmodel (self, self.model);
-
-	self.blocked = button_blocked;
-	self.use = button_use;
-
-	if (self.health)
-	{
-		self.max_health = self.health;
-		self.th_die = button_killed;
-		self.takedamage = DAMAGE_YES;
-	}
 	else
-		self.touch = button_touch;
-
+	{
+		if (!self.noise)
+		{
+			objerror("noise must be set if custom sound is requested\n");
+			remove(self);
+			return;
+		}
+	}
+	precache_sound (self.noise);
+	
+	if (self.health <= 0)
+		self.health = 0;
 	if (self.speed <= 0)
 		self.speed = 40;
 	if (!self.wait)
@@ -131,9 +201,34 @@ void() func_button =
 	if (!self.lip)
 		self.lip = 4;
 
+	self.movetype = MOVETYPE_PUSH;
+	self.solid = SOLID_BSP;
+	setmodel (self, self.model);
+
+	// calculate secondary position
+	SetMovedir();
 	self.state = STATE_BOTTOM;
-
 	self.pos1 = self.origin;
-	self.pos2 = self.pos1 + self.movedir*(fabs(self.movedir*self.size) - self.lip);
-};
+	self.pos2 = self.pos1 + self.movedir * (fabs(self.movedir*self.size) - self.lip);
 
+	self.blocked = button_blocked;
+	self.use = button_use;
+	
+	if (self.spawnflags & BUTTON_START_OFF)
+		self.frame = 1;	// use alternative textures
+	else
+	{
+		// use normal textures
+		self.frame = 0;
+		// button must be shot
+		if (self.health > 0)
+		{
+			self.max_health = self.health;
+			self.takedamage = DAMAGE_YES;
+			self.th_die = button_killed;
+		}
+		// button must be pushed
+		else
+			self.touch = button_touch;
+	}
+};

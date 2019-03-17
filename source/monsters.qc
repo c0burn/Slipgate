@@ -5,9 +5,9 @@ using a monster makes it angry if the activator is a player
 ==========*/
 void() monster_use =
 {
-	if (self.enemy)			// already fighting
+	if (self.enemy)
 		return;
-	if (self.health <= 0)	// already dead
+	if (self.health <= 0)
 		return;
 	if (activator.classname != "player")
 		return;
@@ -21,16 +21,6 @@ void() monster_use =
 	self.think = FoundTarget;
 };
 
-/*==========
-monster_death_use
-
-when a monster dies, it fires it's targets with its enemy as the activator
-==========*/
-void() monster_death_use =
-{
-	activator = self.enemy;
-	SUB_UseTargets();
-};
 
 /*==========
 monster_start_go
@@ -44,7 +34,7 @@ void() monster_start_go =
 		droptofloor();
 	}
 	
-	// check if we're stuck in a wall
+	// print console warning if we're stuck in a wall
 	if (!walkmove(0, 0))
 	{
 		dprint(self.classname);

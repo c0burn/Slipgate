@@ -418,13 +418,11 @@ string	string_null;
 entity	newmis;
 float	gameover;
 entity	activator;
-//entity	damage_attacker;
 float	framecount;
 float	skill;
 entity	lastspawn;
 float	developer;
 float	sv_gravity;
-
 	
 /*==========
 Fields
@@ -507,9 +505,9 @@ Prototypes
 void(vector tdest, float tspeed, void() func) SUB_CalcMove;
 void() SUB_CalcMoveDone;
 void() SUB_Null;
-void() SUB_UseTargets;
+void() UseTargets;
 void() SUB_Remove;
-void(entity targ, entity inflictor, entity attacker, float damage) T_Damage;
+void(entity targ, entity inflictor, entity attacker, float damage) Damage;
 float(entity targ, entity inflictor) CanDamage;
 
 

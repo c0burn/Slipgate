@@ -1,7 +1,7 @@
 /*==========
-func_wall_use
+wall_use
 ==========*/
-void() func_wall_use =
+void() wall_use =
 {
 	self.frame = 1 - self.frame;
 };
@@ -18,7 +18,7 @@ void() func_wall =
 	self.angles = '0 0 0';
 	self.movetype = MOVETYPE_PUSH;
 	self.solid = SOLID_BSP;
-	self.use = func_wall_use;
+	self.use = wall_use;
 	setmodel (self, self.model);
 };
 
@@ -37,7 +37,7 @@ void() func_illusionary =
 	setmodel (self, self.model);
 	
 	if (self.targetname != "")
-		self.use = func_wall_use;
+		self.use = wall_use;
 	else
 		makestatic(self);
 };
@@ -62,7 +62,7 @@ void() func_episodegate =
 	self.angles = '0 0 0';
 	self.movetype = MOVETYPE_PUSH;
 	self.solid = SOLID_BSP;
-	self.use = func_wall_use;
+	self.use = wall_use;
 	setmodel (self, self.model);
 };
 
@@ -83,6 +83,6 @@ void() func_bossgate =
 	self.angles = '0 0 0';
 	self.movetype = MOVETYPE_PUSH;
 	self.solid = SOLID_BSP;
-	self.use = func_wall_use;
+	self.use = wall_use;
 	setmodel (self, self.model);
 };

@@ -42,7 +42,7 @@ OgreGrenadeExplode
 ==========*/
 void() OgreGrenadeExplode =
 {
-	T_RadiusDamage(self, self.owner, 40, world);
+	RadiusDamage(self, self.owner, 40, world);
 	te_explosion(self.origin);
 	BecomeExplosion();
 };
@@ -181,7 +181,7 @@ void() OgreChainsaw =
 		return;
 
 	float ldmg = (random() + random() + random()) * 4;
-	T_Damage (self.enemy, self, self, ldmg);
+	Damage (self.enemy, self, self, ldmg);
 
 	SpawnBlood(trace_endpos, randomvec() * 8, 12);
 	if (random() < 0.1)

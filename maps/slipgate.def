@@ -141,7 +141,7 @@ Rocket Launcher
 {	model("progs/g_light.mdl");	}
 Thunderbolt
 */
-/*QUAKED item_backback (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+/*QUAKED item_backpack (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/backpack.mdl");	}
 Backpack pickup. Contains 40 shells, 50 nails, 10 rockets and 12 cells.
 
@@ -355,7 +355,7 @@ Makes crackling fire noise unless NO_SOUND is set
 Custom map object. Non-solid by default.
 
 "mdl" "name" - model to load, e.g. "progs/grenade.mdl". Will also work on .bsp and .spr
-"pos1", "pos2" "vector" - bounding box size. if not defined it will default to '-16 -16 -16' , '16 16 16'
+"pos1", "pos2" "vector" - bounding box size. if not defined it will default to '-16 -16 -16', '16 16 16'
 "skin" "n" - model or sprite skin
 "frame" "n" - model or sprite frame
 
@@ -666,74 +666,117 @@ If a secret door has a targetname, it will only be opened by it's botton or trig
 2) metal
 3) base
 */
-/*QUAKED func_button (0 .5 .8) ?
-When a button is touched, it moves some distance in the direction of it's angle, triggers all of it's targets, waits some time, then returns to it's original position where it can be triggered again.
+/*QUAKED func_button (0 .5 .8) ? START_OFF X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A button that can either be pushed or shot.
 
-"angle"		determines the opening direction
-"target"	all entities with a matching targetname will be used
-"speed"		override the default 40 speed
-"wait"		override the default 1 second wait (-1 = never return)
-"lip"		override the default 4 pixel lip remaining at end of move
-"health"	if set, the button must be killed instead of touched
-"sounds"
+When a button is activated, it moves the distance of its size,
+in the direction of its angle, leaving a lip at the end of the move.
+when the move is completed, it triggers all of its targets, waits some time,
+then returns to its original position where it can be triggered again.
+
+Keys:
+"target" - entities to trigger when activated
+"killtarget" - entities to remove when activated
+"targetname" - if targeted, the button will activate, unless it's already activated
+or switched off. if switched off, it will enable itself.
+"message" - message to print to player on activation
+"delay" - button will wait some time before firing its targets
+"angle" - direction of movement. use -1 for up and -2 for down.
+"speed"	- speed of movement. default 40.
+"wait" - wait before returning. default 1. use -1 to never return.
+"lip" - number of units to leave at end of move. default 4.
+"health" - if set, the button must be shot rather than pushed
+"sounds" -
 0) steam metal
 1) wooden clunk
 2) metallic click
 3) in-out
+4) custom sound - set .noise to the sound to use
+
+Spawnflags:
+START_OFF - the button starts in a disabled state, and must be triggered to enable it.
 */
-/*QUAKED trigger_multiple (.5 .5 .5) ? notouch
-Variable sized repeatable trigger.  Must be targeted at one or more entities.  If "health" is set, the trigger must be killed to activate each time.
-If "delay" is set, the trigger waits some time after activating before firing.
-"wait" : Seconds between triggerings. (.2 default)
-If notouch is set, the trigger is only fired by other entities, not by touching.
-NOTOUCH has been obsoleted by trigger_relay!
-sounds
-1)	secret
-2)	beep beep
-3)	large switch
-4)
-set "message" to text string
+/*QUAKED trigger_multiple (.5 .5 .5) ? NOTOUCH
+Variable sized repeatable trigger.
+
+Keys:
+"target" - entities to trigger upon firing
+"killtarget" - entities to remove upon firing
+"message" - will be printed to player upon activation
+"delay" - will wait after activation before firing
+"health" - if set, trigger must be killed to activate
+"wait" - time between triggers. default 0.2
+"sounds" -
+0) none
+1) secret
+2) beep beep
+3) large switch
+"angle" - player must be facing this direction to activate the trigger.
+0 is assumed to mean no restriction, so use 360 for an angle of 0.
+
+Spawnflags:
+If NOTOUCH is set, the trigger is only fired by other entities, not by touching.
+NOTOUCH has been obsoleted by trigger_relay.
 */
-/*QUAKED trigger_once (.5 .5 .5) ? notouch
-Variable sized trigger. Triggers once, then removes itself.  You must set the key "target" to the name of another object in the level that has a matching
-"targetname".  If "health" is set, the trigger must be killed to activate.
-If notouch is set, the trigger is only fired by other entities, not by touching.
-if "killtarget" is set, any objects that have a matching "target" will be removed when the trigger is fired.
-if "angle" is set, the trigger will only fire when someone is facing the direction of the angle.  Use "360" for an angle of 0.
-sounds
-1)	secret
-2)	beep beep
-3)	large switch
-4)
-set "message" to text string
+/*QUAKED trigger_once (.5 .5 .5) ? NOTOUCH
+Variable sized trigger. Triggers once, then removes itself.
+
+Keys:
+"target" - entities to trigger upon firing
+"killtarget" - entities to remove upon firing
+"message" - will be printed to player upon activation
+"delay" - will wait after activation before firing
+"health" - if set, trigger must be killed to activate
+"wait" - time between triggers. default 0.2
+"sounds" -
+0) none
+1) secret
+2) beep beep
+3) large switch
+"angle" - player must be facing this direction to activate the trigger.
+0 is assumed to mean no restriction, so use 360 for an angle of 0.
+
+Spawnflags:
+If NOTOUCH is set, the trigger is only fired by other entities, not by touching.
+NOTOUCH has been obsoleted by trigger_relay.
 */
 /*QUAKED trigger_relay (.5 .5 .5) (-8 -8 -8) (8 8 8)
-This fixed size trigger cannot be touched, it can only be fired by other events.  It can contain killtargets, targets, delays, and messages.
+This fixed size trigger cannot be touched, it can only be fired by other events.
+It can contain killtargets, targets, delays, and messages.
 */
 /*QUAKED trigger_secret (.5 .5 .5) ?
-secret counter trigger
-sounds
-1)	secret
-2)	beep beep
-3)
-4)
-set "message" to text string
+Variable sized secret counter trigger. Triggers once, then removes itself.
+
+Keys:
+"target" - entities to trigger upon firing
+"killtarget" - entities to remove upon firing
+"message" - will be printed to player upon activation. default "You found a secret area!"
+"delay" - will wait after activation before firing
+"health" - if set, trigger must be killed to activate
+"sounds" -
+1) secret (default if not set)
+2) beep beep
+3) large switch
+"angle" - player must be facing this direction to activate the trigger.
+0 is assumed to mean no restriction, so use 360 for an angle of 0.
+
+Spawnflags:
+If NOTOUCH is set, the trigger is only fired by other entities, not by touching.
+NOTOUCH has been obsoleted by trigger_relay.
 */
-/*QUAKED trigger_counter (.5 .5 .5) ? nomessage
+/*QUAKED trigger_counter (.5 .5 .5) ? NOMESSAGE
 Acts as an intermediary for an action that takes multiple inputs.
-
-If nomessage is not set, t will print "1 more.. " etc when triggered and "sequence complete" when finished.
-
+If NOMESSAGE is not set, it will print "Only 2 more to go.." etc when triggered and "Sequence completed!" when finished.
 After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
 */
 /*QUAKED trigger_teleport (.5 .5 .5) ? PLAYER_ONLY SILENT
-Any object touching this will be transported to the corresponding info_teleport_destination entity. You must set the "target" field, and create an object with a "targetname" field that matches.
-
-If the trigger_teleport has a targetname, it will only teleport entities when it has been fired.
+Variable sized trigger that teleports players and monsters to a destination marker.
+"target" must be set to an info_teleport_destination with a matching "targetname" field.
+If the trigger_teleport has a "targetname", it will only teleport entities once it has been triggered.
+This is used in id1 for teleporting monsters - this has been obsoleted by the MONSTER_TELEPORT flag.
 */
 /*QUAKED trigger_setskill (.5 .5 .5) ?
-sets skill level to the value of "message".
-Only used on start map.
+sets skill level to the value of "message"
 */
 /*QUAKED trigger_onlyregistered (.5 .5 .5) ?
 Only fires if playing the registered version, otherwise prints the message
@@ -753,8 +796,9 @@ Walking monsters that touch this will jump in the direction of the trigger's ang
 */
 /*QUAKED trigger_ladder (.5 .5 .5) ?
 Invisible ladder trigger.
-When the player is touching this entity, he can climb by holding jump.
+When the player is touching this trigger, he can climb by holding jump.
 If "angle" is set, the player must face that direction to climb the ladder.
+An angle of 0 is assumed to mean no direction, so use an angle of 360 instead.
 */
 /*QUAKED func_plat (0 .5 .8) ? PLAT_LOW_TRIGGER
 speed	default 150
@@ -783,7 +827,8 @@ sounds
 {	model("progs/teleport.mdl");	}
 
 Teleporter target for final boss level. Must target a series of 'path_corner' entities.
-If a targetname is set, must be triggered to start moving.
+It will position itself on its first target at map load.
+If a targetname is set, it must be triggered to start moving, otherwise it will start automatically.
 */
 /*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 {
@@ -840,7 +885,8 @@ Zombie.
 Chthon.
 */
 /*QUAKED event_lightning (0 1 1) (-8 -8 -8) (8 8 8)
-Just for boss level.
+Triggerable lightning event.
+You must have two func_door's in the level which both contain a target of "lightning" (not targetname)
 */
 /*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
 {
@@ -872,7 +918,7 @@ Vore.
 }
 Enforcer.
 */
-/*QUAKED monster_oldone (1 0 0) (-128 -128 -24) (128 128 200)
+/*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (128 128 256)
 {	model ("progs/oldone.mdl");		}
 Shub-Niggurath.
 */

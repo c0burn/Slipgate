@@ -16,9 +16,6 @@ void() backpack_touch =
 	W_SetCurrentAmmo(other);
 	
 	sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
-	if (self.items)
-		sound(other, CHAN_AUTO, "weapons/pkup.wav", 1, ATTN_NORM);
-		
 	stuffcmd (other, "bf\n");
 	
 	// tell the player what's inside
@@ -133,7 +130,7 @@ void() backpack_touch =
 
 	// fire all targets
 	activator = other;
-	SUB_UseTargets();
+	UseTargets();
 };
 
 /*==========
@@ -170,7 +167,7 @@ void() DropBackpack =
 	backpack.think = SUB_Remove;
 };
 
-/*QUAKED item_backback (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+/*QUAKED item_backpack (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/backpack.mdl");	}
 Backpack pickup. Contains 40 shells, 50 nails, 10 rockets and 12 cells.
 

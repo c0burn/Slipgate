@@ -1,6 +1,8 @@
 // default config
 exec default.cfg
 
+r_nolerp_list "progs/flame.mdl,progs/flame2.mdl,progs/flame3.mdl,progs/s_light.mdl"
+
 // engine saved config
 exec config.cfg
 

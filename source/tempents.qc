@@ -109,9 +109,9 @@ void(vector org) te_knightspike =
 };
 
 /*==========
-te_lightning
+te_lightning1
 ==========*/
-void(vector v1, vector v2, entity ent) te_lightning =
+void(vector v1, vector v2, entity ent) te_lightning1 =
 {
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_LIGHTNING1);
@@ -159,17 +159,17 @@ void(vector v1, vector v2, entity ent) te_lightning3 =
 /*==========
 te_beam
 ==========*/
-void(entity e1, entity e2) te_beam =
+void(vector v1, vector v2, entity ent) te_beam =
 {
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_BEAM);
-	WriteEntity (MSG_BROADCAST, e2);
-	WriteCoord (MSG_BROADCAST, e1.origin_x);
-	WriteCoord (MSG_BROADCAST, e1.origin_y);
-	WriteCoord (MSG_BROADCAST, e1.origin_z);
-	WriteCoord (MSG_BROADCAST, e2.origin_x);
-	WriteCoord (MSG_BROADCAST, e2.origin_y);
-	WriteCoord (MSG_BROADCAST, e2.origin_z);
+	WriteEntity (MSG_BROADCAST, ent);
+	WriteCoord (MSG_BROADCAST, v1_x);
+	WriteCoord (MSG_BROADCAST, v1_y);
+	WriteCoord (MSG_BROADCAST, v1_z);
+	WriteCoord (MSG_BROADCAST, v2_x);
+	WriteCoord (MSG_BROADCAST, v2_y);
+	WriteCoord (MSG_BROADCAST, v2_z);
 };
 
 /*==========

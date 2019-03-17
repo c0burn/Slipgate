@@ -27,7 +27,7 @@ void() key_touch =
 
 	// fire targets
 	activator = other;
-	SUB_UseTargets();
+	UseTargets();
 };
 
 /*==========
@@ -143,7 +143,7 @@ void() sigil_touch =
 	
 	// fire targets
 	activator = other;
-	SUB_UseTargets();
+	UseTargets();
 };
 
 /*QUAKED item_sigil (0 0 1) (-16 -16 -24) (16 16 32) E1 E2 E3 E4 X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM

@@ -189,6 +189,7 @@ Keys:
 */
 void() worldspawn =
 {
+	// fix skill at map start
 	skill = rint(cvar("skill"));
 	if (skill < 0)
 		skill = 0;

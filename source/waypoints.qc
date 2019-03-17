@@ -340,9 +340,9 @@ void() DrawWaypointLinks =
 			if (self.current_way != self.last_way)
 			{
 				if (self.menu == MENU_LINKS_C || self.menu == MENU_LINKS_C2)
-					te_beam(self.current_way, self.last_way);
+					te_beam(self.current_way.origin, self.last_way.origin, self.current_way);
 				else
-					te_lightning(self.current_way.origin, self.last_way.origin, self);
+					te_lightning1(self.current_way.origin, self.last_way.origin, self);
 			}
 		}
 		return;
@@ -351,13 +351,13 @@ void() DrawWaypointLinks =
 	if (self.current_way)
 	{
 		if (self.current_way.target1)
-			te_beam(self.current_way, self.current_way.target1);
+			te_beam(self.current_way.origin, self.current_way.target1.origin, self.current_way);
 		if (self.current_way.target2)
-			te_beam(self.current_way, self.current_way.target2);
+			te_beam(self.current_way.origin, self.current_way.target2.origin, self.current_way);
 		if (self.current_way.target3)
-			te_beam(self.current_way, self.current_way.target3);
+			te_beam(self.current_way.origin, self.current_way.target3.origin, self.current_way);
 		if (self.current_way.target4)
-			te_beam(self.current_way, self.current_way.target4);
+			te_beam(self.current_way.origin, self.current_way.target4.origin, self.current_way);
 	}
 };
 

@@ -7,7 +7,7 @@ enumflags { MISC_MODEL_SOLID };
 Custom map object. Non-solid by default.
 
 "mdl" "name" - model to load, e.g. "progs/grenade.mdl". Will also work on .bsp and .spr
-"pos1", "pos2" "vector" - bounding box size. if not defined it will default to '-16 -16 -16' , '16 16 16'
+"pos1", "pos2" "vector" - bounding box size. if not defined it will default to '-16 -16 -16', '16 16 16'
 "skin" "n" - model or sprite skin
 "frame" "n" - model or sprite frame
 

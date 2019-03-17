@@ -44,7 +44,7 @@ void() weapon_touch =
 	
 	// fire targets
 	activator = other;
-	SUB_UseTargets();
+	UseTargets();
 };
 
 /*QUAKED weapon_supershotgun (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM

@@ -9,6 +9,8 @@ tempents.qc
 waypoints.qc
 
 subs.qc
+targets.qc
+
 fight.qc
 ai.qc
 combat.qc
@@ -43,6 +45,7 @@ doors.qc
 buttons.qc
 triggers.qc
 plats.qc
+trains.qc
 
 monsters/ogre.qc
 monsters/demon.qc
@@ -60,4 +63,4 @@ monsters/shalrath.qc
 monsters/enforcer.qc
 monsters/oldone.qc
 
-hud.qc
+//hud.qc

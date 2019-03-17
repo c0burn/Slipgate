@@ -147,7 +147,7 @@ void() player_nail =
 
 	self.effects = self.effects | EF_MUZZLEFLASH;
 	self.weaponframe = self.weaponframe + 1;
-	if (self.weaponframe >= 9)
+	if (self.weaponframe > 8)
 		self.weaponframe = 1;
 	W_QuadDamageSound();
 	if (self.frame == $nailatt1)
@@ -179,7 +179,7 @@ player_lightning
 void() player_lightning =
 {
 	if (!self.button0)
-	{
+	{		
 		player_run();
 		return;
 	}
@@ -191,7 +191,7 @@ void() player_lightning =
 
 	self.effects = self.effects | EF_MUZZLEFLASH;
 	self.weaponframe = self.weaponframe + 1;
-	if (self.weaponframe >= 5)
+	if (self.weaponframe > 4)
 		self.weaponframe = 1;
 	W_QuadDamageSound();
 	W_FireLightning();

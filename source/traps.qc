@@ -5,7 +5,7 @@ void() fireball_touch =
 {
 	if (other.classname == self.classname)
 		return;
-	T_Damage (other, self, self, self.dmg);
+	Damage (other, self, self, self.dmg);
 	remove(self);
 };
 
@@ -69,9 +69,6 @@ void() misc_fireball =
 	self.nextthink = time + self.wait + random()*self.wait;
 };
 
-//============================================================================
-
-
 /*==========
 explobox_explode
 ==========*/
@@ -83,7 +80,7 @@ void() explobox_explode =
 	setorigin(self, org);
 
 	self.classname = "explo_box";	
-	T_RadiusDamage (self, self, 160, world);
+	RadiusDamage (self, self, 160, world);
 
 	te_explosion(self.origin);
 	BecomeExplosion();
@@ -115,7 +112,7 @@ void() explobox_start =
 	else
 	{
 		precache_model ("maps/b_explob.bsp");
-		setmodel (self, "maps/b_explob.bsp");		
+		setmodel (self, "maps/b_explob.bsp");
 		setsize(self, '0 0 0', '32 32 64');
 	}
 
@@ -128,7 +125,7 @@ void() explobox_start =
 		dprint ("\n");
 		remove(self);
 	}
-		
+
 	self.health = 20;
 	self.th_die = explobox_die;
 	self.takedamage = DAMAGE_AIM;
@@ -159,7 +156,7 @@ void() misc_explobox2 =
 //============================================================================
 
 float SPAWNFLAG_SUPERSPIKE	= 1;
-float SPAWNFLAG_LASER = 2;
+float SPAWNFLAG_LASER		= 2;
 
 void(vector org, vector vec) LaunchLaser;
 
@@ -174,19 +171,19 @@ void() spikeshooter_use =
 	{
 		sound (self, CHAN_VOICE, "weapons/spike2.wav", 1, ATTN_NORM);
 		launch_spike (self.origin, self.movedir);
-		newmis.velocity = self.movedir * 500;
 		if (self.spawnflags & SPAWNFLAG_SUPERSPIKE)
 			newmis.touch = superspike_touch;
 	}
+	
+	newmis.velocity = self.movedir * 500;
 };
 
 void() shooter_think =
 {
 	spikeshooter_use ();
+	self.think = shooter_think;
 	self.nextthink = time + self.wait;
-	newmis.velocity = self.movedir * 500;
 };
-
 
 /*QUAKED trap_spikeshooter (1 .5 0) (-8 -8 -8) (8 8 8) superspike laser
 When triggered, fires a spike in the direction set in QuakeEd.
@@ -213,10 +210,9 @@ Continuously fires spikes.
 */
 void() trap_shooter =
 {
-	trap_spikeshooter ();
-	
-	if (self.wait == 0)
+	if (self.wait <= 0)
 		self.wait = 1;
-	self.nextthink = self.nextthink + self.wait + self.ltime;
+	self.nextthink = self.nextthink + self.wait;
 	self.think = shooter_think;
+	trap_spikeshooter();
 };
