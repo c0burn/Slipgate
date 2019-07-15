@@ -1,0 +1,8 @@
+../../csprogs.dat
+#pragma optimise 1
+#pragma optimise strip_unused_fields
+#copyright Michael Coburn (c0burn) - michael.s.coburn@gmail.com
+
+qsextensions.qc
+hud.qc
+

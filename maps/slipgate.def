@@ -4,6 +4,65 @@ Once a monster hits a path_corner, they will move to the next targeted path_corn
 You can set "pausetime" on a path_corner to enforce a delay before the monster moves
 to the next target.
 */
+/*QUAKED item_shells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_shell1.bsp" }, "maps/b_shell0.bsp" }} );
+}
+Nox of 20 shells.
+AMMO_BIG is a box of 40 shells.
+*/
+/*QUAKED item_spikes (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_nail1.bsp" }, "maps/b_nail0.bsp" }} );
+}
+Nox of 25 nails.
+AMMO_BIG is a box of 50 nails.
+*/
+/*QUAKED item_rockets (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_rock1.bsp" }, "maps/b_rock0.bsp" }} );
+}
+Nox of 5 rockets.
+AMMO_BIG is a box of 10 rockets.
+*/
+/*QUAKED item_cells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_batt1.bsp" }, "maps/b_batt0.bsp" }} );
+}
+Nox of 6 cells.
+AMMO_BIG is a box of 12 cells.
+*/
+/*QUAKED item_armor1 (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path" : "progs/armor.mdl", "skin" : 0});
+}
+Green armor. 100 points, saves 30% of damage.
+*/
+/*QUAKED item_armor2 (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path" : "progs/armor.mdl", "skin" : 1});
+}
+Yellow armor. 150 points, saves 60% of damage.
+*/
+/*QUAKED item_armorInv (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path" : "progs/armor.mdl", "skin" : 2});
+}
+Red armor. 200 points, saves 80% of damage.
+*/
+/*QUAKED item_backpack (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/backpack.mdl");	}
+Backpack pickup. Contains 40 shells, 50 nails, 10 rockets and 12 cells.
+
+Keys:
+items - set to one of a combination of the IT_SHOTGUN etc values to make the backpack contain weapons
+ammo_shells, ammo_nails, ammo_rockets, ammo_cells - set to override ammo defaults. set to -1 to not give ANY ammo of that type.
+teleport_time - time in seconds to respawn (default 120)
+
+Spawnflags:
+DONT_DROP - don't drop to floor on map load
+RESPAWN - respawn automatically
+*/
 /*QUAKED item_health (0 0 1) (0 0 0) (32 32 56) Rotten Megahealth X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
 	model ( {{ spawnflags & 1 -> { "path" : "maps/b_bh10.bsp" }, spawnflags & 2 -> { "path" : "maps/b_bh100.bsp" },
@@ -13,24 +72,6 @@ Health box. Normally gives 25 points.
 Rotten box heals 15 points.
 Megahealth will add 100 health, then start to
 rot the player back down to 100 health after 5 seconds.
-*/
-/*QUAKED item_armor1 (0 0 1) (-16 -16 0) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ({"path" : "progs/armor.mdl", "skin" : 0});
-}
-Green armor. 100 points, saves 30% of damage.
-*/
-/*QUAKED item_armor2 (0 0 1) (-16 -16 0) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ({"path" : "progs/armor.mdl", "skin" : 1});
-}
-Yellow armor. 150 points, saves 60% of damage.
-*/
-/*QUAKED item_armorInv (0 0 1) (-16 -16 0) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ({"path" : "progs/armor.mdl", "skin" : 2});
-}
-Red armor. 200 points, saves 80% of damage.
 */
 /*QUAKED item_key1 (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/key_med.mdl");	}
@@ -69,53 +110,25 @@ Episode 2 - The Realm of Black Magic - Rune of Black Magic
 Episode 3 - The Netherworld - Rune of Hell Magic
 Episode 4 - The Elder World - Run of Elder Magic
 */
-/*QUAKED item_artifact_invulnerability (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+/*QUAKED item_artifact_invulnerability (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/invulner.mdl");	}
 Pentagram of Protection
 Player is invulnerable for 30 seconds
 */
-/*QUAKED item_artifact_envirosuit (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+/*QUAKED item_artifact_envirosuit (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/suit.mdl");	}
 Biosuit
 Player takes no damage from water or slime for 30 seconds
 */
-/*QUAKED item_artifact_invisibility (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+/*QUAKED item_artifact_invisibility (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/invisibl.mdl");	}
 Ring of Shadows
 Player is invisible for 30 seconds
 */
-/*QUAKED item_artifact_super_damage (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+/*QUAKED item_artifact_super_damage (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/quaddama.mdl");	}
 Quad Damage
 Player does 4x damage for 30 seconds
-*/
-/*QUAKED item_shells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_shell1.bsp" }, "maps/b_shell0.bsp" }} );
-}
-Nox of 20 shells.
-AMMO_BIG is a box of 40 shells.
-*/
-/*QUAKED item_spikes (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_nail1.bsp" }, "maps/b_nail0.bsp" }} );
-}
-Nox of 25 nails.
-AMMO_BIG is a box of 50 nails.
-*/
-/*QUAKED item_rockets (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_rock1.bsp" }, "maps/b_rock0.bsp" }} );
-}
-Nox of 5 rockets.
-AMMO_BIG is a box of 10 rockets.
-*/
-/*QUAKED item_cells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_batt1.bsp" }, "maps/b_batt0.bsp" }} );
-}
-Nox of 6 cells.
-AMMO_BIG is a box of 12 cells.
 */
 /*QUAKED weapon_supershotgun (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/g_shot.mdl");	}
@@ -141,21 +154,13 @@ Rocket Launcher
 {	model("progs/g_light.mdl");	}
 Thunderbolt
 */
-/*QUAKED item_backpack (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/backpack.mdl");	}
-Backpack pickup. Contains 40 shells, 50 nails, 10 rockets and 12 cells.
-
-Keys:
-items: set to one of the IT_SHOTGUN etc values to make the backpack contain a (single) weapon
-ammo_shells, ammo_nails, ammo_rockets, ammo_cells - set to override defaults. set to -1 to not give ammo of that type.
-*/
 /*QUAKED ambient_custom (0.3 0.1 0.6) (-8 -8 -8) (8 8 8)
 Customisable ambient sound.
 
 Keys:
-"noise" "name" - Ambient sound to play. Must have loop markers.
-"volume" "n" - Set the volume of the sound. Range 0-1. Defaulf 0.5.
-"distance" "n" - Set the attenuation of the ambient sound.
+"noise" - Ambient sound to play.
+"volume" - Set the volume of the sound. Range 0-1. Default 0.5.
+"distance" - Set the attenuation of the ambient sound:
 0 - static (default, usual for ambient sounds)
 1 - idle (usually used for monster idle sounds)
 2 - normal (normal attenuation)
@@ -200,6 +205,152 @@ Ambient water.
 /*QUAKED ambient_wind (0.3 0.1 0.6) (-8 -8 -8) (8 8 8)
 Ambient wind.
 */
+/*QUAKED func_wall (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Simple solid bmodel
+
+Keys:
+"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
+*/
+/*QUAKED func_illusionary (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A simple bmodel that looks solid but lets the player walk through it
+
+Keys:
+"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
+*/
+/*QUAKED func_episodegate (0 .5 .8) ? E1 E2 E3 E4 X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+This bmodel will only appear if the episode has already been completed.
+
+Keys:
+"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
+
+Spawnflags:
+E1, E2, E3, E4
+*/
+/*QUAKED func_bossgate (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+This bmodel appears unless the player has all of the episode runes.
+
+Keys:
+"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
+*/
+/*QUAKED func_breakable (0 .5 .8) ? EXPLODE NO_EXPLOSION_SPRITE NO_EXPLOSION_SOUND SPAWN_SMOKE X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Breakable brush model
+
+Spawnflags:
+EXPLODE - will explode upon destruction. Set the dmg key to the force of the explosion.
+You can set dmg to 0 for just the explosion effects.
+NO_EXPLOSION_SPRITE - don't show explosion sprite.
+NO_EXPLOSION_SOUND - don't make explosion sound or light.
+SPAWN_SMOKE - will spawn some additional smoke upon destuction
+
+Keys:
+"style" "n"
+Preset style, 1=base crates, 2=stone/brick
+Sets debris model, particle color and sounds automatically
+If mdl1-3, noise or colour are set they will override the preset
+
+"mdl1", "mdl2", "mdl3" "name"
+custom models for debris chunks
+
+"color" "n"
+particle color for damage, range 0-254 (from palette)
+
+"noise1", "noise2" "name"
+custom sound for break / damage
+
+"health" "n"
+damage required to destroy. default 30.
+
+"targetname" "name"
+if set, the breakable must be triggered to destroy it
+
+"count" "n"
+number of pieces of debris to spawn. default 8.
+
+"angle" "n"
+If set, overrides the direction debris moves in. Use -1 and -2 for up/down. Use 360 for a yaw of 0.
+
+"dmg" "n"
+Amount of explosive damage to deal. Default 60.
+*/
+/*QUAKED air_bubbles (0 .5 .8) (-8 -8 -8) (8 8 8)
+
+testing air bubbles
+*/
+/*QUAKED func_button (0 .5 .8) ? START_OFF X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A button that can either be pushed or shot.
+
+When a button is activated, it moves the distance of its size,
+in the direction of its angle, leaving a "lip" at the end of the move.
+Alternatively, you can specify a set "distance" to move.
+
+When the move is completed, it triggers all of its targets, waits some time,
+then returns to its original position where it can be pushed or shot again.
+
+Spawnflags:
+START_OFF - the button starts in a disabled state, and it must be triggered to enable it.
+Once enabled, it acts like any other button.
+
+Keys:
+"target" - entities with a matching targetname will be triggered.
+"killtarget" - entities with a matching targetname will be removed.
+"targetname" - if triggered, the button will fire, unless it's already in motion
+ or switched off. if switched off, it will enable itself.
+"message" - message to print to player on activation.
+"delay" - button will wait some time before triggering its targets.
+"angle" - direction of movement. use -1 for up and -2 for down.
+"speed"	- speed of movement. default 40.
+"wait" - wait before returning. default 1 second. use -1 to never return.
+"lip" - number of units to leave at end of the move. default 4.
+"distance" - manually specify the distance to move, ignoring the size and lip
+"health" - if set, the button must be shot rather than pushed.
+"sounds" -
+-1) custom sound
+0) steam metal
+1) wooden clunk
+2) metallic click
+3) in-out
+"noise" - custom sound to use for button activation
+*/
+/*QUAKED func_door (0 .5 .8) ? START_OPEN x DOOR_DONT_LINK GOLD_KEY SILVER_KEY TOGGLE
+if two doors touch, they are assumed to be connected and operate as a unit.
+
+TOGGLE causes the door to wait in both the start and end states for a trigger event.
+
+START_OPEN causes the door to move to its destination when spawned, and operate in reverse.  It is used to temporarily or permanently close off an area when triggered (not usefull for touch or takedamage doors).
+
+Key doors are allways wait -1.
+
+"message"	is printed when the door is touched if it is a trigger door and it hasn't been fired yet
+"angle"		determines the opening direction
+"targetname" if set, no touch field will be spawned and a remote button or trigger field activates the door.
+"health"	if set, door must be shot open
+"speed"		movement speed (100 default)
+"wait"		wait before returning (3 default, -1 = never return)
+"lip"		lip remaining at end of move (8 default)
+"dmg"		damage to inflict when blocked (2 default)
+"sounds"
+0)	no sound
+1)	stone
+2)	base
+3)	stone chain
+4)	screechy metal
+*/
+/*QUAKED func_door_secret (0 .5 .8) ? open_once 1st_left 1st_down no_shoot always_shoot
+Basic secret door. Slides back, then to the side. Angle determines direction.
+wait  = # of seconds before coming back
+1st_left = 1st move is left of arrow
+1st_down = 1st move is down from arrow
+always_shoot = even if targeted, keep shootable
+t_width = override WIDTH to move back (or height if going down)
+t_length = override LENGTH to move sideways
+"dmg"		damage to inflict when blocked (2 default)
+
+If a secret door has a targetname, it will only be opened by it's botton or trigger, not by damage.
+"sounds"
+1) medieval
+2) metal
+3) base
+*/
 /*QUAKED info_null (.5 .5 .5) (-8 -8 -8) (8 8 8)
 Used as a positional target for spotlights, etc.
 */
@@ -239,43 +390,12 @@ Potential spawning position for coop games.
 */
 /*QUAKED info_teleport_destination (.5 .5 .5) (-16 -16 0) (16 16 56)
 This is the destination marker for a teleporter.
-It should have a "targetname" field with the same value as a teleporter's "target" field.
+It should have a "targetname" field with the same value as a trigger_teleport "target" field.
 */
-/*QUAKED func_wall (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-Simple solid bmodel
-
-Keys:
-"targetname" "name"
-if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
-*/
-/*QUAKED func_illusionary (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-A simple bmodel that looks solid but lets the player walk through it
-
-Keys:
-"targetname" "name"
-if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
-*/
-/*QUAKED func_episodegate (0 .5 .8) ? E1 E2 E3 E4 X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-This bmodel will only appear if the episode has already been completed.
-
-Keys:
-"targetname" "name"
-if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
-
-Spawnflags:
-E1, E2, E3, E4
-*/
-/*QUAKED func_bossgate (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-This bmodel appears unless the player has all of the episode runes.
-
-Keys:
-"targetname" "name"
-if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
-*/
-/*QUAKED light (1 1 0) (-8 -8 -8) (8 8 8) START_OFF FADE_IN_OUT
+/*QUAKED light (1 1 0) (-8 -8 -8) (8 8 8) START_OFF FADE NO_SOUND
 Non-displayed light
 Please see your compiling utility documentation for full details,
-this entry only describes things controlled by the game code
+this entry only describes things controlled by the QuakeC.
 
 ==========
 Keys
@@ -311,58 +431,58 @@ so we need to tell the QuakeC what actual style to use.
 Spawnflags
 ==========
 START_OFF - switchable lights only - light is switched off at map start - default is on
-FADE_IN_OUT - switchable lights only - light fades in and out when switched. you can't combine this with an animated style.
+FADE - switchable lights only - light fades in and out when switched. you can't combine this with an animated style.
 */
-/*QUAKED light_fluoro (1 1 0) (-8 -8 -8) (8 8 8)
+/*QUAKED light_fluoro (1 1 0) (-8 -8 -8) (8 8 8) START_OFF FADE NO_SOUND
 Non-displayed light
 Makes steady fluorescent humming sound
 */
-/*QUAKED light_fluorospark (1 1 0) (-8 -8 -8) (8 8 8)
+/*QUAKED light_fluorospark (1 1 0) (-8 -8 -8) (8 8 8) START_OFF FADE NO_SOUND
 Non-displayed light
 Makes sparking, broken fluorescent sound
 */
-/*QUAKED light_globe (1 1 0) (-8 -8 -8) (8 8 8)
+/*QUAKED light_globe (1 1 0) (-8 -8 -8) (8 8 8) START_OFF FADE NO_SOUND
 Sprite globe light
 */
-/*QUAKED light_torch_small_walltorch (1 1 0) (-4 -4 -16) (4 4 32) NO_SOUND
+/*QUAKED light_torch_small_walltorch (1 1 0) (-4 -4 -16) (4 4 32) START_OFF FADE NO_SOUND
 {	model ("progs/flame.mdl");	}
 Short wall torch
 Makes crackling fire noise unless NO_SOUND is set
 */
-/*QUAKED light_torch_long_walltorch (1 1 0) (-8 -8 -48) (8 8 24) NO_SOUND
+/*QUAKED light_torch_long_walltorch (1 1 0) (-8 -8 -48) (8 8 24) START_OFF FADE NO_SOUND
 {	model ("progs/flame3.mdl");	}
 Long wall torch
 Makes crackling fire noise unless NO_SOUND is set
 */
-/*QUAKED light_flame_small_yellow (1 1 0) (-4 -4 -12) (4 4 16) NO_SOUND
+/*QUAKED light_flame_small_yellow (1 1 0) (-4 -4 -12) (4 4 16) START_OFF FADE NO_SOUND
 {	model ("progs/flame2.mdl");	}
 Small yellow flame
 Makes crackling fire noise unless NO_SOUND is set
 */
-/*QUAKED light_flame_large_yellow (1 1 0) (-8 -8 -12) (8 8 40) NO_SOUND
+/*QUAKED light_flame_large_yellow (1 1 0) (-8 -8 -12) (8 8 40) START_OFF FADE NO_SOUND
 {	model ( { "path" : "progs/flame2.mdl", "frame" : 1 } );	}
 Large yellow flame
 Makes crackling fire noise unless NO_SOUND is set
 */
-/*QUAKED light_flame_sprite (1 1 0) (-16 -16 0) (16 16 40) NO_SOUND
+/*QUAKED light_flame_sprite (1 1 0) (-16 -16 0) (16 16 40) START_OFF FADE NO_SOUND
 Large yellow flame sprite
-Makes crackling fire noise unless NO_SOUND is set
+Makes crackling fire noise
+See the "light" entity for a full description
 */
-/*QUAKED misc_model (0 0 1) (-16 -16 -16) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+/*QUAKED misc_model (0 0 1) (-16 -16 -16) (16 16 16) SOLID X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
 	model ({"path" : mdl, "skin" : skin, "frame": frame});
 }
 Custom map object. Non-solid by default.
 
-"mdl" "name" - model to load, e.g. "progs/grenade.mdl". Will also work on .bsp and .spr
+Keys:
+"mdl" "name" - model to load, e.g. "progs/grenade.mdl"
 "pos1", "pos2" "vector" - bounding box size. if not defined it will default to '-16 -16 -16', '16 16 16'
 "skin" "n" - model or sprite skin
 "frame" "n" - model or sprite frame
 
-==========
-Spawnflags
-==========
-1 - Object is solid
+Spawnflags:
+SOLID - Model is solid
 */
 /*QUAKED misc_demon_dead (1 0 0) (-32 -32 -24) (32 32 0) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
@@ -538,31 +658,58 @@ Dead Zombie
 }
 Zombie Head
 */
-/*QUAKED air_bubbles (0 .5 .8) (-8 -8 -8) (8 8 8)
+/*QUAKED func_plat (0 .5 .8) ? LOW_TRIGGER X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A platform that moves vertically up and down.
 
-testing air bubbles
-*/
-/*QUAKED misc_fireball (1 .5 0) (-8 -8 -8) (8 8 8)
-{	model ("progs/lavaball.mdl");	}
-Flying lava balls
+Plats are always drawn in the editor in the up position, so they will light correctly.
+They are then moved to the down position on map load.
+
+Plats spawn a trigger field that cause the plat to rise when a player touches it. By default
+this trigger field spans the entire height of the plat. The plat will stay in the up position as
+long as the player is touching the trigger and will fall again when they step off.
+
+The plat will move a distance of its "height" minus any "lip".
+
+If the plat has a "targetname", it will start out disabled in the up position until
+it is triggered, when it will lower and behave like a normal plat.
+
+Spawnflags:
+LOW_TRIGGER - the plat trigger field is spawned only at the bottom of the plat.
 
 Keys:
-speed - set vertical speed of fireballs. default 1000.
-wait - delay between fireballs (with some randomness). default 3 seconds.
-count - number of fireballs to launch. default 1.
-dmg - damage dealt by fireballs. default 20.
+"dmg" - damage to deal if blocked. default 1.
+"speed"	- speed of movement. default 150.
+"lip" - amount of height to leave at end of move. this should usually be
+ the height of the component of your plat that a player can step upon. default 8.
+"height" - override the movement distance, which by default
+ is calculated from the height of the actual brush minus any lip.
+ "wait" - time to wait at top before returning. default 3.
+"sounds" -
+-1) custom, see below
+0) chain slow (default)
+1) base fast
+2) chain slow (default)
+3) base alternative
+"noise" - sound to play at start of plat movement. tip: can contain looped segments.
+"noise1" - sound to play at end of plat movement.
 */
-/*QUAKED misc_explobox (1 .5 0) (0 0 0) (32 32 64)
-{
-	model("maps/b_explob.bsp");
-}
-Explosive box
+/*QUAKED func_train (0 .5 .8) ?
+Trains are moving platforms that players can ride.
+The targets origin specifies the min point of the train at each corner.
+The train spawns at the first target it is pointing at.
+If the train is the target of a button or trigger, it will not begin moving until activated.
+speed	default 100
+dmg		default	2
+sounds
+1) ratchet metal
+
 */
-/*QUAKED misc_explobox2 (1 .5 0) (0 0 0) (32 32 32)
-{
-	model("maps/b_exbox2.bsp");
-}
-Smaller explosive box
+/*QUAKED misc_teleporttrain (.5 .5 .5) (-16 -16 -16) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/teleport.mdl");	}
+
+Teleporter target for final boss level. Must target a series of 'path_corner' entities.
+It will position itself on its first target at map load.
+If a targetname is set, it must be triggered to start moving, otherwise it will start automatically.
 */
 /*QUAKED trap_spikeshooter (1 .5 0) (-8 -8 -8) (8 8 8) superspike laser
 When triggered, fires a spike in the direction set in QuakeEd.
@@ -573,130 +720,52 @@ Continuously fires spikes.
 "wait" time between spike (1.0 default)
 "nextthink" delay before firing first spike, so multiple shooters can be stagered.
 */
-/*QUAKED worldspawn (0 0 0) ?
-The world entity.
+/*QUAKED misc_explobox (1 .5 0) (0 0 0) (32 32 64) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model("maps/b_explob.bsp");
+}
+Large explosive box
+If "targetname" is set, cannot be shot and must be triggered.
 
 Keys:
-"message" "name" - Map name
-"sounds" "n" - CD / Music track to play
-"worldtype" "n":
-0 - medieval, 1 - metal, 2 - base
+"targetname" - if set, cannot be shot and must be triggered.
+"health" - override default health of 20.
+"dmg" - override default damage of 160.
 */
-/*QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION
-When the player touches this, he gets sent to the map listed in the "map" key.
-Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display stats.
+/*QUAKED misc_explobox2 (1 .5 0) (0 0 0) (32 32 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model("maps/b_exbox2.bsp");
+}
+Small explosive box
+
+Keys:
+"targetname" - if set, cannot be shot and must be triggered.
+"health" - override default health of 20.
+"dmg" - override default damage of 160.
 */
-/*QUAKED func_breakable (0 .5 .8) ? EXPLODE NO_EXPLOSION_SPRITE NO_EXPLOSION_SOUND SPAWN_SMOKE X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-Breakable brush model
+/*QUAKED func_explosive (1 .5 0) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Brush that explodes when shot or triggered
+
+Keys:
+"targetname" - if set, cannot be shot and must be triggered.
+"health" - override default health of 20.
+"dmg" - override default damage of 160.
+*/
+/*QUAKED misc_fireball (1 .5 0) (-8 -8 -8) (8 8 8) SOUNDS X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model ("progs/lavaball.mdl");	}
+Flying lava balls
+
+Keys:
+speed - set the vertical speed of fireballs. default 1000.
+wait - delay between fireballs (with some randomness). default 3 seconds.
+count - number of fireballs to launch. default 1.
+dmg - damage dealt by fireballs. default 20.
+targetname - if set, must be triggered to activate.
 
 Spawnflags:
-EXPLODE - will explode upon destruction. Set the dmg key to the force of the explosion.
-You can set dmg to 0 for just the explosion effects.
-NO_EXPLOSION_SPRITE - don't show explosion sprite.
-NO_EXPLOSION_SOUND - don't make explosion sound or light.
-SPAWN_SMOKE - will spawn some additional smoke upon destuction
-
-Keys:
-"style" "n"
-Preset style, 1=base crates, 2=stone/brick
-Sets debris model, particle color and sounds automatically
-If mdl1-3, noise or colour are set they will override the preset
-
-"mdl1", "mdl2", "mdl3" "name"
-custom models for debris chunks
-
-"color" "n"
-particle color for damage, range 0-254 (from palette)
-
-"noise1", "noise2" "name"
-custom sound for break / damage
-
-"health" "n"
-damage required to destroy. default 30.
-
-"targetname" "name"
-if set, the breakable must be triggered to destroy it
-
-"count" "n"
-number of pieces of debris to spawn. default 8.
-
-"angle" "n"
-If set, overrides the direction debris moves in. Use -1 and -2 for up/down. Use 360 for a yaw of 0.
-
-"dmg" "n"
-Amount of explosive damage to deal. Default 60.
+SOUNDS - if set, fireballs will make a whooshing sound when launched.
 */
-/*QUAKED func_door (0 .5 .8) ? START_OPEN x DOOR_DONT_LINK GOLD_KEY SILVER_KEY TOGGLE
-if two doors touch, they are assumed to be connected and operate as a unit.
-
-TOGGLE causes the door to wait in both the start and end states for a trigger event.
-
-START_OPEN causes the door to move to its destination when spawned, and operate in reverse.  It is used to temporarily or permanently close off an area when triggered (not usefull for touch or takedamage doors).
-
-Key doors are allways wait -1.
-
-"message"	is printed when the door is touched if it is a trigger door and it hasn't been fired yet
-"angle"		determines the opening direction
-"targetname" if set, no touch field will be spawned and a remote button or trigger field activates the door.
-"health"	if set, door must be shot open
-"speed"		movement speed (100 default)
-"wait"		wait before returning (3 default, -1 = never return)
-"lip"		lip remaining at end of move (8 default)
-"dmg"		damage to inflict when blocked (2 default)
-"sounds"
-0)	no sound
-1)	stone
-2)	base
-3)	stone chain
-4)	screechy metal
-*/
-/*QUAKED func_door_secret (0 .5 .8) ? open_once 1st_left 1st_down no_shoot always_shoot
-Basic secret door. Slides back, then to the side. Angle determines direction.
-wait  = # of seconds before coming back
-1st_left = 1st move is left of arrow
-1st_down = 1st move is down from arrow
-always_shoot = even if targeted, keep shootable
-t_width = override WIDTH to move back (or height if going down)
-t_length = override LENGTH to move sideways
-"dmg"		damage to inflict when blocked (2 default)
-
-If a secret door has a targetname, it will only be opened by it's botton or trigger, not by damage.
-"sounds"
-1) medieval
-2) metal
-3) base
-*/
-/*QUAKED func_button (0 .5 .8) ? START_OFF X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-A button that can either be pushed or shot.
-
-When a button is activated, it moves the distance of its size,
-in the direction of its angle, leaving a lip at the end of the move.
-when the move is completed, it triggers all of its targets, waits some time,
-then returns to its original position where it can be triggered again.
-
-Keys:
-"target" - entities to trigger when activated
-"killtarget" - entities to remove when activated
-"targetname" - if targeted, the button will activate, unless it's already activated
-or switched off. if switched off, it will enable itself.
-"message" - message to print to player on activation
-"delay" - button will wait some time before firing its targets
-"angle" - direction of movement. use -1 for up and -2 for down.
-"speed"	- speed of movement. default 40.
-"wait" - wait before returning. default 1. use -1 to never return.
-"lip" - number of units to leave at end of move. default 4.
-"health" - if set, the button must be shot rather than pushed
-"sounds" -
-0) steam metal
-1) wooden clunk
-2) metallic click
-3) in-out
-4) custom sound - set .noise to the sound to use
-
-Spawnflags:
-START_OFF - the button starts in a disabled state, and must be triggered to enable it.
-*/
-/*QUAKED trigger_multiple (.5 .5 .5) ? NOTOUCH
+/*QUAKED trigger_multiple (.5 .5 .5) ? NOTOUCH X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 Variable sized repeatable trigger.
 
 Keys:
@@ -718,7 +787,7 @@ Spawnflags:
 If NOTOUCH is set, the trigger is only fired by other entities, not by touching.
 NOTOUCH has been obsoleted by trigger_relay.
 */
-/*QUAKED trigger_once (.5 .5 .5) ? NOTOUCH
+/*QUAKED trigger_once (.5 .5 .5) ? NOTOUCH X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 Variable sized trigger. Triggers once, then removes itself.
 
 Keys:
@@ -742,9 +811,9 @@ NOTOUCH has been obsoleted by trigger_relay.
 */
 /*QUAKED trigger_relay (.5 .5 .5) (-8 -8 -8) (8 8 8)
 This fixed size trigger cannot be touched, it can only be fired by other events.
-It can contain killtargets, targets, delays, and messages.
+It can contain targets, killtargets, delays, and messages.
 */
-/*QUAKED trigger_secret (.5 .5 .5) ?
+/*QUAKED trigger_secret (.5 .5 .5) ? NOTOUCH X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 Variable sized secret counter trigger. Triggers once, then removes itself.
 
 Keys:
@@ -754,7 +823,7 @@ Keys:
 "delay" - will wait after activation before firing
 "health" - if set, trigger must be killed to activate
 "sounds" -
-1) secret (default if not set)
+1) secret (default)
 2) beep beep
 3) large switch
 "angle" - player must be facing this direction to activate the trigger.
@@ -764,71 +833,76 @@ Spawnflags:
 If NOTOUCH is set, the trigger is only fired by other entities, not by touching.
 NOTOUCH has been obsoleted by trigger_relay.
 */
-/*QUAKED trigger_counter (.5 .5 .5) ? NOMESSAGE
-Acts as an intermediary for an action that takes multiple inputs.
-If NOMESSAGE is not set, it will print "Only 2 more to go.." etc when triggered and "Sequence completed!" when finished.
+/*QUAKED trigger_counter (.5 .5 .5) ? NOMESSAGE X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Acts as an intermediary for an action that takes multiple inputs - cannot be interacted with directly.
+It will print "Only X more to go.." when triggered and "Sequence completed!" when finished.
 After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
+
+Spawnflags:
+NOMESSAGE - don't display any messages
 */
-/*QUAKED trigger_teleport (.5 .5 .5) ? PLAYER_ONLY SILENT
+/*QUAKED trigger_setskill (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Trigger that sets "skill" to the value of "message".
+*/
+/*QUAKED trigger_onlyregistered (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Only fires if playing the registered version, otherwise prints the message.
+*/
+/*QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+When the player touches this trigger, they get sent to the map listed in the "map" key.
+Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display the end of level stats.
+*/
+/*QUAKED trigger_hurt (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A trigger that damages anything alive that touches it.
+
+Keys:
+dmg - damage to deal. default 5.
+wait - time in seconds between causing damage. default 1
+*/
+/*QUAKED trigger_void (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A variable trigger that removes items, projectiles and monsters touching it.
+Also kills the player.
+*/
+/*QUAKED trigger_ladder (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Invisible ladder trigger.
+When the player is touching this trigger, they can climb by holding jump.
+If "angle" is set, the player must face that direction to climb the ladder.
+An angle of 0 is assumed to mean no direction, so use an angle of 360 instead.
+*/
+/*QUAKED trigger_monsterjump (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Walking monsters that touch this will jump at a set "speed" and "height" according to "angle"
+
+Keys:
+"angle" - angle to fling monsters
+"speed" - defaults to 200, the speed thrown forward
+"height" - defaults to 200, the speed thrown upwards
+"netname" - only monsters with this classname will be affected, e.g. "monster_shambler"
+*/
+/*QUAKED trigger_push (.5 .5 .5) ? PUSH_ONCE NO_SOUND X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Pushes the player in the direction of "angle" at "speed" and makes the flying wind sound.
+Note that "speed" will be multiplied by a factor of 10, so 30 = 300
+Use an "angle" of 360 for 0, -1 for up and -2 for down.
+Set "noise" for a custom sound
+Set PUSH_ONCE to remove after first use.
+Set NO_SOUND to make silent.
+*/
+/*QUAKED trigger_teleport (.5 .5 .5) ? PLAYER_ONLY SILENT X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 Variable sized trigger that teleports players and monsters to a destination marker.
 "target" must be set to an info_teleport_destination with a matching "targetname" field.
 If the trigger_teleport has a "targetname", it will only teleport entities once it has been triggered.
 This is used in id1 for teleporting monsters - this has been obsoleted by the MONSTER_TELEPORT flag.
-*/
-/*QUAKED trigger_setskill (.5 .5 .5) ?
-sets skill level to the value of "message"
-*/
-/*QUAKED trigger_onlyregistered (.5 .5 .5) ?
-Only fires if playing the registered version, otherwise prints the message
-*/
-/*QUAKED trigger_hurt (.5 .5 .5) ?
-Any object touching this will be hurt
-set dmg to damage amount
-defalt dmg = 5
-*/
-/*QUAKED trigger_push (.5 .5 .5) ? PUSH_ONCE
-Pushes the player
-*/
-/*QUAKED trigger_monsterjump (.5 .5 .5) ?
-Walking monsters that touch this will jump in the direction of the trigger's angle
-"speed" default to 200, the speed thrown forward
-"height" default to 200, the speed thrown upwards
-*/
-/*QUAKED trigger_ladder (.5 .5 .5) ?
-Invisible ladder trigger.
-When the player is touching this trigger, he can climb by holding jump.
-If "angle" is set, the player must face that direction to climb the ladder.
-An angle of 0 is assumed to mean no direction, so use an angle of 360 instead.
-*/
-/*QUAKED func_plat (0 .5 .8) ? PLAT_LOW_TRIGGER
-speed	default 150
 
-Plats are always drawn in the extended position, so they will light correctly.
-
-If the plat is the target of another trigger or button, it will start out disabled in the extended position until it is trigger, when it will lower and become a normal plat.
-
-If the "height" key is set, that will determine the amount the plat moves, instead of being implicitly determined by the model's height.
-Set "sounds" to one of the following:
-1) base fast
-2) chain slow
+Spawnflags: 
+PLAYER_ONLY - just players, not monsters
+SILENT - don't spawn ambient teleporter noise
 */
-/*QUAKED func_train (0 .5 .8) ?
-Trains are moving platforms that players can ride.
-The targets origin specifies the min point of the train at each corner.
-The train spawns at the first target it is pointing at.
-If the train is the target of a button or trigger, it will not begin moving until activated.
-speed	default 100
-dmg		default	2
-sounds
-1) ratchet metal
+/*QUAKED worldspawn (0 0 0) ?
+The world entity.
 
-*/
-/*QUAKED misc_teleporttrain (.5 .5 .5) (-16 -16 -16) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/teleport.mdl");	}
-
-Teleporter target for final boss level. Must target a series of 'path_corner' entities.
-It will position itself on its first target at map load.
-If a targetname is set, it must be triggered to start moving, otherwise it will start automatically.
+Keys:
+"message" "name" - Map name
+"sounds" "n" - CD / Music track to play
+"worldtype" "n":
+0 - medieval, 1 - metal, 2 - base
 */
 /*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 {
@@ -872,7 +946,7 @@ Scrag.
 }
 Rottweiler.
 */
-/*QUAKED monster_zombie (1 0 0) (-16 -16 -24) (16 16 32) Crucified Ambush Teleport X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD
+/*QUAKED monster_zombie (1 0 0) (-16 -16 -24) (16 16 32) CRUCIFIED AMBUSH TELEPORT X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD
 {
 	model ( {{ spawnflags & 2 -> { "path" : "progs/zombie.mdl", "frame" : 192 }, "progs/zombie.mdl" }} );
 }
@@ -885,8 +959,8 @@ Zombie.
 Chthon.
 */
 /*QUAKED event_lightning (0 1 1) (-8 -8 -8) (8 8 8)
-Triggerable lightning event.
-You must have two func_door's in the level which both contain a target of "lightning" (not targetname)
+Triggerable lightning event for chthon only.
+You must have two func_door's in the level which both contain a target of "lightning" (not targetname!)
 */
 /*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
 {

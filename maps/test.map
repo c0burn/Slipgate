@@ -6,14 +6,11 @@
 "message" "Slipgate Test Map"
 "_tb_def" "external:slipgate.def"
 "wad" "gfx/base.wad;gfx/lights.wad;gfx/medieval.wad;gfx/misc.wad;gfx/runic.wad;gfx/ubiBase_v100.wad"
-"_sunlight2" "100"
-"_sunlight" "100"
+"_sunlight2" "120"
 "_tb_mod" "slipgate"
 "fog" "0.08 0.05 0.10 0.15"
 "worldtype" "2"
-"_dirt" "1"
-"_dirtmode" "1"
-"_dirtscale" "2"
+"_sunlight" "120"
 // brush 0
 {
 ( -256 -64 -32 ) ( -256 -63 -32 ) ( -256 -64 -31 ) sfloor1_4 -0 -0 -0 1 1
@@ -1141,7 +1138,6 @@
 {
 "classname" "trigger_ladder"
 "angle" "360"
-"blah" ""
 // brush 0
 {
 ( 940 -32 -0 ) ( 940 -31 -0 ) ( 940 -32 1 ) trigger -32 -0 -0 1 1
@@ -1172,8 +1168,7 @@
 }
 // entity 40
 {
-"classname" "func_wall"
-"_shadow" "1"
+"classname" "func_detail_wall"
 // brush 0
 {
 ( 948 -32 88 ) ( 948 -31 88 ) ( 948 -32 89 ) metal04_1 -32 24 -0 1 1
@@ -1290,7 +1285,7 @@
 // entity 45
 {
 "classname" "info_player_start"
-"origin" "-160 208 24"
+"origin" "-208 208 24"
 "angle" "315"
 }
 // entity 46
@@ -1334,41 +1329,19 @@
 "classname" "monster_army"
 "origin" "144 -0 24"
 "target" "b1"
+"message" "The button is now activated..."
 }
 // entity 49
 {
-"classname" "info_player_test"
-"origin" "704 48 24"
-"angle" "75"
-}
-// entity 50
-{
-"classname" "trigger_once"
-"target" "p1"
-// brush 0
-{
-( 704 144 -0 ) ( 704 145 -0 ) ( 704 144 1 ) trigger 0 0 0 1 1
-( 704 144 -0 ) ( 704 144 1 ) ( 705 144 -0 ) trigger 0 0 0 1 1
-( 704 144 -0 ) ( 705 144 -0 ) ( 704 145 -0 ) trigger 0 0 0 1 1
-( 832 176 16 ) ( 832 177 16 ) ( 833 176 16 ) trigger 0 0 0 1 1
-( 832 176 16 ) ( 833 176 16 ) ( 832 176 17 ) trigger 0 0 0 1 1
-( 832 176 16 ) ( 832 176 17 ) ( 832 177 16 ) trigger 0 0 0 1 1
-}
-}
-// entity 51
-{
 "classname" "func_plat"
-"sounds" "1"
+"sounds" "3"
+"lip" "16"
+"noise" "plats/plat3.wav"
+"noise1" "plats/plat4.wav"
+"speed" "50"
+"noise2" "plats/plat5.wav"
+"ideal_yaw" "1"
 // brush 0
-{
-( 704 192 112 ) ( 704 193 112 ) ( 704 192 113 ) plat_side1 -0 48 -0 1 1
-( 704 192 112 ) ( 704 192 113 ) ( 705 192 112 ) plat_side1 -0 48 -0 1 1
-( 704 192 112 ) ( 705 192 112 ) ( 704 193 112 ) plat_top1 -0 -0 -0 1 1
-( 832 256 128 ) ( 832 257 128 ) ( 833 256 128 ) plat_top1 -0 -0 -0 1 1
-( 832 256 128 ) ( 833 256 128 ) ( 832 256 129 ) plat_side1 -0 48 -0 1 1
-( 832 256 128 ) ( 832 256 129 ) ( 832 257 128 ) plat_side1 -0 48 -0 1 1
-}
-// brush 1
 {
 ( 736 208 -0 ) ( 736 209 -0 ) ( 736 208 1 ) plat_stem1 -0 -32 -0 1 1
 ( 752 208 -0 ) ( 736 224 -0 ) ( 736 224 128 ) plat_stem1 0 -32 0 1 1
@@ -1379,13 +1352,29 @@
 ( 784 208 -0 ) ( 800 224 128 ) ( 800 224 -0 ) plat_stem1 0 -32 0 1 1
 ( 800 256 16 ) ( 800 256 17 ) ( 800 257 16 ) plat_stem1 -0 -32 -0 1 1
 }
-// brush 2
+// brush 1
 {
-( 704 192 -0 ) ( 704 193 -0 ) ( 704 192 1 ) clip 0 0 0 1 1
-( 704 192 -0 ) ( 704 192 1 ) ( 705 192 -0 ) clip 0 0 0 1 1
-( 704 192 -0 ) ( 705 192 -0 ) ( 704 193 -0 ) clip 0 0 0 1 1
-( 832 208 112 ) ( 832 209 112 ) ( 833 208 112 ) clip -0 -0 -0 1 1
-( 832 256 16 ) ( 833 256 16 ) ( 832 256 17 ) clip -0 -0 -0 1 1
-( 832 208 16 ) ( 832 208 17 ) ( 832 209 16 ) clip 0 0 0 1 1
+( 704 192 112 ) ( 704 193 112 ) ( 704 192 113 ) plat_side1 -0 48 -0 1 1
+( 704 208 128 ) ( 720 192 256 ) ( 720 192 128 ) plat_side1 0 48 0 1 1
+( 704 192 112 ) ( 704 192 113 ) ( 705 192 112 ) plat_side1 -0 48 -0 1 1
+( 704 192 112 ) ( 705 192 112 ) ( 704 193 112 ) plat_top1 -0 -0 -0 1 1
+( 832 256 128 ) ( 832 257 128 ) ( 833 256 128 ) plat_top1 -0 -0 -0 1 1
+( 832 256 128 ) ( 833 256 128 ) ( 832 256 129 ) plat_side1 -0 48 -0 1 1
+( 816 192 128 ) ( 832 208 256 ) ( 832 208 128 ) plat_side1 0 48 0 1 1
+( 832 256 128 ) ( 832 256 129 ) ( 832 257 128 ) plat_side1 -0 48 -0 1 1
+}
+}
+// entity 50
+{
+"classname" "trigger_once"
+"message" "\bfunc_plat with custom .lip and sounds"
+// brush 0
+{
+( 688 144 -0 ) ( 688 145 -0 ) ( 688 144 1 ) trigger 0 0 0 1 1
+( 688 144 -0 ) ( 688 144 1 ) ( 689 144 -0 ) trigger 0 0 0 1 1
+( 688 144 -0 ) ( 689 144 -0 ) ( 688 145 -0 ) trigger 0 0 0 1 1
+( 848 192 32 ) ( 848 193 32 ) ( 849 192 32 ) trigger -0 -0 -0 1 1
+( 848 192 16 ) ( 849 192 16 ) ( 848 192 17 ) trigger 0 0 0 1 1
+( 848 192 16 ) ( 848 192 17 ) ( 848 193 16 ) trigger 0 0 0 1 1
 }
 }
