@@ -36,9 +36,12 @@ void() boss_idle =
 		entity client = checkclient();
 		if (client)
 		{
-			self.enemy = client;
-			boss_missile1();
-			return;
+			if (visible(client))
+			{
+				self.enemy = client;
+				boss_missile1();
+				return;
+			}
 		}
 	}
 	
@@ -116,6 +119,7 @@ void() boss_check_enemy =
 			{
 				if (self.enemy.health > 0)
 					return;
+
 				// go to idle, no live players found
 				self.enemy = world;
 				boss_idle();
@@ -218,6 +222,7 @@ boss_awake
 ==========*/
 void() boss_awake =
 {
+	self.health = skill + 1;
 	self.yaw_speed = 20;
 	self.view_ofs = '0 0 200';
 	
@@ -230,16 +235,15 @@ void() boss_awake =
 	setmodel (self, "progs/boss.mdl");
 	setsize (self, '-128 -128 -24', '128 128 256');
 	
-	self.health = skill + 1;
-	
-	boss_rise1 ();
+	boss_rise1();
 };
 
 /*QUAKED monster_boss (1 0 0) (-128 -128 -24) (128 128 256)
 {
 	model ("progs/boss.mdl");
 }
-Chthon.
+Chthon, for Boss levels.
+Must be triggered to activate.
 */
 void() monster_boss =
 {
@@ -300,7 +304,7 @@ void() lightning_use =
 {
 	if (self.state)
 		return;
-				
+
 	// check the electrodes are aligned and not moving
 	if (self.target1.state != self.target2.state)
 		return;
@@ -308,7 +312,7 @@ void() lightning_use =
 		return;
 
 	self.state = 1;
-		
+
 	// don't let the electrodes go back up until the bolt is done
 	self.target1.nextthink = -1;
 	self.target2.nextthink = -1;
@@ -366,7 +370,7 @@ void() event_lightning_go =
 };
 
 /*QUAKED event_lightning (0 1 1) (-8 -8 -8) (8 8 8)
-Triggerable lightning event for chthon only.
+Triggerable lightning event for Chthon only.
 You must have two func_door's in the level which both contain a target of "lightning" (not targetname!)
 */
 void() event_lightning =

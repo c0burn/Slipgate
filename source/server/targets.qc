@@ -13,11 +13,11 @@ void() DelayUseTargets =
 };
 
 /*==========
-DelayKilltargets
+DelayKillTargets
 
 actually removes any kiltargets
 ==========*/
-void() DelayKilltargets =
+void() DelayKillTargets =
 {
 	entity e = world;
 	while (1)
@@ -73,11 +73,12 @@ void() UseTargets =
 	if (self.killtarget != "")
 	{
 		// we use a think to remove the killtargets because we could be in the 
-		// middle of a touch function
+		// middle of a touch function, which can cause crashes in vanilla engines
+		// without fixed SV_TouchLinks
 		e = spawn();
-		e.classname = "DelayKilltargets";
+		e.classname = "DelayKillTargets";
 		e.killtarget = self.killtarget;
-		e.think = DelayKilltargets;
+		e.think = DelayKillTargets;
 		e.nextthink = time;		// do it on the next frame
 
 		// clear out some essential fields to stop it being used before the actual removal
@@ -87,20 +88,18 @@ void() UseTargets =
 			e = find(e, targetname, self.killtarget);
 			if (!e)
 				break;
-			e.target = "";
-			e.killtarget = "";
 			e.use = SUB_Null;
 			e.touch = SUB_Null;
 			e.think = SUB_Null;
 			e.nextthink = -1;
 		}
-
+		
 		// workaround for various maps that have triggers which contains both "target" and "killtarget"
 		// set to identical values
 		if (self.target == self.killtarget)
 			return;
 	}
-
+	
 	// fire any targets
 	if (self.target != "")
 	{

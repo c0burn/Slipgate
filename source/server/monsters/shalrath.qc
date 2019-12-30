@@ -160,8 +160,10 @@ void() ShalMissile =
 	missile.origin = self.origin + '0 8 20';
 	missile.velocity = dir * 400;
 	missile.avelocity = '300 300 300';
-	missile.nextthink = flytime + time;
+	
 	missile.think = ShalHome;
+	missile.nextthink = time + flytime;
+	
 	missile.enemy = self.enemy;
 	missile.touch = ShalMissileTouch;
 };
@@ -184,18 +186,9 @@ void() ShalHome =
 };
 
 void() ShalMissileTouch =
-{
-	if (other.classname == "monster_zombie")
-		Damage (other, self, self, 110);	
-		
+{		
 	RadiusDamage (self, self.owner, 40, world);
-
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_TAREXPLOSION);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
-
+	te_tarexplosion(self.origin);
 	remove(self);
 };
 

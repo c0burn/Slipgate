@@ -6,44 +6,22 @@ defs.qc
 System Globals
 ==========*/
 
-entity		self;
-entity		other;
-entity		world;
-float		time;
-float		frametime;
-float		force_retouch;
+entity		self, other, world;
+float		time, frametime, force_retouch;
 string		mapname;
-float		deathmatch;
-float		coop;
-float		teamplay;
-float		serverflags;
-float		total_secrets;
-float		total_monsters;
-float		found_secrets;
-float		killed_monsters;
+float		deathmatch, coop, teamplay, serverflags;
+float		total_secrets, total_monsters, found_secrets, killed_monsters;
 float		parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8,
 			parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16;
 vector		v_forward, v_up, v_right;
-float		trace_allsolid;
-float		trace_startsolid;
-float		trace_fraction;
-vector		trace_endpos;
-vector		trace_plane_normal;
+float		trace_allsolid, trace_startsolid, trace_fraction;
+vector		trace_endpos, trace_plane_normal;
 float		trace_plane_dist;
 entity		trace_ent;
-float		trace_inopen;
-float		trace_inwater;
+float		trace_inopen, trace_inwater;
 entity		msg_entity;
-void() 		main;
-void()		StartFrame;
-void() 		PlayerPreThink;
-void() 		PlayerPostThink;
-void()		ClientKill;
-void()		ClientConnect;
-void() 		PutClientInServer;
-void()		ClientDisconnect;
-void()		SetNewParms;
-void()		SetChangeParms;	
+void() 		main, StartFrame, PlayerPreThink, PlayerPostThink, ClientKill, ClientConnect,
+			PutClientInServer, ClientDisconnect, SetNewParms, SetChangeParms;
 void		end_sys_globals;
 
 /*==========
@@ -192,7 +170,6 @@ __used string(string s) precache_sound2 = #76;
 __used string(string s) precache_file2	= #77;
 __used void(entity e) setspawnparms = #78;
 
-
 /*==========
 Constants
 ==========*/
@@ -215,7 +192,7 @@ float	FL_ONGROUND				= 512;
 float	FL_PARTIALGROUND		= 1024;
 float	FL_WATERJUMP			= 2048;
 float	FL_JUMPRELEASED			= 4096;
-;
+
 // movetype
 float	MOVETYPE_NONE			= 0;
 float	MOVETYPE_WALK			= 3;
@@ -412,6 +389,7 @@ float	MOVE_MISSILE		= 2;
 
 // flags2
 float	FL2_ONLADDER		= 1;
+float	FL2_PROJECTILE		= 2;
 
 /*==========
 Globals

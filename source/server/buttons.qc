@@ -207,7 +207,8 @@ void() func_button =
 	SetPositiveDefault(speed, 40);
 	SetFloatDefault(wait, 1);
 	SetFloatDefault(lip, 4);
-
+	self.colour = 192;
+	
 	self.movetype = MOVETYPE_PUSH;
 	self.solid = SOLID_BSP;
 	setmodel (self, self.model);

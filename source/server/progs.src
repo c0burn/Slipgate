@@ -12,13 +12,17 @@ tempents.qc
 obituary.qc
 damage.qc
 
+gore.qc
+projectiles.qc
+w_shotguns.qc
+weapons.qc
+
 waypoints.qc
 monsters.qc
 fight.qc
 ai.qc
 
-gore.qc
-weapons.qc
+
 
 items.qc
 it_ammo.qc
@@ -41,9 +45,9 @@ lights.qc
 misc.qc
 plats.qc
 trains.qc
-traps.qc
 trap_explobox.qc
 trap_fireball.qc
+trap_shooter.qc
 triggers.qc
 trigger_changelevel.qc
 trigger_hurt.qc

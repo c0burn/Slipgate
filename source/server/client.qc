@@ -630,9 +630,6 @@ void() PlayerPreThink =
 		PlayerDeathThink();
 		return;
 	}
-
-	stuffcmd(self, "v_cshift 0\n");
-
 	WaypointPreFrame();
 
 	CheckRules ();

@@ -229,7 +229,7 @@ void() trigger_secret =
 {
 	total_secrets = total_secrets + 1;
 	self.wait = -1;
-	SetStringDefault(message, "Your found a secret area!");
+	SetStringDefault(message, "You found a secret area!");
 	SetPositiveDefault(sounds, 1);
 	trigger_multiple();
 };
@@ -317,6 +317,8 @@ onlyregistered_touch
 static void() onlyregistered_touch =
 {
 	if (other.classname != "player")
+		return;
+	if (other.health <= 0)
 		return;
 	if (self.attack_finished > time)
 		return;

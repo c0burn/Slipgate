@@ -1,21 +1,31 @@
+/*==========
+SUB_PainNull
+==========*/
 void(entity attacker, float damage) SUB_PainNull = {};
 
+/*==========
+SUB_Null
+==========*/
 void() SUB_Null = {};
 
+/*==========
+SUB_Remove
+==========*/
 void() SUB_Remove = {remove(self);};
 
+/*==========
+SUB_Fade
+==========*/
 void() SUB_Fade =
 {
 	if (self.alpha == 0)
 		self.alpha = 1;
-		
 	self.alpha = self.alpha - 0.1;
 	if (self.alpha <= 0)
 	{
 		remove(self);
 		return;
 	}
-	
 	self.think = SUB_Fade;
 	self.nextthink = time + 0.1;
 };
@@ -42,7 +52,7 @@ void() SetMovedir =
 /*==========
 SUB_CalcMoveDone
 
-After moving, set origin to exact final destination and run think
+After moving, set origin to exact final destination and run think1
 ==========*/
 void() SUB_CalcMoveDone =
 {
@@ -64,7 +74,7 @@ void(vector dst, float spd, void() thnk) SUB_CalcMove =
 {
 	if (!spd)
 	{
-		objerror("no speed defined");
+		objerror("SUB_CalcMove: no speed defined");
 		return;
 	}
 
@@ -75,7 +85,10 @@ void(vector dst, float spd, void() thnk) SUB_CalcMove =
 	if (dst == self.origin)
 	{
 		self.velocity = '0 0 0';
-		self.nextthink = self.ltime + 0.01;
+		if (self.movetype == MOVETYPE_PUSH)
+			self.nextthink = self.ltime + 0.01;
+		else
+			self.nextthink = time + 0.01;
 		return;
 	}
 
@@ -84,12 +97,18 @@ void(vector dst, float spd, void() thnk) SUB_CalcMove =
 	if (traveltime < 0.01)
 	{
 		self.velocity = '0 0 0';
-		self.nextthink = self.ltime + 0.01;
+		if (self.movetype == MOVETYPE_PUSH)
+			self.nextthink = self.ltime + 0.01;
+		else
+			self.nextthink = time + 0.01;
 		return;
 	}
 
-	self.nextthink = self.ltime + traveltime;
 	self.velocity = delta / traveltime;
+	if (self.movetype == MOVETYPE_PUSH)
+		self.nextthink = self.ltime + traveltime;
+	else
+		self.nextthink = time + traveltime;
 };
 
 void(float normal) SUB_AttackFinished =
@@ -97,18 +116,4 @@ void(float normal) SUB_AttackFinished =
 	self.cnt = 0;		// refire count for nightmare
 	if (skill != 3)
 		self.attack_finished = time + normal;
-};
-
-float (entity targ) visible;
-
-void (void() thinkst) SUB_CheckRefire =
-{
-	if (skill != 3)
-		return;
-	if (self.cnt == 1)
-		return;
-	if (!visible (self.enemy))
-		return;
-	self.cnt = 1;
-	self.think = thinkst;
 };

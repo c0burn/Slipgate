@@ -83,6 +83,7 @@ static void() explobox_start =
 
 	self.classname = "explobox";
 	SetPositiveDefault(dmg, 160);
+	self.colour = 192;
 	
 	// if targetname is set, it must be triggered
 	if (self.targetname != "")

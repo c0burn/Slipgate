@@ -60,8 +60,8 @@ W_BestWeapon
 
 returns the players best weapon
 to avoid self damage:
-does not switch to GL or RL
-does not switch to Thunderbolt if underwater
+does not auto-switch to GL or RL
+does not auto-switch to Thunderbolt if underwater
 ==========*/
 float(entity player) W_BestWeapon =
 {
@@ -204,128 +204,8 @@ void() W_FireAxe =
 	}
 };
 
-entity	multi_ent;
-float	multi_damage;
 
-void() ClearMultiDamage =
-{
-	multi_ent = world;
-	multi_damage = 0;
-};
 
-void() ApplyMultiDamage =
-{
-	if (!multi_ent)
-		return;
-	Damage (multi_ent, self, self, multi_damage);
-};
-
-void(entity hit, float damage) AddMultiDamage =
-{
-	if (!hit)
-		return;
-	
-	if (hit != multi_ent)
-	{
-		ApplyMultiDamage ();
-		multi_damage = damage;
-		multi_ent = hit;
-	}
-	else
-		multi_damage = multi_damage + damage;
-};
-
-void(float damage, vector dir) TraceAttack =
-{
-	vector org = trace_endpos - dir*4;
-
-	if (trace_ent.takedamage)
-	{
-		vector vel = normalize(dir + v_up*crandom() + v_right*crandom());
-		vel = vel + 2*trace_plane_normal;
-		vel = vel * 4;
-	
-		if (trace_ent.classname == "func_breakable")
-			particle(org, vel, trace_ent.colour, damage * 2);
-		else if (trace_ent.solid == SOLID_SLIDEBOX)
-			SpawnBlood (org, vel, damage * 2);
-		else
-			particle(org, vel, 192, damage * 2);
-			
-		AddMultiDamage (trace_ent, damage);
-	}
-	else
-	{
-		te_gunshot(org);
-	}
-};
-
-void(float shotcount, vector dir, vector spread) FireBullets =
-{
-	local	vector direction;
-	local	vector	src;
-	
-	makevectors(self.v_angle);
-
-	src = self.origin + v_forward*10;
-	src_z = self.absmin_z + self.size_z * 0.7;
-
-	ClearMultiDamage ();
-	while (shotcount > 0)
-	{
-		direction = dir + crandom()*spread_x*v_right + crandom()*spread_y*v_up;
-
-		traceline (src, src + direction*2048, FALSE, self);
-		if (trace_fraction != 1.0)
-			TraceAttack (4, direction);
-
-		shotcount = shotcount - 1;
-	}
-	ApplyMultiDamage ();
-};
-
-void() W_FireShotgun =
-{
-	local vector dir;
-
-	sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);	
-
-	self.punchangle_x = -2;
-	
-	self.currentammo = self.ammo_shells = self.ammo_shells - 1;
-	dir = aim (self, 100000);
-	FireBullets (6, dir, '0.04 0.04 0');
-};
-
-void() W_FireSuperShotgun =
-{
-	local vector dir;
-		
-	sound (self ,CHAN_WEAPON, "weapons/shotgn2.wav", 1, ATTN_NORM);	
-
-	self.punchangle_x = -4;
-	
-	self.currentammo = self.ammo_shells = self.ammo_shells - 2;
-	dir = aim (self, 100000);
-	FireBullets (14, dir, '0.14 0.08 0');
-};
-
-void()	s_explode1	=	[0,		s_explode2] {};
-void()	s_explode2	=	[1,		s_explode3] {};
-void()	s_explode3	=	[2,		s_explode4] {};
-void()	s_explode4	=	[3,		s_explode5] {};
-void()	s_explode5	=	[4,		s_explode6] {};
-void()	s_explode6	=	[5,		SUB_Remove] {};
-
-void() BecomeExplosion =
-{
-	self.solid = SOLID_NOT;
-	self.movetype = MOVETYPE_NONE;
-	self.velocity = '0 0 0';
-	self.touch = SUB_Null;
-	setmodel (self, "progs/s_explod.spr");
-	s_explode1();
-};
 
 void() T_MissileTouch =
 {
@@ -595,13 +475,10 @@ void() spike_touch =
 // hit something that bleeds
 	if (other.takedamage)
 	{
-		if (other.classname == "func_breakable")
-		{
+		if (other.solid == SOLID_BSP)
 			SpawnTouchParticles(9, other.colour);
-		}
 		else
 			SpawnTouchblood (9);
-			
 		Damage (other, self, self.owner, 9);
 	}
 	else
@@ -634,10 +511,10 @@ void() superspike_touch =
 // hit something that bleeds
 	if (other.takedamage)
 	{
-		if (other.classname == "func_breakable")
+		if (other.solid == SOLID_BSP)
 			SpawnTouchParticles(18, other.colour);
 		else
-			SpawnTouchblood(18);
+			SpawnTouchblood (18);
 			
 		Damage (other, self, self.owner, 18);
 	}
@@ -653,7 +530,6 @@ void() superspike_touch =
 	remove(self);
 
 };
-
 
 /*==========
 W_Attack
@@ -895,16 +771,6 @@ void() W_SuitCheat =
 	stuffcmd(self, "bf\n");
 };
 
-
-void() Aimlock =
-{
-	entity findguy = find(world, targetname, self.netname);
-	vector findguy_position = 0.5 * (findguy.absmin + findguy.absmax);
-	vector newangle = vectoangles(findguy_position - self.origin);
-	self.angles = self.v_angle = newangle;
-	self.fixangle = TRUE;
-};
-
 /*==========
 W_ImpulseCommands
 ==========*/
@@ -912,8 +778,6 @@ void() W_ImpulseCommands =
 {
 	if (!(deathmatch || coop))
 	{
-		if (self.impulse == 50)
-			Aimlock();
 		if (self.impulse == 9)
 			W_Cheat();
 		if (self.impulse == 11)
@@ -926,12 +790,6 @@ void() W_ImpulseCommands =
 			W_RingCheat();
 		if (self.impulse == 252)
 			W_SuitCheat();
-		if (self.impulse == 251)
-		{
-			W_Cheat();
-			W_QuadCheat();
-			W_PentCheat();
-		}
 	}
 
 	if (time < self.attack_finished)
@@ -946,7 +804,7 @@ W_QuadDamageSound
 ==========*/
 void() W_QuadDamageSound =
 {
-	if (self.super_damage_finished > time)
+	if (self.items & IT_QUAD)
 	{
 		if (self.super_sound < time)
 		{

@@ -510,6 +510,8 @@ void() func_door =
 	if (!self.dmg)
 		self.dmg = 2;
 
+	self.colour = 192;
+
 	self.pos1 = self.origin;
 	self.pos2 = self.pos1 + self.movedir*(fabs(self.movedir*self.size) - self.lip);
 
@@ -765,6 +767,8 @@ void () func_door_secret =
 	if (!self.dmg)
 		self.dmg = 2;
 		
+	self.colour = 192;
+	
 	// Magic formula...
 	self.mangle = self.angles;
 	self.angles = '0 0 0';

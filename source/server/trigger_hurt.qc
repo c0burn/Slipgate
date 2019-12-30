@@ -55,6 +55,7 @@ static void() void_touch =
 		other.items = other.items - other.items & IT_INVULNERABILITY;
 		other.invincible_finished = other.invincible_time = other.invincible_sound = 0;
 		
+		// black screen
 		stuffcmd(other, "v_cshift 0 0 0 255\n");
 		
 		Damage (other, self, self, other.health);

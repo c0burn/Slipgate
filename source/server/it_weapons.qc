@@ -8,7 +8,16 @@ static void() weapon_touch =
 	if (other.health <= 0)
 		return;
 	if (coop && (other.items & self.weapon))
+	{
+		// fire targets in coop even if all players already have the weapon
+		if (!self.count)
+		{
+			activator = other;
+			UseTargets();
+		}
+		self.count = 1;
 		return;
+	}
 
 	other.ammo_shells = other.ammo_shells + self.ammo_shells;
 	other.ammo_nails = other.ammo_nails + self.ammo_nails;

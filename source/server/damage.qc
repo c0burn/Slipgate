@@ -60,7 +60,8 @@ void(entity targ, entity inflictor, entity attacker) Killed =
 		// display obituary text
 		Obituary(self, attacker, inflictor);
 	}
-	else if (self.flags & FL_MONSTER)
+	
+	if (self.flags & FL_MONSTER)
 		monster_death_use();
 
 	self.takedamage = DAMAGE_NO;

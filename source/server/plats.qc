@@ -124,7 +124,7 @@ static void() plat_spawn_trigger =
 /*QUAKED func_plat (0 .5 .8) ? LOW_TRIGGER X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 A platform that moves vertically up and down.
 
-Plats are always drawn in the editor in the up position, so they will light correctly.
+Plats are always drawn in the map editor in the "up" position, so they will light correctly.
 They are then moved to the down position on map load.
 
 Plats spawn a trigger field that cause the plat to rise when a player touches it. By default
@@ -133,7 +133,7 @@ long as the player is touching the trigger and will fall again when they step of
 
 The plat will move a distance of its "height" minus any "lip".
 
-If the plat has a "targetname", it will start out disabled in the up position until
+If the plat has a "targetname", it will start disabled in the up position until
 it is triggered, when it will lower and behave like a normal plat.
 
 Spawnflags:
@@ -149,7 +149,7 @@ Keys:
  "wait" - time to wait at top before returning. default 3.
 "sounds" -
 -1) custom, see below
-0) chain slow (default)
+0) chain slow
 1) base fast
 2) chain slow (default)
 3) base alternative
@@ -163,7 +163,7 @@ void() func_plat =
 	setmodel (self, self.model);
 
 	// sounds
-	// 1 = base, 2 = medieval (default), 3 = base alternative, 4 = custom
+	// -1 custom, 1 = base, 2 = medieval (default), 3 = base alternative
 	SetFloatDefault(sounds, 2);
 	if (self.sounds == 1)
 	{

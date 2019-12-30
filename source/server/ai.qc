@@ -401,11 +401,6 @@ void() ai_turn =
 float(float ang) FacingIdeal =
 {
 	float delta = angcomp(self.ideal_yaw, self.angles_y);
-	
-	dprint("FacingIdeal: ");
-	dprint(ftos(delta));
-	dprint("\n");
-	
 	if (delta > ang)
 		return FALSE;
 	if (delta < -ang)
@@ -801,7 +796,7 @@ void(float dist) ai_run =
 		self.th_stand();
 		return;
 	}
-	// enemy has died, so look for a new one
+	// our enemy has died, so look for a new one
 	if (self.enemy.health <= 0)
 	{
 		ClearRoute();

@@ -114,13 +114,13 @@ void() backpack_touch =
 		}
 	}
 	
-	// set up for respawn
 	self.solid = SOLID_NOT;
 	self.model = string_null;
+	// set up for respawn
 	if (self.classname == "item_backpack" && deathmatch)	// map item, not dropped backpack
 	{
 		self.think = ItemRespawn;
-		self.nextthink = time + 30;
+		self.nextthink = time + self.teleport_time;
 	}
 	else
 	{
@@ -188,6 +188,8 @@ void() item_backpack =
 	setsize (self, '-16 -16 0', '16 16 56');
 	self.touch = backpack_touch;
 
+	SetPositiveDefault(teleport_time, 120);
+	
 	// remove anything that isn't a weapon
 	self.items = self.items & (IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN |
 		IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING);

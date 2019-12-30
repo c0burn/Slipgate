@@ -13,13 +13,10 @@ void() InitBodyQue =
 	{
 		corpse = spawn();
 		corpse.classname = "bodyque";
-		
 		if (bodyque_head == world)
 			bodyque_head = corpse;
-			
 		if (prev != world)
 			prev.owner = corpse;
-		
 		prev = corpse;
 		count = count - 1;
 	}

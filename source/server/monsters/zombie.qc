@@ -128,17 +128,23 @@ ATTACKS
 
 void() ZombieGrenadeTouch =
 {
+	SpawnTouchblood(32);
+	
 	if (other.takedamage)
 	{
-		Damage (other, self, self.owner, 10 );
+		Damage (other, self, self.owner, 10);
 		sound (self, CHAN_WEAPON, "zombie/z_hit.wav", 1, ATTN_NORM);
-		remove (self);
+		remove(self);
 		return;
 	}
+	
 	sound (self, CHAN_WEAPON, "zombie/z_miss.wav", 1, ATTN_NORM);
+		
+	self.touch = SUB_Null;
 	self.velocity = '0 0 0';
-	self.avelocity = '0 0 0';
-	self.touch = SUB_Remove;
+
+	self.think = SUB_Fade;
+	self.nextthink = time + 2 + random()*2;
 };
 
 /*
@@ -155,7 +161,7 @@ void(vector st) ZombieFireGrenade =
 
 	missile = spawn ();
 	missile.owner = self;
-	missile.movetype = MOVETYPE_BOUNCE;
+	missile.movetype = MOVETYPE_TOSS;
 	missile.solid = SOLID_BBOX;
 
 // calc org

@@ -101,7 +101,7 @@ void() BecomeGibs =
 	self.movetype = MOVETYPE_BOUNCE;
 	setmodel (self, self.headmodel);
 	setsize (self, '-16 -16 0', '16 16 16');
-	setorigin(self, self.origin + self.view_ofs + [0,0,8]);
+	setorigin(self, self.origin + self.view_ofs + '0 0 8');
 	self.view_ofs = '0 0 8';
 	
 	self.velocity = GibVelocity(self.health);
@@ -114,6 +114,7 @@ SpawnMeatSpray
 void(vector org, vector vel) SpawnMeatSpray =
 {
 	entity gib = spawn();
+	gib.classname = "gib";
 	gib.owner = self;
 	gib.solid = SOLID_NOT;
 	gib.movetype = MOVETYPE_TOSS;

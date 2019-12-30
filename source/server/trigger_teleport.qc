@@ -110,7 +110,7 @@ static void() teleport_touch =
 	if (other.solid != SOLID_SLIDEBOX)	// only players/monsters
 		return;
 
-	// look for the destination
+	// look for the destination spot
 	entity t = find (world, targetname, self.target);
 	if (!t)
 	{
@@ -118,13 +118,19 @@ static void() teleport_touch =
 		remove(self);
 		return;
 	}
-	if (t.classname != "info_teleporter_destination")
+
+	// some maps use things other then info_teleport_destination as targets for
+	// teleporters. just print a warning.
+	if (developer > 1)
 	{
-		dprint("warning: teleport destination is ");
-		dprint(t.classname);
-		dprint(" at ");
-		dprint(vtos(t.origin));
-		dprint("\n");
+		if (t.classname != "info_teleport_destination")
+		{
+			dprint("warning: teleport destination is ");
+			dprint(t.classname);
+			dprint(" at ");
+			dprint(vtos(t.origin));
+			dprint("\n");
+		}
 	}
 	
 	// fire targets

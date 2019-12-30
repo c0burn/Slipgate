@@ -158,7 +158,7 @@ void() ogre_grenade2	=[	$shoot2,	ogre_grenade3	] {ai_face();};
 void() ogre_grenade3	=[	$shoot2,	ogre_grenade4	] {ai_face();};
 void() ogre_grenade4	=[	$shoot3,	ogre_grenade5	] {ai_face();OgreFireGrenade(FALSE);};
 void() ogre_grenade5	=[	$shoot4,	ogre_grenade6	] {ai_face();};
-void() ogre_grenade6	=[	$shoot5,	ogre_grenade7	] {ai_face();SUB_CheckRefire (ogre_grenade1);};
+void() ogre_grenade6	=[	$shoot5,	ogre_grenade7	] {ai_face();};
 void() ogre_grenade7	=[	$shoot6,	ogre_run1		] {ai_face();};
 
 void() ogre_spam1	=[	$shoot1,	ogre_spam2	] {ai_face_last();};

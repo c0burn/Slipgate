@@ -368,29 +368,30 @@ The normal starting point for a level.
 {
 	model ({"path" : "progs/player.mdl", "frame" : 12});
 }
-Only used on start map for the return point from an episode.
+Used as the return point from an episode. Players will spawn here if they have any runes.
 */
 /*QUAKED info_player_test (0 .5 0) (-16 -16 -24) (16 16 32)
 {
 	model ({"path" : "progs/player.mdl", "frame" : 12});
 }
-For debugging. If developer mode is active, player will always spawn here.
+For debugging only. If developer mode is active, player will always spawn here.
 */
 /*QUAKED info_player_deathmatch (0 .5 0) (-16 -16 -24) (16 16 32)
 {
 	model ({"path" : "progs/player.mdl", "frame" : 12});
 }
-Potential spawning position for deathmatch games.
+Spawning position for deathmatch games.
 */
 /*QUAKED info_player_coop (0 .5 0) (-16 -16 -24) (16 16 32)
 {
 	model ({"path" : "progs/player.mdl", "frame" : 12});
 }
-Potential spawning position for coop games.
+Spawning position for coop games.
 */
 /*QUAKED info_teleport_destination (.5 .5 .5) (-16 -16 0) (16 16 56)
 This is the destination marker for a teleporter.
 It should have a "targetname" field with the same value as a trigger_teleport "target" field.
+Set "angle" to the direction the player should face when arriving at the destination.
 */
 /*QUAKED light (1 1 0) (-8 -8 -8) (8 8 8) START_OFF FADE NO_SOUND
 Non-displayed light
@@ -661,7 +662,7 @@ Zombie Head
 /*QUAKED func_plat (0 .5 .8) ? LOW_TRIGGER X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 A platform that moves vertically up and down.
 
-Plats are always drawn in the editor in the up position, so they will light correctly.
+Plats are always drawn in the map editor in the "up" position, so they will light correctly.
 They are then moved to the down position on map load.
 
 Plats spawn a trigger field that cause the plat to rise when a player touches it. By default
@@ -670,7 +671,7 @@ long as the player is touching the trigger and will fall again when they step of
 
 The plat will move a distance of its "height" minus any "lip".
 
-If the plat has a "targetname", it will start out disabled in the up position until
+If the plat has a "targetname", it will start disabled in the up position until
 it is triggered, when it will lower and behave like a normal plat.
 
 Spawnflags:
@@ -686,7 +687,7 @@ Keys:
  "wait" - time to wait at top before returning. default 3.
 "sounds" -
 -1) custom, see below
-0) chain slow (default)
+0) chain slow
 1) base fast
 2) chain slow (default)
 3) base alternative
@@ -695,30 +696,26 @@ Keys:
 */
 /*QUAKED func_train (0 .5 .8) ?
 Trains are moving platforms that players can ride.
+Must target a series of 'path_corner' entities.
 The targets origin specifies the min point of the train at each corner.
-The train spawns at the first target it is pointing at.
-If the train is the target of a button or trigger, it will not begin moving until activated.
+It will always position itself on its first target at map load.
+If a targetname is set, it must be triggered to start moving, otherwise it will start immediately.
+
 speed	default 100
 dmg		default	2
 sounds
+-1) custom, set "noise" and "noise1"
+0) none
 1) ratchet metal
-
 */
 /*QUAKED misc_teleporttrain (.5 .5 .5) (-16 -16 -16) (16 16 16) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {	model("progs/teleport.mdl");	}
 
-Teleporter target for final boss level. Must target a series of 'path_corner' entities.
-It will position itself on its first target at map load.
-If a targetname is set, it must be triggered to start moving, otherwise it will start automatically.
-*/
-/*QUAKED trap_spikeshooter (1 .5 0) (-8 -8 -8) (8 8 8) superspike laser
-When triggered, fires a spike in the direction set in QuakeEd.
-Laser is only for REGISTERED.
-*/
-/*QUAKED trap_shooter (1 .5 0) (-8 -8 -8) (8 8 8) superspike laser
-Continuously fires spikes.
-"wait" time between spike (1.0 default)
-"nextthink" delay before firing first spike, so multiple shooters can be stagered.
+Floating teleporter target for final boss level. Must target a series of 'path_corner' entities.
+It will always position itself on its first target at map load.
+If a targetname is set, it must be triggered to start moving, otherwise it will start immediately.
+
+speed	default 100
 */
 /*QUAKED misc_explobox (1 .5 0) (0 0 0) (32 32 64) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 {
@@ -764,6 +761,30 @@ targetname - if set, must be triggered to activate.
 
 Spawnflags:
 SOUNDS - if set, fireballs will make a whooshing sound when launched.
+*/
+/*QUAKED trap_spikeshooter (1 .5 0) (-8 -8 -8) (8 8 8) SUPERSPIKE LASER
+Fires projectiles when triggered.
+
+Keys:
+"angle" - direction of movement
+
+Spawnflags:
+If no spawnflag is set, shoots regular nails.
+SUPERSPIKE - fire supernails
+LASER - fire enforcer lasers
+*/
+/*QUAKED trap_shooter (1 .5 0) (-8 -8 -8) (8 8 8) SUPERSPIKE LASER
+Continuously fires projectiles.
+
+Keys:
+"angle" - direction of movement
+"wait" - time between shots
+"nextthink" - delay on first shot, so shooters can be staggered.
+
+Spawnflags:
+If no spawnflag is set, shoots regular nails.
+SUPERSPIKE - fire supernails
+LASER - fire enforcer lasers
 */
 /*QUAKED trigger_multiple (.5 .5 .5) ? NOTOUCH X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 Variable sized repeatable trigger.
@@ -859,8 +880,8 @@ dmg - damage to deal. default 5.
 wait - time in seconds between causing damage. default 1
 */
 /*QUAKED trigger_void (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-A variable trigger that removes items, projectiles and monsters touching it.
-Also kills the player.
+A variable sized trigger designed for "void" areas that removes items, projectiles and monsters touching it.
+Always kills the player regardless of pentagram or armor.
 */
 /*QUAKED trigger_ladder (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 Invisible ladder trigger.
@@ -956,10 +977,11 @@ Zombie.
 {
 	model ("progs/boss.mdl");
 }
-Chthon.
+Chthon, for Boss levels.
+Must be triggered to activate.
 */
 /*QUAKED event_lightning (0 1 1) (-8 -8 -8) (8 8 8)
-Triggerable lightning event for chthon only.
+Triggerable lightning event for Chthon only.
 You must have two func_door's in the level which both contain a target of "lightning" (not targetname!)
 */
 /*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
@@ -986,11 +1008,12 @@ Rotfish.
 }
 Vore.
 */
-/*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+/*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) AMBUSH
 {
 	model ("progs/enforcer.mdl");
 }
 Enforcer.
+Grunt, Mark Two. Grunts who are surlier and beefier than the rest get outfitted in combat armor and built-in blasters.
 */
 /*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (128 128 256)
 {	model ("progs/oldone.mdl");		}
