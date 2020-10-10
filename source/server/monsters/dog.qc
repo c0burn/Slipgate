@@ -232,11 +232,8 @@ void(entity inflictor, entity attacker) dog_die =
 	if (self.health < -35)
 	{
 		SpawnGib ("progs/gib3.mdl");
-		SpawnGib ("progs/gib3.mdl");
 		SpawnGib ("progs/gib4.mdl");
 		SpawnGib ("progs/gib5.mdl");
-		SpawnGib ("progs/blood.mdl");
-		SpawnGib ("progs/blood.mdl");
 		BecomeGibs ();
 		return;
 	}
@@ -328,6 +325,7 @@ float()	DogCheckAttack =
 	model ("progs/dog.mdl");
 }
 Rottweiler.
+"Bad, bad doggie! Play dead! -- blam! -- yipe! Good dog!"
 */
 void() monster_dog =
 {

@@ -15,7 +15,8 @@ static void() push_touch =
 			if (other.fly_sound < time)
 			{
 				other.fly_sound = time + 1.5;
-				sound (other, CHAN_AUTO, self.noise, 1, ATTN_NORM);
+				if (self.noise != "")
+					sound (other, CHAN_AUTO, self.noise, 1, ATTN_NORM);
 			}
 		}
 	}

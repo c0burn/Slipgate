@@ -96,6 +96,8 @@ void() DecodeLevelParms =
 // called by ClientKill and DeadThink
 void() respawn =
 {
+	stuffcmd(self, "v_cshift 0\n");
+		
 	if (coop)
 	{
 		// make a copy of the dead body for appearances sake
@@ -251,6 +253,8 @@ void() PutClientInServer =
 
 void() PutClientInServer =
 {
+	dprint("PutClientInServer\n");
+	
 	self.classname = "player";
 	self.health = self.max_health = 100;
 	self.headmodel = "progs/h_player.mdl";
@@ -491,6 +495,7 @@ WaterMove
 .float	dmgtime;
 
 
+
 void() CheckWaterJump =
 {
 	local vector start, end;
@@ -522,13 +527,16 @@ void() CheckWaterJump =
 
 void() WaterMove =
 {
-	// don't drown if no clip...
+	// don't drown if noclip is on
 	if (self.movetype == MOVETYPE_NOCLIP)
 	{
 		self.air_finished = time + 12;
 		self.dmg = 2;
 		return;
 	}
+	// stop stupid bugs with PlayerPreThink being called before PutClientInServer has ran
+	if (self.movetype != MOVETYPE_WALK)
+		return;
 
 	if (self.waterlevel == 2)
 		CheckWaterJump ();
@@ -617,6 +625,37 @@ Called every frame before physics are run
 .float ladder_sound;
 .float ladder_time;
 
+void() CheckClamber =
+{
+	if (self.flags & FL_ONGROUND)
+		return;
+		
+	// check waist height
+	vector start = self.origin;
+	start_z = start_z + 8;
+	makevectors (self.angles);
+	v_forward_z = 0;
+	normalize(v_forward);
+	vector end = start + v_forward*24;
+	traceline (start, end, TRUE, self);
+	if (trace_ent.classname == "func_clamber")
+	{
+		if (trace_fraction < 1)
+		{
+			start_z = start_z + self.maxs_z - 8;
+			end = start + v_forward*24;
+			self.movedir = trace_plane_normal * -50;
+			traceline (start, end, TRUE, self);
+			// solid at waist, open at eyes
+			if (trace_fraction == 1)
+			{	
+				self.flags = self.flags | FL_WATERJUMP;
+				self.velocity_z = 300;
+				self.teleport_time = time + 2;
+			}
+		}
+	}
+};
 
 void() PlayerPreThink =
 {
@@ -631,28 +670,24 @@ void() PlayerPreThink =
 		return;
 	}
 	WaypointPreFrame();
-
 	CheckRules ();
 	WaterMove ();
+	CheckClamber ();
 
 	if (self.flags2 & FL2_ONLADDER)
 	{
 		self.flags2 = self.flags2 - FL2_ONLADDER;
-		// climb
 		if (self.button2)
 		{
 			// don't pogo stick if we drop off
-			self.flags = self.flags - self.flags & FL_JUMPRELEASED;
-
+			self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 			self.velocity = '0 0 160';
 			if (time > self.ladder_time)
 			{
 				self.ladder_time = time + 0.5;
-
 				self.ladder_sound = self.ladder_sound + 1;
 				if (self.ladder_sound > 4)
 					self.ladder_sound = 0;
-
 				if (self.ladder_sound == 0)
 					sound(self, CHAN_BODY, "player/ladder1.wav", 1, ATTN_IDLE);
 				if (self.ladder_sound == 1)
@@ -663,14 +698,12 @@ void() PlayerPreThink =
 					sound(self, CHAN_BODY, "player/ladder4.wav", 1, ATTN_IDLE);
 				if (self.ladder_sound == 4)
 					sound(self, CHAN_BODY, "player/ladder5.wav", 1, ATTN_IDLE);
-
 			}
 		}
 		else
 		{
 			self.flags = self.flags | FL_JUMPRELEASED;
-			// restrict horizontal movement
-			self.velocity = 0.9 * self.velocity;
+			self.velocity = self.velocity - 0.99*self.velocity*frametime;
 			self.velocity_z = 0;
 		}
 	}

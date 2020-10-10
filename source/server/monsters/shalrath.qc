@@ -110,13 +110,9 @@ void(entity inflictor, entity attacker) shalrath_die =
 	// check for gib
 	if (self.health < -90)
 	{
-		SpawnGib("progs/gib1.mdl");
-		SpawnGib("progs/gib2.mdl");
 		SpawnGib("progs/gib3.mdl");
 		SpawnGib("progs/gib4.mdl");
 		SpawnGib("progs/gib5.mdl");
-		SpawnGib("progs/blood.mdl");
-		SpawnGib("progs/blood.mdl");
 		BecomeGibs();
 		return;
 	}
@@ -199,6 +195,7 @@ void() ShalMissileTouch =
 	model ({ "path" : "progs/shalrath.mdl",	"frame": 23 });
 }
 Vore.
+"A spideresque hybrid horror. Keep your eye on the energy pod he hurls."
 */
 void() monster_shalrath =
 {

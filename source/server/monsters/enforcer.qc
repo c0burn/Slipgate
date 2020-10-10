@@ -251,10 +251,6 @@ void(entity inflictor, entity attacker) enf_die =
 		SpawnGib("progs/gib1.mdl");
 		SpawnGib("progs/gib2.mdl");
 		SpawnGib("progs/gib3.mdl");
-		SpawnGib("progs/gib4.mdl");
-		SpawnGib("progs/gib5.mdl");
-		SpawnGib("progs/blood.mdl");
-		SpawnGib("progs/blood.mdl");
 		BecomeGibs();
 		return;
 	}
@@ -273,7 +269,8 @@ void(entity inflictor, entity attacker) enf_die =
 	model ("progs/enforcer.mdl");
 }
 Enforcer.
-Grunt, Mark Two. Grunts who are surlier and beefier than the rest get outfitted in combat armor and built-in blasters.
+"Grunt, Mark Two. Grunts who are surlier and beefier than the rest
+get outfitted in combat armor and built-in blasters."
 */
 void() monster_enforcer =
 {

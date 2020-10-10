@@ -35,7 +35,6 @@ vector(entity e) realorigin =
 
 /*==========
 anglemod
-correct an angle so it's between 0 and 359
 ==========*/
 float(float v) anglemod =
 {
@@ -44,7 +43,6 @@ float(float v) anglemod =
 
 /*==========
 angcomp
-calculate the difference between two angles
 ==========*/
 float (float y1, float y2) angcomp =
 {
@@ -60,7 +58,6 @@ float (float y1, float y2) angcomp =
 
 /*==========
 crandom
-returns -1 to +1
 ==========*/
 float() crandom =
 {
@@ -69,7 +66,6 @@ float() crandom =
 
 /*==========
 randomvec
-returns a random vector with all 3 components between -1 and +1
 ==========*/
 vector() randomvec =
 {
@@ -78,7 +74,6 @@ vector() randomvec =
 
 /*==========
 randomrange
-returns a whole number between 0 and range - 1
 ==========*/ 
 float(float range) randomrange =
 {

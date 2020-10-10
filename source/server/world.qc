@@ -154,7 +154,9 @@ void() precache_models =
 	precache_model ("progs/s_bubble.spr");
 	precache_model ("progs/s_explod.spr");
 	precache_model ("progs/s_null.spr");
-
+	precache_model ("progs/s_blood.spr");
+	precache_model ("progs/s_blood2.spr");
+	
 	// weapon models
 	precache_model ("progs/v_axe.mdl");
 	precache_model ("progs/v_shot.mdl");

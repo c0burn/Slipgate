@@ -74,7 +74,7 @@ void() UseTargets =
 	{
 		// we use a think to remove the killtargets because we could be in the 
 		// middle of a touch function, which can cause crashes in vanilla engines
-		// without fixed SV_TouchLinks
+		// without a fixed SV_TouchLinks
 		e = spawn();
 		e.classname = "DelayKillTargets";
 		e.killtarget = self.killtarget;

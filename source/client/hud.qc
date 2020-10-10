@@ -4,6 +4,8 @@ float hud_health;
 float hud_items;
 float hud_runes;
 float hud_pain_time;
+float hud_pain_alpha;
+vector hud_pain_dir;
 float hud_weapon_time[7];
 float hud_item_time[6];
 
@@ -313,7 +315,6 @@ void(vector virtsize) Hud_DrawStats =
 	vector pos = [virtsize_x / 2 - stringwidth(s, 0) / 2, virtsize_y - 16];
 	drawstring(pos, s, [8, 8], [1,1,1], 1, 0);
 	
-	
 	pos = [virtsize_x / 2 - stringwidth(world.message, 0) / 2, virtsize_y / 2 - 64];
 	drawstring(pos, world.message, [8, 8], [1,1,1], 1, 0);
 };
@@ -327,6 +328,19 @@ void(vector virtsize, float showscores) CSQC_DrawScores =
 		return;
 	if (!deathmatch)
 		return;
+};
+
+void(vector virtsize) Hud_DrawDamage =
+{
+	if (hud_pain_alpha <= 0)
+		return;
+
+	drawpic([(virtsize_x/2)-64,(virtsize_y/2)-64], "gfx/hud/blood2_0.tga", [128, 128], [1, 1, 1], hud_pain_alpha);
+	
+	if (hud_pain_time > time)
+		return;
+	hud_pain_time = time + 0.05;
+	hud_pain_alpha = hud_pain_alpha - 0.1;
 };
 
 /*==========
@@ -384,6 +398,7 @@ void(vector virtsize, float showscores) CSQC_DrawHud =
 	Hud_DrawAmmo(virtsize);
 	Hud_DrawWeapons(virtsize);
 	Hud_DrawItems(virtsize);
+	//Hud_DrawDamage(virtsize);
 };
 
 /*==========
@@ -400,8 +415,13 @@ CSQC_Parse_Damage
 float(float save, float take, vector dir) CSQC_Parse_Damage =
 {
 	if (take)
-		hud_pain_time = time + 0.2;
-	return FALSE;
+	{
+		hud_pain_alpha = 1.0;
+		hud_pain_time = time + 0.05;
+		hud_pain_dir = dir;
+	}
+
+	return FALSE;	// still do built-in effects
 };
 
 /*==========
@@ -409,5 +429,4 @@ CSQC_Init
 ==========*/
 void(float apilevel, string enginename, float engineversion) CSQC_Init =
 {
-	
 };

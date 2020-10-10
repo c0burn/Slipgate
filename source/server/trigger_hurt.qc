@@ -45,27 +45,31 @@ static void() void_touch =
 		return;
 	}
 	
-	// insta kill players
+	// always insta kill players unless godmode
 	if (other.flags & FL_CLIENT)
 	{
+		if (other.flags & FL_GODMODE)
+			return;
+			
 		// remove all armor
 		other.items = other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3));
 		other.armortype = other.armorvalue = 0;
-		// remove pent
-		other.items = other.items - other.items & IT_INVULNERABILITY;
+		// remove pentagram of protection
+		other.items = other.items - (other.items & IT_INVULNERABILITY);
 		other.invincible_finished = other.invincible_time = other.invincible_sound = 0;
 		
 		// black screen
 		stuffcmd(other, "v_cshift 0 0 0 255\n");
 		
-		Damage (other, self, self, other.health);
+		// do the damage
+		Damage (other, self, self, other.health + 100);
 		return;
 	}
 };
 
 /*QUAKED trigger_void (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 A variable sized trigger designed for "void" areas that removes items, projectiles and monsters touching it.
-Always kills the player regardless of pentagram or armor.
+Always kills the player regardless of health, armor, or pentagram of protection.
 */
 void() trigger_void =
 {

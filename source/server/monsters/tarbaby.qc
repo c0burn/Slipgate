@@ -194,6 +194,7 @@ void(entity inflictor, entity attacker) tbaby_die =
 	model ("progs/tarbaby.mdl");
 }
 Spawn.
+"A merrily bouncing blob as dangerous to kill as to ignore. Blech."
 */
 void() monster_tarbaby =
 {

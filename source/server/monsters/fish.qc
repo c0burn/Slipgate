@@ -130,6 +130,15 @@ void() f_death21 =[      $death21,       f_death21       ] {};
 
 void(entity inflictor, entity attacker) f_death =
 {
+	// check for gib	
+	if (self.health < -35)
+	{
+		SpawnGib("progs/gib4.mdl");
+		SpawnGib("progs/gib4.mdl");
+		BecomeGibs();
+		return;
+	}
+	
 	self.solid = SOLID_NOT;
 	f_death1();	
 };
@@ -156,6 +165,7 @@ void(entity attacker, float damage)	fish_pain =
 	model ("progs/fish.mdl");
 }
 Rotfish.
+"Disgusting little critters who dish it out, but can't take it."
 */
 void() monster_fish =
 {

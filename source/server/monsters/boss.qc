@@ -242,7 +242,7 @@ void() boss_awake =
 {
 	model ("progs/boss.mdl");
 }
-Chthon, for Boss levels.
+Chthon.
 Must be triggered to activate.
 */
 void() monster_boss =

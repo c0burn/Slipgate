@@ -297,8 +297,6 @@ void(entity inflictor, entity attacker) sham_die =
 		SpawnGib("progs/gib3.mdl");
 		SpawnGib("progs/gib4.mdl");
 		SpawnGib("progs/gib5.mdl");
-		SpawnGib("progs/blood.mdl");
-		SpawnGib("progs/blood.mdl");
 		BecomeGibs();
 		return;
 	}

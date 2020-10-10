@@ -232,6 +232,9 @@ This bmodel appears unless the player has all of the episode runes.
 Keys:
 "targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
 */
+/*QUAKED func_clamber (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Player can clamber up these.
+*/
 /*QUAKED func_breakable (0 .5 .8) ? EXPLODE NO_EXPLOSION_SPRITE NO_EXPLOSION_SOUND SPAWN_SMOKE X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 Breakable brush model
 
@@ -881,7 +884,7 @@ wait - time in seconds between causing damage. default 1
 */
 /*QUAKED trigger_void (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 A variable sized trigger designed for "void" areas that removes items, projectiles and monsters touching it.
-Always kills the player regardless of pentagram or armor.
+Always kills the player regardless of health, armor, or pentagram of protection.
 */
 /*QUAKED trigger_ladder (.5 .5 .5) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 Invisible ladder trigger.
@@ -930,12 +933,14 @@ Keys:
 	model ("progs/ogre.mdl");
 }
 Ogre.
+"What's worse than a cannibal monster eight feet tall? One with a chainsaw. And a sack of grenades."
 */
 /*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 {
 	model ("progs/demon.mdl");
 }
 Fiend.
+"In essence, organic buzzsaws, rife with pummeling power!"
 */
 /*QUAKED monster_shambler (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 {
@@ -948,36 +953,43 @@ Shambler.
 	model ("progs/knight.mdl");
 }
 Knight.
+"Canned meat. Open 'er up and see if it's still fresh."
 */
 /*QUAKED monster_army (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 {
 	model ("progs/soldier.mdl");
 }
 Grunt.
+"Goons with probes inserted into their pleasure centers; wired up so when they kill someone,
+they get paroxysms of ecstasy. In essence, customized serial killers.
+Easy to kill, and they tote shotgun shells. It's like a little Christmas each time you blow a Grunt away!"
 */
 /*QUAKED monster_wizard (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 {
 	model ("progs/wizard.mdl");
 }
 Scrag.
+"Floats like a butterfly, stings like a bee. Ugly as hell. They're not real tough, but like to bushwhack you."
 */
 /*QUAKED monster_dog (1 0 0) (-32 -32 -24) (32 32 40) Ambush
 {
 	model ("progs/dog.mdl");
 }
 Rottweiler.
+"Bad, bad doggie! Play dead! -- blam! -- yipe! Good dog!"
 */
 /*QUAKED monster_zombie (1 0 0) (-16 -16 -24) (16 16 32) CRUCIFIED AMBUSH TELEPORT X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD
 {
 	model ( {{ spawnflags & 2 -> { "path" : "progs/zombie.mdl", "frame" : 192 }, "progs/zombie.mdl" }} );
 }
 Zombie.
+"Thou canst not kill that which doth not live. But you can blast it into chunky kibbles."
 */
 /*QUAKED monster_boss (1 0 0) (-128 -128 -24) (128 128 256)
 {
 	model ("progs/boss.mdl");
 }
-Chthon, for Boss levels.
+Chthon.
 Must be triggered to activate.
 */
 /*QUAKED event_lightning (0 1 1) (-8 -8 -8) (8 8 8)
@@ -989,31 +1001,36 @@ You must have two func_door's in the level which both contain a target of "light
 	model ("progs/tarbaby.mdl");
 }
 Spawn.
+"A merrily bouncing blob as dangerous to kill as to ignore. Blech."
 */
 /*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 {
 	model ("progs/hknight.mdl");
 }
-Death knight.
+Death Knight.
+"This particular canned meat tends to open you up instead."
 */
 /*QUAKED monster_fish (1 0 0) (-16 -16 -24) (16 16 24) Ambush
 {
 	model ("progs/fish.mdl");
 }
 Rotfish.
+"Disgusting little critters who dish it out, but can't take it."
 */
 /*QUAKED monster_shalrath (1 0 0) (-32 -32 -24) (32 32 48) Ambush
 {
 	model ({ "path" : "progs/shalrath.mdl",	"frame": 23 });
 }
 Vore.
+"A spideresque hybrid horror. Keep your eye on the energy pod he hurls."
 */
 /*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) AMBUSH
 {
 	model ("progs/enforcer.mdl");
 }
 Enforcer.
-Grunt, Mark Two. Grunts who are surlier and beefier than the rest get outfitted in combat armor and built-in blasters.
+"Grunt, Mark Two. Grunts who are surlier and beefier than the rest
+get outfitted in combat armor and built-in blasters."
 */
 /*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (128 128 256)
 {	model ("progs/oldone.mdl");		}

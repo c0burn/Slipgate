@@ -190,10 +190,6 @@ void(entity inflictor, entity attacker) hknight_die =
 		SpawnGib("progs/gib1.mdl");
 		SpawnGib("progs/gib2.mdl");
 		SpawnGib("progs/gib3.mdl");
-		SpawnGib("progs/gib4.mdl");
-		SpawnGib("progs/gib5.mdl");
-		SpawnGib("progs/blood.mdl");
-		SpawnGib("progs/blood.mdl");
 		BecomeGibs();
 		return;
 	}
@@ -390,7 +386,8 @@ void() hknight_melee =
 {
 	model ("progs/hknight.mdl");
 }
-Death knight.
+Death Knight.
+"This particular canned meat tends to open you up instead."
 */
 void() monster_hell_knight =
 {

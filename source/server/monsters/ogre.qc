@@ -414,13 +414,11 @@ void(entity inflictor, entity attacker) ogre_die =
 {
 	if (self.health < -80)
 	{
-		SpawnGib ("progs/gib3.mdl");
-		SpawnGib ("progs/gib3.mdl");
+		SpawnGib ("progs/gib1.mdl");
+		SpawnGib ("progs/gib2.mdl");
 		SpawnGib ("progs/gib3.mdl");
 		SpawnGib ("progs/gib4.mdl");
 		SpawnGib ("progs/gib5.mdl");
-		SpawnGib ("progs/blood.mdl");
-		SpawnGib ("progs/blood.mdl");
 		BecomeGibs ();
 		return;
 	}
@@ -438,6 +436,7 @@ void(entity inflictor, entity attacker) ogre_die =
 	model ("progs/ogre.mdl");
 }
 Ogre.
+"What's worse than a cannibal monster eight feet tall? One with a chainsaw. And a sack of grenades."
 */
 void() monster_ogre =
 {	

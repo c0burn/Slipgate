@@ -103,7 +103,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) Damage =
 		// message at the end of the frame
 		targ.dmg_take = targ.dmg_take + take;
 		targ.dmg_save = targ.dmg_save + save;
-		targ.dmg_inflictor = inflictor;
+		targ.dmg_inflictor = attacker;
 	}
 
 	// push players around

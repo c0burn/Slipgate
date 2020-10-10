@@ -79,8 +79,34 @@ static void() GibSound =
 		sound (self, CHAN_VOICE, "player/teledth1.wav", 1, attn);
 	else if (r == 2)
 		sound (self, CHAN_VOICE, "player/gib.wav", 1, attn);
-	else if (r == 4)
+	else if (r == 3)
 		sound (self, CHAN_VOICE, "player/tornoff2.wav", 1, attn);
+};
+
+void() blood_fade =
+{
+	self.alpha = self.alpha - 0.05;
+	self.frame = self.frame + 1;
+	if (self.frame > 9)
+	{
+		remove(self);
+		return;
+	}
+	self.think = blood_fade;
+	self.nextthink = time + 0.05;
+};
+
+void() SpawnBloodSprite =
+{
+	entity blood = spawn();
+	blood.solid = SOLID_NOT;
+	blood.movetype = MOVETYPE_NONE;
+	blood.alpha = 0.7;
+	setmodel(blood, "progs/s_blood2.spr");
+	setorigin(blood, self.origin);
+	setsize(blood, '0 0 0', '0 0 0');
+	blood.think = blood_fade;
+	blood.nextthink = time + 0.05;
 };
 
 /*==========
@@ -88,6 +114,8 @@ BecomeGibs
 ==========*/
 void() BecomeGibs =
 {
+	SpawnBloodSprite();
+	
 	GibSound();
 	
 	self.think = SUB_Null;

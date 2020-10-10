@@ -82,3 +82,16 @@ void() func_bossgate =
 	self.use = wall_use;
 	setmodel (self, self.model);
 };
+
+
+/*QUAKED func_clamber (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Player can clamber up these.
+*/
+void() func_clamber =
+{
+	self.angles = '0 0 0';
+	self.movetype = MOVETYPE_PUSH;
+	self.solid = SOLID_BSP;
+	self.use = wall_use;
+	setmodel (self, self.model);
+};

@@ -186,10 +186,6 @@ void(entity inflictor, entity attacker) knight_die =
 		SpawnGib ("progs/gib1.mdl");
 		SpawnGib ("progs/gib2.mdl");
 		SpawnGib ("progs/gib3.mdl");
-		SpawnGib ("progs/gib4.mdl");
-		SpawnGib ("progs/gib5.mdl");
-		SpawnGib ("progs/blood.mdl");
-		SpawnGib ("progs/blood.mdl");
 		BecomeGibs ();
 		return;
 	}
@@ -208,6 +204,7 @@ void(entity inflictor, entity attacker) knight_die =
 	model ("progs/knight.mdl");
 }
 Knight.
+"Canned meat. Open 'er up and see if it's still fresh."
 */
 void() monster_knight =
 {

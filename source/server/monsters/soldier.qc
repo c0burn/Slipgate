@@ -24,7 +24,6 @@ $frame prowl_1 prowl_2 prowl_3 prowl_4 prowl_5 prowl_6 prowl_7 prowl_8
 $frame prowl_9 prowl_10 prowl_11 prowl_12 prowl_13 prowl_14 prowl_15 prowl_16
 $frame prowl_17 prowl_18 prowl_19 prowl_20 prowl_21 prowl_22 prowl_23 prowl_24
 
-
 void()	army_stand1	=[	$stand1,	army_stand2	] {
 if (random() < 0.1)
 	sound (self, CHAN_VOICE, "soldier/idle.wav", 1, ATTN_IDLE);
@@ -191,9 +190,6 @@ void(entity inflictor, entity attacker) army_die =
 		SpawnGib("progs/gib1.mdl");
 		SpawnGib("progs/gib2.mdl");
 		SpawnGib("progs/gib3.mdl");
-		SpawnGib("progs/gib4.mdl");
-		SpawnGib("progs/gib5.mdl");
-		SpawnGib("progs/blood.mdl");
 		BecomeGibs();
 		return;
 	}
@@ -207,12 +203,14 @@ void(entity inflictor, entity attacker) army_die =
 		army_cdie1 ();
 };
 
-
 /*QUAKED monster_army (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 {
 	model ("progs/soldier.mdl");
 }
 Grunt.
+"Goons with probes inserted into their pleasure centers; wired up so when they kill someone,
+they get paroxysms of ecstasy. In essence, customized serial killers.
+Easy to kill, and they tote shotgun shells. It's like a little Christmas each time you blow a Grunt away!"
 */
 void() monster_army =
 {	
@@ -222,6 +220,8 @@ void() monster_army =
 		return;
 	}
 	precache_model ("progs/soldier.mdl");
+	
+	precache_model ("progs/soldier2.mdl");
 	precache_model ("progs/h_guard.mdl");
 
 	precache_sound ("soldier/death1.wav");

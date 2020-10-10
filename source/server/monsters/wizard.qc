@@ -339,8 +339,6 @@ void(entity inflictor, entity attacker) wiz_die =
 		SpawnGib("progs/gib3.mdl");
 		SpawnGib("progs/gib4.mdl");
 		SpawnGib("progs/gib5.mdl");
-		SpawnGib("progs/blood.mdl");
-		SpawnGib("progs/blood.mdl");
 		BecomeGibs();
 		return;
 	}
@@ -378,6 +376,7 @@ void() Wiz_Missile =
 	model ("progs/wizard.mdl");
 }
 Scrag.
+"Floats like a butterfly, stings like a bee. Ugly as hell. They're not real tough, but like to bushwhack you."
 */
 void() monster_wizard =
 {

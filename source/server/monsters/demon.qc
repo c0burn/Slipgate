@@ -186,11 +186,8 @@ void(entity inflictor, entity attacker) demon_die =
 	if (self.health < -80)
 	{
 		SpawnGib("progs/gib3.mdl");
-		SpawnGib("progs/gib3.mdl");
 		SpawnGib("progs/gib4.mdl");
 		SpawnGib("progs/gib5.mdl");
-		SpawnGib("progs/blood.mdl");
-		SpawnGib("progs/blood.mdl");
 		BecomeGibs();
 		return;
 	}
@@ -211,6 +208,7 @@ void() Demon_MeleeAttack =
 	model ("progs/demon.mdl");
 }
 Fiend.
+"In essence, organic buzzsaws, rife with pummeling power!"
 */
 void() monster_demon1 =
 {

@@ -379,10 +379,6 @@ void(entity inflictor, entity attacker) zombie_die =
 	SpawnGib("progs/gib1.mdl");
 	SpawnGib("progs/gib2.mdl");
 	SpawnGib("progs/gib3.mdl");
-	SpawnGib("progs/gib4.mdl");
-	SpawnGib("progs/gib5.mdl");
-	SpawnGib("progs/blood.mdl");
-	SpawnGib("progs/blood.mdl");
 	BecomeGibs();
 };
 
@@ -461,6 +457,7 @@ void(entity attacker, float take) zombie_pain =
 	model ( {{ spawnflags & 2 -> { "path" : "progs/zombie.mdl", "frame" : 192 }, "progs/zombie.mdl" }} );
 }
 Zombie.
+"Thou canst not kill that which doth not live. But you can blast it into chunky kibbles."
 */
 void() monster_zombie =
 {
