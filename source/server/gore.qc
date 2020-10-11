@@ -79,7 +79,7 @@ static void() GibSound =
 		sound (self, CHAN_VOICE, "player/teledth1.wav", 1, attn);
 	else if (r == 2)
 		sound (self, CHAN_VOICE, "player/gib.wav", 1, attn);
-	else if (r == 3)
+	else
 		sound (self, CHAN_VOICE, "player/tornoff2.wav", 1, attn);
 };
 

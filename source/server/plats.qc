@@ -153,8 +153,8 @@ Keys:
 1) base fast
 2) chain slow (default)
 3) base alternative
-"noise" - sound to play at start of plat movement. tip: can contain looped segments.
-"noise1" - sound to play at end of plat movement.
+"noise" - sound to play at start of plat movement
+"noise1" - sound to play at end of plat movement
 */
 void() func_plat =
 {
