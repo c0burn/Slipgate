@@ -454,6 +454,8 @@ void()	player_die_ax9	=	[	$axdeth9,	player_die_ax9	] {PlayerDead();};
 /*==========
 PlayerDie
 ==========*/
+void() DropBackpack;
+
 void(entity inflictor, entity attacker) PlayerDie =
 {
 	// remove any powerups

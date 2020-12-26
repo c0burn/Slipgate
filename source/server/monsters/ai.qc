@@ -1,3 +1,5 @@
+
+
 /*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 If a monster targets a path_corner, they will move towards it.
 Once a monster hits a path_corner, they will move to the next targeted path_corner.

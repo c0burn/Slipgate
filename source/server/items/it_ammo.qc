@@ -68,7 +68,7 @@ static void() ammo_touch =
 {
 	model ( {{ spawnflags & 1 -> { "path" : "maps/b_shell1.bsp" }, "maps/b_shell0.bsp" }} );
 }
-Nox of 20 shells.
+Box of 20 shells.
 AMMO_BIG is a box of 40 shells.
 */
 void() item_shells =
@@ -96,7 +96,7 @@ void() item_shells =
 {
 	model ( {{ spawnflags & 1 -> { "path" : "maps/b_nail1.bsp" }, "maps/b_nail0.bsp" }} );
 }
-Nox of 25 nails.
+Box of 25 nails.
 AMMO_BIG is a box of 50 nails.
 */
 void() item_spikes =
@@ -124,7 +124,7 @@ void() item_spikes =
 {
 	model ( {{ spawnflags & 1 -> { "path" : "maps/b_rock1.bsp" }, "maps/b_rock0.bsp" }} );
 }
-Nox of 5 rockets.
+Box of 5 rockets.
 AMMO_BIG is a box of 10 rockets.
 */
 void() item_rockets =
@@ -152,7 +152,7 @@ void() item_rockets =
 {
 	model ( {{ spawnflags & 1 -> { "path" : "maps/b_batt1.bsp" }, "maps/b_batt0.bsp" }} );
 }
-Nox of 6 cells.
+Box of 6 cells.
 AMMO_BIG is a box of 12 cells.
 */
 void() item_cells =
@@ -197,26 +197,27 @@ void() item_weapon =
 		return;
 	}
 
-	// convert into correct item
-	
-	if (self.spawnflags & ITW_BIG)
-		self.spawnflags = self.spawnflags - ITW_BIG + AMMO_BIG;
-
 	if (self.spawnflags & ITW_SHELLS)
 	{
 		self.spawnflags = self.spawnflags - ITW_SHELLS;
+		if (self.spawnflags & ITW_BIG)
+			self.spawnflags = self.spawnflags - ITW_BIG + AMMO_BIG;
 		self.classname = "item_shells";
 		item_shells();
 	}
 	else if (self.spawnflags & ITW_ROCKETS)
 	{
 		self.spawnflags = self.spawnflags - ITW_ROCKETS;
+		if (self.spawnflags & ITW_BIG)
+			self.spawnflags = self.spawnflags - ITW_BIG + AMMO_BIG;
 		self.classname = "item_rockets";
 		item_rockets();
 	}
 	else if (self.spawnflags & ITW_NAILS)
 	{
 		self.spawnflags = self.spawnflags - ITW_NAILS;
+		if (self.spawnflags & ITW_BIG)
+			self.spawnflags = self.spawnflags - ITW_BIG + AMMO_BIG;
 		self.classname = "item_spikes";
 		item_spikes();
 	}

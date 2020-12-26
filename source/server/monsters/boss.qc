@@ -271,6 +271,8 @@ void() monster_boss =
 
 void() lightning_use;
 
+void() door_go_down;
+
 /*==========
 lightning_fire
 ==========*/

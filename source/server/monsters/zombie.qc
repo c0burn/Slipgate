@@ -126,6 +126,8 @@ ATTACKS
 =============================================================================
 */
 
+void() SUB_Fade;
+
 void() ZombieGrenadeTouch =
 {
 	SpawnTouchblood(32);

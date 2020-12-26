@@ -131,6 +131,12 @@ monster_start
 ==========*/
 void(string mod, string hmod, float hp, float fl, vector min, vector max) monster_start =
 {
+	if (cvar("nomonsters"))
+	{
+		remove(self);
+		return;
+	}
+		
 	total_monsters = total_monsters + 1;
 
 	self.flags = FL_MONSTER + fl;	// FL_FLY or FL_SWIM

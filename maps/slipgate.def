@@ -1,159 +1,3 @@
-/*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-If a monster targets a path_corner, they will move towards it.
-Once a monster hits a path_corner, they will move to the next targeted path_corner.
-You can set "pausetime" on a path_corner to enforce a delay before the monster moves
-to the next target.
-*/
-/*QUAKED item_shells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_shell1.bsp" }, "maps/b_shell0.bsp" }} );
-}
-Nox of 20 shells.
-AMMO_BIG is a box of 40 shells.
-*/
-/*QUAKED item_spikes (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_nail1.bsp" }, "maps/b_nail0.bsp" }} );
-}
-Nox of 25 nails.
-AMMO_BIG is a box of 50 nails.
-*/
-/*QUAKED item_rockets (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_rock1.bsp" }, "maps/b_rock0.bsp" }} );
-}
-Nox of 5 rockets.
-AMMO_BIG is a box of 10 rockets.
-*/
-/*QUAKED item_cells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_batt1.bsp" }, "maps/b_batt0.bsp" }} );
-}
-Nox of 6 cells.
-AMMO_BIG is a box of 12 cells.
-*/
-/*QUAKED item_armor1 (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ({"path" : "progs/armor.mdl", "skin" : 0});
-}
-Green armor. 100 points, saves 30% of damage.
-*/
-/*QUAKED item_armor2 (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ({"path" : "progs/armor.mdl", "skin" : 1});
-}
-Yellow armor. 150 points, saves 60% of damage.
-*/
-/*QUAKED item_armorInv (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ({"path" : "progs/armor.mdl", "skin" : 2});
-}
-Red armor. 200 points, saves 80% of damage.
-*/
-/*QUAKED item_backpack (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/backpack.mdl");	}
-Backpack pickup. Contains 40 shells, 50 nails, 10 rockets and 12 cells.
-
-Keys:
-items - set to one of a combination of the IT_SHOTGUN etc values to make the backpack contain weapons
-ammo_shells, ammo_nails, ammo_rockets, ammo_cells - set to override ammo defaults. set to -1 to not give ANY ammo of that type.
-teleport_time - time in seconds to respawn (default 120)
-
-Spawnflags:
-DONT_DROP - don't drop to floor on map load
-RESPAWN - respawn automatically
-*/
-/*QUAKED item_health (0 0 1) (0 0 0) (32 32 56) Rotten Megahealth X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "maps/b_bh10.bsp" }, spawnflags & 2 -> { "path" : "maps/b_bh100.bsp" },
-	 "maps/b_bh25.bsp" }} );
-}
-Health box. Normally gives 25 points.
-Rotten box heals 15 points.
-Megahealth will add 100 health, then start to
-rot the player back down to 100 health after 5 seconds.
-*/
-/*QUAKED item_key1 (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/key_med.mdl");	}
-SILVER key
-In order for keys to work
-you MUST set your maps
-worldtype to one of the
-following:
-0: medieval
-1: metal
-2: base
-*/
-/*QUAKED item_key2 (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ({"path" : "progs/key_med.mdl", "skin" : 1});
-}
-GOLD key
-In order for keys to work
-you MUST set your maps
-worldtype to one of the
-following:
-0: medieval
-1: metal
-2: base
-*/
-/*QUAKED item_sigil (0 0 1) (-16 -16 -24) (16 16 32) E1 E2 E3 E4 X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{
-	model ( {{ spawnflags & 1 -> { "path" : "progs/end1.mdl" }, spawnflags & 2 -> { "path" : "progs/end2.mdl" },
-	spawnflags & 4 -> { "path" : "progs/end3.mdl" }, spawnflags & 8 -> { "path" : "progs/end4.mdl" },
-	 "progs/end1.mdl" }} );
-}
-End of episode rune. Use in conjuction with func_bossgate and func_episodegate.
-Spawnflag must be set to the appropriate episode.
-Episode 1 - Dimension of the Doomed - Rune of Earth Magic
-Episode 2 - The Realm of Black Magic - Rune of Black Magic
-Episode 3 - The Netherworld - Rune of Hell Magic
-Episode 4 - The Elder World - Run of Elder Magic
-*/
-/*QUAKED item_artifact_invulnerability (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/invulner.mdl");	}
-Pentagram of Protection
-Player is invulnerable for 30 seconds
-*/
-/*QUAKED item_artifact_envirosuit (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/suit.mdl");	}
-Biosuit
-Player takes no damage from water or slime for 30 seconds
-*/
-/*QUAKED item_artifact_invisibility (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/invisibl.mdl");	}
-Ring of Shadows
-Player is invisible for 30 seconds
-*/
-/*QUAKED item_artifact_super_damage (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/quaddama.mdl");	}
-Quad Damage
-Player does 4x damage for 30 seconds
-*/
-/*QUAKED weapon_supershotgun (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/g_shot.mdl");	}
-Double-barrelled Shotgun
-*/
-/*QUAKED weapon_nailgun (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/g_nail.mdl");	}
-Nailgun
-*/
-/*QUAKED weapon_supernailgun (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/g_nail2.mdl");	}
-Perforator
-*/
-/*QUAKED weapon_grenadelauncher (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/g_rock.mdl");	}
-Grenade Launcher
-*/
-/*QUAKED weapon_rocketlauncher (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/g_rock2.mdl");	}
-Rocket Launcher
-*/
-/*QUAKED weapon_lightning (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-{	model("progs/g_light.mdl");	}
-Thunderbolt
-*/
 /*QUAKED ambient_custom (0.3 0.1 0.6) (-8 -8 -8) (8 8 8)
 Customisable ambient sound.
 
@@ -205,154 +49,9 @@ Ambient water.
 /*QUAKED ambient_wind (0.3 0.1 0.6) (-8 -8 -8) (8 8 8)
 Ambient wind.
 */
-/*QUAKED func_wall (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-Simple solid bmodel
-
-Keys:
-"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
-*/
-/*QUAKED func_illusionary (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-A simple bmodel that looks solid but lets the player walk through it
-
-Keys:
-"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
-*/
-/*QUAKED func_episodegate (0 .5 .8) ? E1 E2 E3 E4 X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-This bmodel will only appear if the episode has already been completed.
-
-Keys:
-"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
-
-Spawnflags:
-E1, E2, E3, E4
-*/
-/*QUAKED func_bossgate (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-This bmodel appears unless the player has all of the episode runes.
-
-Keys:
-"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
-*/
-/*QUAKED func_clamber (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-Player can clamber up these.
-*/
-/*QUAKED func_breakable (0 .5 .8) ? EXPLODE NO_EXPLOSION_SPRITE NO_EXPLOSION_SOUND SPAWN_SMOKE X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-Breakable brush model
-
-Spawnflags:
-EXPLODE - will explode upon destruction. Set the dmg key to the force of the explosion.
-You can set dmg to 0 for just the explosion effects.
-NO_EXPLOSION_SPRITE - don't show explosion sprite.
-NO_EXPLOSION_SOUND - don't make explosion sound or light.
-SPAWN_SMOKE - will spawn some additional smoke upon destuction
-
-Keys:
-"style" "n"
-Preset style, 1=base crates, 2=stone/brick
-Sets debris model, particle color and sounds automatically
-If mdl1-3, noise or colour are set they will override the preset
-
-"mdl1", "mdl2", "mdl3" "name"
-custom models for debris chunks
-
-"color" "n"
-particle color for damage, range 0-254 (from palette)
-
-"noise1", "noise2" "name"
-custom sound for break / damage
-
-"health" "n"
-damage required to destroy. default 30.
-
-"targetname" "name"
-if set, the breakable must be triggered to destroy it
-
-"count" "n"
-number of pieces of debris to spawn. default 8.
-
-"angle" "n"
-If set, overrides the direction debris moves in. Use -1 and -2 for up/down. Use 360 for a yaw of 0.
-
-"dmg" "n"
-Amount of explosive damage to deal. Default 60.
-*/
 /*QUAKED air_bubbles (0 .5 .8) (-8 -8 -8) (8 8 8)
 
 testing air bubbles
-*/
-/*QUAKED func_button (0 .5 .8) ? START_OFF X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
-A button that can either be pushed or shot.
-
-When a button is activated, it moves the distance of its size,
-in the direction of its angle, leaving a "lip" at the end of the move.
-Alternatively, you can specify a set "distance" to move.
-
-When the move is completed, it triggers all of its targets, waits some time,
-then returns to its original position where it can be pushed or shot again.
-
-Spawnflags:
-START_OFF - the button starts in a disabled state, and it must be triggered to enable it.
-Once enabled, it acts like any other button.
-
-Keys:
-"target" - entities with a matching targetname will be triggered.
-"killtarget" - entities with a matching targetname will be removed.
-"targetname" - if triggered, the button will fire, unless it's already in motion
- or switched off. if switched off, it will enable itself.
-"message" - message to print to player on activation.
-"delay" - button will wait some time before triggering its targets.
-"angle" - direction of movement. use -1 for up and -2 for down.
-"speed"	- speed of movement. default 40.
-"wait" - wait before returning. default 1 second. use -1 to never return.
-"lip" - number of units to leave at end of the move. default 4.
-"distance" - manually specify the distance to move, ignoring the size and lip
-"health" - if set, the button must be shot rather than pushed.
-"sounds" -
--1) custom sound
-0) steam metal
-1) wooden clunk
-2) metallic click
-3) in-out
-"noise" - custom sound to use for button activation
-*/
-/*QUAKED func_door (0 .5 .8) ? START_OPEN x DOOR_DONT_LINK GOLD_KEY SILVER_KEY TOGGLE
-if two doors touch, they are assumed to be connected and operate as a unit.
-
-TOGGLE causes the door to wait in both the start and end states for a trigger event.
-
-START_OPEN causes the door to move to its destination when spawned, and operate in reverse.  It is used to temporarily or permanently close off an area when triggered (not usefull for touch or takedamage doors).
-
-Key doors are allways wait -1.
-
-"message"	is printed when the door is touched if it is a trigger door and it hasn't been fired yet
-"angle"		determines the opening direction
-"targetname" if set, no touch field will be spawned and a remote button or trigger field activates the door.
-"health"	if set, door must be shot open
-"speed"		movement speed (100 default)
-"wait"		wait before returning (3 default, -1 = never return)
-"lip"		lip remaining at end of move (8 default)
-"dmg"		damage to inflict when blocked (2 default)
-"sounds"
-0)	no sound
-1)	stone
-2)	base
-3)	stone chain
-4)	screechy metal
-*/
-/*QUAKED func_door_secret (0 .5 .8) ? open_once 1st_left 1st_down no_shoot always_shoot
-Basic secret door. Slides back, then to the side. Angle determines direction.
-wait  = # of seconds before coming back
-1st_left = 1st move is left of arrow
-1st_down = 1st move is down from arrow
-always_shoot = even if targeted, keep shootable
-t_width = override WIDTH to move back (or height if going down)
-t_length = override LENGTH to move sideways
-"dmg"		damage to inflict when blocked (2 default)
-
-If a secret door has a targetname, it will only be opened by it's botton or trigger, not by damage.
-"sounds"
-1) medieval
-2) metal
-3) base
 */
 /*QUAKED info_null (.5 .5 .5) (-8 -8 -8) (8 8 8)
 Used as a positional target for spotlights, etc.
@@ -662,6 +361,424 @@ Dead Zombie
 }
 Zombie Head
 */
+/*QUAKED worldspawn (0 0 0) ?
+The world entity.
+
+Keys:
+"message" "name" - Map name
+"sounds" "n" - CD / Music track to play
+"worldtype" "n":
+0 - medieval, 1 - metal, 2 - base
+*/
+/*QUAKED item_shells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_shell1.bsp" }, "maps/b_shell0.bsp" }} );
+}
+Nox of 20 shells.
+AMMO_BIG is a box of 40 shells.
+*/
+/*QUAKED item_spikes (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_nail1.bsp" }, "maps/b_nail0.bsp" }} );
+}
+Nox of 25 nails.
+AMMO_BIG is a box of 50 nails.
+*/
+/*QUAKED item_rockets (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_rock1.bsp" }, "maps/b_rock0.bsp" }} );
+}
+Nox of 5 rockets.
+AMMO_BIG is a box of 10 rockets.
+*/
+/*QUAKED item_cells (0 0 1) (0 0 0) (32 32 56) AMMO_BIG X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_batt1.bsp" }, "maps/b_batt0.bsp" }} );
+}
+Nox of 6 cells.
+AMMO_BIG is a box of 12 cells.
+*/
+/*QUAKED item_armor1 (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path" : "progs/armor.mdl", "skin" : 0});
+}
+Green armor. 100 points, saves 30% of damage.
+*/
+/*QUAKED item_armor2 (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path" : "progs/armor.mdl", "skin" : 1});
+}
+Yellow armor. 150 points, saves 60% of damage.
+*/
+/*QUAKED item_armorInv (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path" : "progs/armor.mdl", "skin" : 2});
+}
+Red armor. 200 points, saves 80% of damage.
+*/
+/*QUAKED item_backpack (0 0 1) (-16 -16 0) (16 16 56) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/backpack.mdl");	}
+Backpack pickup. Contains 40 shells, 50 nails, 10 rockets and 12 cells.
+
+Keys:
+items - set to one of a combination of the IT_SHOTGUN etc values to make the backpack contain weapons
+ammo_shells, ammo_nails, ammo_rockets, ammo_cells - set to override ammo defaults. set to -1 to not give ANY ammo of that type.
+teleport_time - time in seconds to respawn (default 120)
+
+Spawnflags:
+DONT_DROP - don't drop to floor on map load
+RESPAWN - respawn automatically
+*/
+/*QUAKED item_health (0 0 1) (0 0 0) (32 32 56) Rotten Megahealth X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "maps/b_bh10.bsp" }, spawnflags & 2 -> { "path" : "maps/b_bh100.bsp" },
+	 "maps/b_bh25.bsp" }} );
+}
+Health box. Normally gives 25 points.
+Rotten box heals 15 points.
+Megahealth will add 100 health, then start to
+rot the player back down to 100 health after 5 seconds.
+*/
+/*QUAKED item_key1 (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/key_med.mdl");	}
+SILVER key
+In order for keys to work
+you MUST set your maps
+worldtype to one of the
+following:
+0: medieval
+1: metal
+2: base
+*/
+/*QUAKED item_key2 (0 0 1) (-16 -16 -24) (16 16 32) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ({"path" : "progs/key_med.mdl", "skin" : 1});
+}
+GOLD key
+In order for keys to work
+you MUST set your maps
+worldtype to one of the
+following:
+0: medieval
+1: metal
+2: base
+*/
+/*QUAKED item_sigil (0 0 1) (-16 -16 -24) (16 16 32) E1 E2 E3 E4 X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{
+	model ( {{ spawnflags & 1 -> { "path" : "progs/end1.mdl" }, spawnflags & 2 -> { "path" : "progs/end2.mdl" },
+	spawnflags & 4 -> { "path" : "progs/end3.mdl" }, spawnflags & 8 -> { "path" : "progs/end4.mdl" },
+	 "progs/end1.mdl" }} );
+}
+End of episode rune. Use in conjuction with func_bossgate and func_episodegate.
+Spawnflag must be set to the appropriate episode.
+Episode 1 - Dimension of the Doomed - Rune of Earth Magic
+Episode 2 - The Realm of Black Magic - Rune of Black Magic
+Episode 3 - The Netherworld - Rune of Hell Magic
+Episode 4 - The Elder World - Run of Elder Magic
+*/
+/*QUAKED item_artifact_invulnerability (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/invulner.mdl");	}
+Pentagram of Protection
+Player is invulnerable for 30 seconds
+*/
+/*QUAKED item_artifact_envirosuit (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/suit.mdl");	}
+Biosuit
+Player takes no damage from water or slime for 30 seconds
+*/
+/*QUAKED item_artifact_invisibility (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/invisibl.mdl");	}
+Ring of Shadows
+Player is invisible for 30 seconds
+*/
+/*QUAKED item_artifact_super_damage (0 0 1) (-16 -16 -24) (16 16 32) X X X X DONT_DROP RESPAWN X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/quaddama.mdl");	}
+Quad Damage
+Player does 4x damage for 30 seconds
+*/
+/*QUAKED weapon_supershotgun (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/g_shot.mdl");	}
+Double-barrelled Shotgun
+*/
+/*QUAKED weapon_nailgun (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/g_nail.mdl");	}
+Nailgun
+*/
+/*QUAKED weapon_supernailgun (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/g_nail2.mdl");	}
+Perforator
+*/
+/*QUAKED weapon_grenadelauncher (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/g_rock.mdl");	}
+Grenade Launcher
+*/
+/*QUAKED weapon_rocketlauncher (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/g_rock2.mdl");	}
+Rocket Launcher
+*/
+/*QUAKED weapon_lightning (0 0 1) (-16 -16 0) (16 16 56) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+{	model("progs/g_light.mdl");	}
+Thunderbolt
+*/
+/*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8) X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+If a monster targets a path_corner, they will move towards it.
+Once a monster hits a path_corner, they will move to the next targeted path_corner.
+You can set "pausetime" on a path_corner to enforce a delay before the monster moves
+to the next target.
+*/
+/*QUAKED monster_boss (1 0 0) (-128 -128 -24) (128 128 256)
+{
+	model ("progs/boss.mdl");
+}
+Chthon.
+Must be triggered to activate.
+*/
+/*QUAKED event_lightning (0 1 1) (-8 -8 -8) (8 8 8)
+Triggerable lightning event for Chthon only.
+You must have two func_door's in the level which both contain a target of "lightning" (not targetname!)
+*/
+/*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush
+{
+	model ("progs/demon.mdl");
+}
+Fiend.
+"In essence, organic buzzsaws, rife with pummeling power!"
+*/
+/*QUAKED monster_dog (1 0 0) (-32 -32 -24) (32 32 40) Ambush
+{
+	model ("progs/dog.mdl");
+}
+Rottweiler.
+"Bad, bad doggie! Play dead! -- blam! -- yipe! Good dog!"
+*/
+/*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) AMBUSH
+{
+	model ("progs/enforcer.mdl");
+}
+Enforcer.
+"Grunt, Mark Two. Grunts who are surlier and beefier than the rest
+get outfitted in combat armor and built-in blasters."
+*/
+/*QUAKED monster_fish (1 0 0) (-16 -16 -24) (16 16 24) Ambush
+{
+	model ("progs/fish.mdl");
+}
+Rotfish.
+"Disgusting little critters who dish it out, but can't take it."
+*/
+/*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+{
+	model ("progs/hknight.mdl");
+}
+Death Knight.
+"This particular canned meat tends to open you up instead."
+*/
+/*QUAKED monster_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+{
+	model ("progs/knight.mdl");
+}
+Knight.
+"Canned meat. Open 'er up and see if it's still fresh."
+*/
+/*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (128 128 256)
+{	model ("progs/oldone.mdl");		}
+Shub-Niggurath.
+*/
+/*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
+{
+	model ("progs/ogre.mdl");
+}
+Ogre.
+"What's worse than a cannibal monster eight feet tall? One with a chainsaw. And a sack of grenades."
+*/
+/*QUAKED monster_shalrath (1 0 0) (-32 -32 -24) (32 32 48) Ambush
+{
+	model ({ "path" : "progs/shalrath.mdl",	"frame": 23 });
+}
+Vore.
+"A spideresque hybrid horror. Keep your eye on the energy pod he hurls."
+*/
+/*QUAKED monster_shambler (1 0 0) (-32 -32 -24) (32 32 64) Ambush
+{
+	model ("progs/shambler.mdl");
+}
+Shambler.
+*/
+/*QUAKED monster_army (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+{
+	model ("progs/soldier.mdl");
+}
+Grunt.
+"Goons with probes inserted into their pleasure centers; wired up so when they kill someone,
+they get paroxysms of ecstasy. In essence, customized serial killers.
+Easy to kill, and they tote shotgun shells. It's like a little Christmas each time you blow a Grunt away!"
+*/
+/*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
+{
+	model ("progs/tarbaby.mdl");
+}
+Spawn.
+"A merrily bouncing blob as dangerous to kill as to ignore. Blech."
+*/
+/*QUAKED monster_wizard (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+{
+	model ("progs/wizard.mdl");
+}
+Scrag.
+"Floats like a butterfly, stings like a bee. Ugly as hell. They're not real tough, but like to bushwhack you."
+*/
+/*QUAKED monster_zombie (1 0 0) (-16 -16 -24) (16 16 32) CRUCIFIED AMBUSH TELEPORT X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD
+{
+	model ( {{ spawnflags & 2 -> { "path" : "progs/zombie.mdl", "frame" : 192 }, "progs/zombie.mdl" }} );
+}
+Zombie.
+"Thou canst not kill that which doth not live. But you can blast it into chunky kibbles."
+*/
+/*QUAKED func_wall (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Simple solid bmodel
+
+Keys:
+"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
+*/
+/*QUAKED func_illusionary (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A simple bmodel that looks solid but lets the player walk through it
+
+Keys:
+"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
+*/
+/*QUAKED func_episodegate (0 .5 .8) ? E1 E2 E3 E4 X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+This bmodel will only appear if the episode has already been completed.
+
+Keys:
+"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
+
+Spawnflags:
+E1, E2, E3, E4
+*/
+/*QUAKED func_bossgate (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+This bmodel appears unless the player has all of the episode runes.
+
+Keys:
+"targetname" - if triggered, the bmodel will toggle its frame/animation sequence from +0 -> +9 to +a -> +j
+*/
+/*QUAKED func_clamber (0 .5 .8) ? X X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Player can clamber up these.
+*/
+/*QUAKED func_breakable (0 .5 .8) ? EXPLODE NO_EXPLOSION_SPRITE NO_EXPLOSION_SOUND SPAWN_SMOKE X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+Breakable brush model
+
+Spawnflags:
+EXPLODE - will explode upon destruction. Set the dmg key to the force of the explosion.
+You can set dmg to 0 for just the explosion effects.
+NO_EXPLOSION_SPRITE - don't show explosion sprite.
+NO_EXPLOSION_SOUND - don't make explosion sound or light.
+SPAWN_SMOKE - will spawn some additional smoke upon destuction
+
+Keys:
+"style" "n"
+Preset style, 1=base crates, 2=stone/brick
+Sets debris model, particle color and sounds automatically
+If mdl1-3, noise or colour are set they will override the preset
+
+"mdl1", "mdl2", "mdl3" "name"
+custom models for debris chunks
+
+"color" "n"
+particle color for damage, range 0-254 (from palette)
+
+"noise1", "noise2" "name"
+custom sound for break / damage
+
+"health" "n"
+damage required to destroy. default 30.
+
+"targetname" "name"
+if set, the breakable must be triggered to destroy it
+
+"count" "n"
+number of pieces of debris to spawn. default 8.
+
+"angle" "n"
+If set, overrides the direction debris moves in. Use -1 and -2 for up/down. Use 360 for a yaw of 0.
+
+"dmg" "n"
+Amount of explosive damage to deal. Default 60.
+*/
+/*QUAKED func_button (0 .5 .8) ? START_OFF X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
+A button that can either be pushed or shot.
+
+When a button is activated, it moves the distance of its size,
+in the direction of its angle, leaving a "lip" at the end of the move.
+Alternatively, you can specify a set "distance" to move.
+
+When the move is completed, it triggers all of its targets, waits some time,
+then returns to its original position where it can be pushed or shot again.
+
+Spawnflags:
+START_OFF - the button starts in a disabled state, and it must be triggered to enable it.
+Once enabled, it acts like any other button.
+
+Keys:
+"target" - entities with a matching targetname will be triggered.
+"killtarget" - entities with a matching targetname will be removed.
+"targetname" - if triggered, the button will fire, unless it's already in motion
+ or switched off. if switched off, it will enable itself.
+"message" - message to print to player on activation.
+"delay" - button will wait some time before triggering its targets.
+"angle" - direction of movement. use -1 for up and -2 for down.
+"speed"	- speed of movement. default 40.
+"wait" - wait before returning. default 1 second. use -1 to never return.
+"lip" - number of units to leave at end of the move. default 4.
+"distance" - manually specify the distance to move, ignoring the size and lip
+"health" - if set, the button must be shot rather than pushed.
+"sounds" -
+-1) custom sound
+0) steam metal
+1) wooden clunk
+2) metallic click
+3) in-out
+"noise" - custom sound to use for button activation
+*/
+/*QUAKED func_door (0 .5 .8) ? START_OPEN x DOOR_DONT_LINK GOLD_KEY SILVER_KEY TOGGLE
+if two doors touch, they are assumed to be connected and operate as a unit.
+
+TOGGLE causes the door to wait in both the start and end states for a trigger event.
+
+START_OPEN causes the door to move to its destination when spawned, and operate in reverse.  It is used to temporarily or permanently close off an area when triggered (not usefull for touch or takedamage doors).
+
+Key doors are allways wait -1.
+
+"message"	is printed when the door is touched if it is a trigger door and it hasn't been fired yet
+"angle"		determines the opening direction
+"targetname" if set, no touch field will be spawned and a remote button or trigger field activates the door.
+"health"	if set, door must be shot open
+"speed"		movement speed (100 default)
+"wait"		wait before returning (3 default, -1 = never return)
+"lip"		lip remaining at end of move (8 default)
+"dmg"		damage to inflict when blocked (2 default)
+"sounds"
+0)	no sound
+1)	stone
+2)	base
+3)	stone chain
+4)	screechy metal
+*/
+/*QUAKED func_door_secret (0 .5 .8) ? open_once 1st_left 1st_down no_shoot always_shoot
+Basic secret door. Slides back, then to the side. Angle determines direction.
+wait  = # of seconds before coming back
+1st_left = 1st move is left of arrow
+1st_down = 1st move is down from arrow
+always_shoot = even if targeted, keep shootable
+t_width = override WIDTH to move back (or height if going down)
+t_length = override LENGTH to move sideways
+"dmg"		damage to inflict when blocked (2 default)
+
+If a secret door has a targetname, it will only be opened by it's botton or trigger, not by damage.
+"sounds"
+1) medieval
+2) metal
+3) base
+*/
 /*QUAKED func_plat (0 .5 .8) ? LOW_TRIGGER X X X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD NOT_IN_DM
 A platform that moves vertically up and down.
 
@@ -694,8 +811,8 @@ Keys:
 1) base fast
 2) chain slow (default)
 3) base alternative
-"noise" - sound to play at start of plat movement. tip: can contain looped segments.
-"noise1" - sound to play at end of plat movement.
+"noise" - sound to play at start of plat movement
+"noise1" - sound to play at end of plat movement
 */
 /*QUAKED func_train (0 .5 .8) ?
 Trains are moving platforms that players can ride.
@@ -918,121 +1035,4 @@ This is used in id1 for teleporting monsters - this has been obsoleted by the MO
 Spawnflags: 
 PLAYER_ONLY - just players, not monsters
 SILENT - don't spawn ambient teleporter noise
-*/
-/*QUAKED worldspawn (0 0 0) ?
-The world entity.
-
-Keys:
-"message" "name" - Map name
-"sounds" "n" - CD / Music track to play
-"worldtype" "n":
-0 - medieval, 1 - metal, 2 - base
-*/
-/*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
-{
-	model ("progs/ogre.mdl");
-}
-Ogre.
-"What's worse than a cannibal monster eight feet tall? One with a chainsaw. And a sack of grenades."
-*/
-/*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush
-{
-	model ("progs/demon.mdl");
-}
-Fiend.
-"In essence, organic buzzsaws, rife with pummeling power!"
-*/
-/*QUAKED monster_shambler (1 0 0) (-32 -32 -24) (32 32 64) Ambush
-{
-	model ("progs/shambler.mdl");
-}
-Shambler.
-*/
-/*QUAKED monster_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-{
-	model ("progs/knight.mdl");
-}
-Knight.
-"Canned meat. Open 'er up and see if it's still fresh."
-*/
-/*QUAKED monster_army (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-{
-	model ("progs/soldier.mdl");
-}
-Grunt.
-"Goons with probes inserted into their pleasure centers; wired up so when they kill someone,
-they get paroxysms of ecstasy. In essence, customized serial killers.
-Easy to kill, and they tote shotgun shells. It's like a little Christmas each time you blow a Grunt away!"
-*/
-/*QUAKED monster_wizard (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-{
-	model ("progs/wizard.mdl");
-}
-Scrag.
-"Floats like a butterfly, stings like a bee. Ugly as hell. They're not real tough, but like to bushwhack you."
-*/
-/*QUAKED monster_dog (1 0 0) (-32 -32 -24) (32 32 40) Ambush
-{
-	model ("progs/dog.mdl");
-}
-Rottweiler.
-"Bad, bad doggie! Play dead! -- blam! -- yipe! Good dog!"
-*/
-/*QUAKED monster_zombie (1 0 0) (-16 -16 -24) (16 16 32) CRUCIFIED AMBUSH TELEPORT X X X X X NOT_IN_EASY NOT_IN_NORMAL NOT_IN_HARD
-{
-	model ( {{ spawnflags & 2 -> { "path" : "progs/zombie.mdl", "frame" : 192 }, "progs/zombie.mdl" }} );
-}
-Zombie.
-"Thou canst not kill that which doth not live. But you can blast it into chunky kibbles."
-*/
-/*QUAKED monster_boss (1 0 0) (-128 -128 -24) (128 128 256)
-{
-	model ("progs/boss.mdl");
-}
-Chthon.
-Must be triggered to activate.
-*/
-/*QUAKED event_lightning (0 1 1) (-8 -8 -8) (8 8 8)
-Triggerable lightning event for Chthon only.
-You must have two func_door's in the level which both contain a target of "lightning" (not targetname!)
-*/
-/*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
-{
-	model ("progs/tarbaby.mdl");
-}
-Spawn.
-"A merrily bouncing blob as dangerous to kill as to ignore. Blech."
-*/
-/*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-{
-	model ("progs/hknight.mdl");
-}
-Death Knight.
-"This particular canned meat tends to open you up instead."
-*/
-/*QUAKED monster_fish (1 0 0) (-16 -16 -24) (16 16 24) Ambush
-{
-	model ("progs/fish.mdl");
-}
-Rotfish.
-"Disgusting little critters who dish it out, but can't take it."
-*/
-/*QUAKED monster_shalrath (1 0 0) (-32 -32 -24) (32 32 48) Ambush
-{
-	model ({ "path" : "progs/shalrath.mdl",	"frame": 23 });
-}
-Vore.
-"A spideresque hybrid horror. Keep your eye on the energy pod he hurls."
-*/
-/*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) AMBUSH
-{
-	model ("progs/enforcer.mdl");
-}
-Enforcer.
-"Grunt, Mark Two. Grunts who are surlier and beefier than the rest
-get outfitted in combat armor and built-in blasters."
-*/
-/*QUAKED monster_oldone (1 0 0) (-160 -128 -24) (128 128 256)
-{	model ("progs/oldone.mdl");		}
-Shub-Niggurath.
 */

@@ -7,6 +7,7 @@ void (vector org, entity death_owner) spawn_tdeath;
 
 float	modelindex_eyes, modelindex_player;
 
+
 /*
 =============================================================================
 
@@ -902,6 +903,8 @@ PlayerPostThink
 Called every frame after physics are run
 ================
 */
+
+void() W_WeaponFrame;
 
 void() PlayerPostThink =
 {

@@ -1,4 +1,4 @@
-entity	bodyque_head;
+entity bodyque_head;
 
 void() bodyque = {};
 

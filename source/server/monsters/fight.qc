@@ -1,3 +1,10 @@
+void(float normal) SUB_AttackFinished =
+{
+	self.cnt = 0;		// refire count for nightmare
+	if (skill != 3)
+		self.attack_finished = time + normal;
+};
+
 
 /*
 
