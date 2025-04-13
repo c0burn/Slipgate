@@ -21,6 +21,14 @@ damage.qc
 gore.qc
 intermission.qc
 
+movers/subs.qc
+movers/bmodel.qc
+movers/breakable.qc
+movers/buttons.qc
+movers/doors.qc
+movers/plats.qc
+movers/trains.qc
+
 monsters/waypoints.qc
 monsters/monsters.qc
 monsters/fight.qc
@@ -62,13 +70,7 @@ monsters/tarbaby.qc
 monsters/wizard.qc
 monsters/zombie.qc
 
-movers/subs.qc
-movers/bmodel.qc
-movers/breakable.qc
-movers/buttons.qc
-movers/doors.qc
-movers/plats.qc
-movers/trains.qc
+
 
 
 traps/trap_explobox.qc

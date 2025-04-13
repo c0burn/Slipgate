@@ -142,7 +142,7 @@ void(string mod, string hmod, float hp, float fl, vector min, vector max) monste
 	self.flags = FL_MONSTER + fl;	// FL_FLY or FL_SWIM
 	self.headmodel = hmod;
 	self.health = hp;
-	
+	  
 	if (self.flags & FL_FLY)
 	{
 		self.yaw_speed = 20;
@@ -178,7 +178,7 @@ void(string mod, string hmod, float hp, float fl, vector min, vector max) monste
 		// save off fields so we can restore them later
 		self.pos1 = min;
 		self.pos2 = max;
-		self.mdl = mod;	
+		self.mdl = mod;
 		return;
 	}
 	
